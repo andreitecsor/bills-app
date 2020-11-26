@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">bills-management</string>
+    <string name="home">Home</string>
+    <string name="filter">Filter</string>
+    <string name="profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
