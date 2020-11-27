@@ -1,4 +1,4 @@
-package ie.dam.project.activities;
+package ie.dam.project;
 
 import android.os.Bundle;
 import android.view.MenuItem;
