@@ -1,32 +1,42 @@
-package ie.dam.project;
+package ie.dam.project.activities;
+
+import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
-import ie.dam.project.fragments.*;
+import ie.dam.project.R;
+import ie.dam.project.fragments.FilterFragment;
+import ie.dam.project.fragments.HomeFragment;
+import ie.dam.project.fragments.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
+    BottomNavigationView bottomNavMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initialiseComponents(savedInstanceState);
+        bottomNavMenu.setOnNavigationItemSelectedListener(selectMenuItem());
+    }
 
-        BottomNavigationView navView=findViewById(R.id.menu_nav_bar);
+    private void initialiseComponents(Bundle savedInstanceState) {
+        bottomNavMenu = findViewById(R.id.act_main_menu);
+        //Start-up fragment
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
+            getSupportFragmentManager().beginTransaction().replace(R.id.act_main_frame_layout,
                     new HomeFragment()).commit();
-                    navView.setSelectedItemId(R.id.menu_home);
+            bottomNavMenu.setSelectedItemId(R.id.menu_home);
         }
+    }
 
-        navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private BottomNavigationView.OnNavigationItemSelectedListener selectMenuItem() {
+        return new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment = new HomeFragment();
@@ -41,10 +51,12 @@ public class MainActivity extends AppCompatActivity {
                         selectedFragment = new ProfileFragment();
                         break;
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
+                getSupportFragmentManager().beginTransaction().replace(R.id.act_main_frame_layout,
                         selectedFragment).commit();
                 return true;
             }
-        });
+        };
     }
+
+
 }
