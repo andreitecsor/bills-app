@@ -3,14 +3,14 @@
 
     <item
     android:id="@+id/menu_filter"
-    android:icon="@drawable/ic_filter_list"
-    android:title="@string/filter"/>
+    android:icon="@drawable/ic_menu_filter_list"
+    android:title="@string/menu_filter"/>
     <item
         android:id="@+id/menu_home"
-        android:icon="@drawable/ic_home"
-        android:title="@string/home"/>
+        android:icon="@drawable/ic_menu_home"
+        android:title="@string/menu_home"/>
     <item
     android:id="@+id/menu_profile"
-    android:icon="@drawable/ic_profile"
-    android:title="@string/profile"/>
+    android:icon="@drawable/ic_menu_profile"
+    android:title="@string/menu_profile"/>
 </menu>
