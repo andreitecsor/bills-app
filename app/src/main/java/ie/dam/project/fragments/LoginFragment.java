@@ -15,7 +15,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import ie.dam.project.MainActivity;
 import ie.dam.project.R;
-import ie.dam.project.StartActivity;
+import ie.dam.project.BeginActivity;
 
 
 public class LoginFragment extends Fragment {
@@ -42,9 +42,9 @@ public class LoginFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StartActivity startActivity = (StartActivity) getContext(); //poate returna null. WATCH OUT!!!
-                if (startActivity != null) {
-                    startActivity.getSupportFragmentManager().beginTransaction().replace(R.id.act_start_frame_layout,
+                BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
+                if (beginActivity != null) {
+                    beginActivity.getSupportFragmentManager().beginTransaction().replace(R.id.act_begin_frame_layout,
                             new RegisterFragment()).commit();
                 }
             }
@@ -55,14 +55,14 @@ public class LoginFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StartActivity startActivity = (StartActivity) getContext(); //poate returna null. WATCH OUT!!!
-                if (startActivity != null) {
+                BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
+                if (beginActivity != null) {
                     if (emailTiet.getText().toString().equals("a") && passwordTiet.getText().toString().equals("a")) {
-                        Intent intent = new Intent(startActivity, MainActivity.class);
-                        startActivity.startActivity(intent);
-                        startActivity.finish();
+                        Intent intent = new Intent(beginActivity, MainActivity.class);
+                        beginActivity.startActivity(intent);
+                        beginActivity.finish();
                     } else {
-                        Toast.makeText(startActivity, R.string.start_invalid_credentials, Toast.LENGTH_LONG).show();
+                        Toast.makeText(beginActivity, R.string.begin_invalid_credentials, Toast.LENGTH_LONG).show();
                     }
                 }
             }

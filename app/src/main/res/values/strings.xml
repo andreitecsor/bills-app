@@ -4,15 +4,15 @@
     <string name="menu_filter">Filter</string>
     <string name="menu_profile">Profile</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="start_email">Email</string>
-    <string name="start_password">Password</string>
-    <string name="start_login_button">Let\'s go</string>
-    <string name="start_register_now">Create one now</string>
-    <string name="start_register_now_text">Don\'t have an account?</string>
-    <string name="start_login_now_text">Already have an account?</string>
-    <string name="start_name">Name</string>
-    <string name="start_confirm_password">Confirm password</string>
-    <string name="start_register_button">Let\'s get started</string>
-    <string name="start_login_now">Sign in</string>
-    <string name="start_invalid_credentials">Invalid email or password</string>
+    <string name="begin_email">Email</string>
+    <string name="begin_password">Password</string>
+    <string name="begin_login_button">Let\'s go</string>
+    <string name="begin_register_now">Create one now</string>
+    <string name="begin_register_now_text">Don\'t have an account?</string>
+    <string name="begin_login_now_text">Already have an account?</string>
+    <string name="begin_name">Name</string>
+    <string name="begin_confirm_password">Confirm password</string>
+    <string name="begin_register_button">Let\'s get started</string>
+    <string name="begin_login_now">Sign in</string>
+    <string name="begin_invalid_credentials">Invalid email or password</string>
 </resources>

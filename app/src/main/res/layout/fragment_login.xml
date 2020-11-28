@@ -11,9 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/frg_login_box"
             android:layout_width="match_parent"
@@ -48,7 +45,7 @@
                     android:id="@+id/frg_login_email_tiet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/start_email" />
+                    android:hint="@string/begin_email" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,7 +66,7 @@
                     android:id="@+id/frg_login_password_tiet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/start_password" />
+                    android:hint="@string/begin_password" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -78,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/start_login_button"
+                android:text="@string/begin_login_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:text="@string/start_register_now"
+            android:text="@string/begin_register_now"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -99,7 +96,7 @@
             android:id="@+id/frg_login_register_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start_register_now_text"
+            android:text="@string/begin_register_now_text"
             app:layout_constraintBottom_toTopOf="@+id/frg_login_register_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

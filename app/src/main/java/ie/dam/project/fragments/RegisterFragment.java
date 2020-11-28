@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import ie.dam.project.R;
-import ie.dam.project.StartActivity;
+import ie.dam.project.BeginActivity;
 
 public class RegisterFragment extends Fragment {
     private Button loginNowButton;
@@ -26,9 +26,9 @@ public class RegisterFragment extends Fragment {
         loginNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StartActivity startActivity = (StartActivity) getContext(); //poate returna null. WATCH OUT!!!
-                if (startActivity != null) {
-                    startActivity.getSupportFragmentManager().beginTransaction().replace(R.id.act_start_frame_layout,
+                BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
+                if (beginActivity != null) {
+                    beginActivity.getSupportFragmentManager().beginTransaction().replace(R.id.act_begin_frame_layout,
                             new LoginFragment()).commit();
                 }
             }
