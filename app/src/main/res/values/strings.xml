@@ -14,4 +14,5 @@
     <string name="start_confirm_password">Confirm password</string>
     <string name="start_register_button">Let\'s get started</string>
     <string name="start_login_now">Sign in</string>
+    <string name="start_invalid_credentials">Invalid email or password</string>
 </resources>
