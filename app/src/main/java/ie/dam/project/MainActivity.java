@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import ie.dam.project.R;
 import ie.dam.project.fragments.FilterFragment;
 import ie.dam.project.fragments.HomeFragment;
 import ie.dam.project.fragments.ProfileFragment;

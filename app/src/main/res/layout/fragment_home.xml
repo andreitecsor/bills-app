@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,4 +8,90 @@
     android:background="@color/purple_200">
 
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frg_home_constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/frg_home_brief_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/frg_home_tv_welcome_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/home_welcome_back"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/frg_home_progress_bar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="94dp"
+                android:layout_height="106dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frg_home_tv_welcome_user" />
+
+            <TextView
+                android:id="@+id/frg_home_tv_payed_out_of"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_m_n"
+                app:layout_constraintBottom_toBottomOf="@+id/frg_home_progress_bar"
+                app:layout_constraintEnd_toEndOf="@+id/frg_home_progress_bar"
+                app:layout_constraintStart_toStartOf="@+id/frg_home_progress_bar"
+                app:layout_constraintTop_toTopOf="@+id/frg_home_progress_bar" />
+
+            <TextView
+                android:id="@+id/frg_home_tv_payments_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_payments_status"
+                app:layout_constraintBottom_toBottomOf="@+id/frg_home_progress_bar"
+                app:layout_constraintEnd_toStartOf="@+id/frg_home_progress_bar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/frg_home_progress_bar" />
+
+            <TextView
+                android:id="@+id/frg_home_tv_total_to_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_total_to_pay"
+                app:layout_constraintBottom_toBottomOf="@+id/frg_home_progress_bar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/frg_home_progress_bar"
+                app:layout_constraintTop_toTopOf="@+id/frg_home_progress_bar" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ListView
+            android:id="@+id/frg_home_list_view_bills"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frg_home_brief_box" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -70,9 +70,9 @@ public class LoginFragment extends Fragment {
     }
 
     private void initialiseComponents(View view) {
-        registerNowButton = view.findViewById(R.id.frg_login_register_button);
-        loginButton = view.findViewById(R.id.frg_login_button);
-        emailTiet = view.findViewById(R.id.frg_login_email_tiet);
-        passwordTiet = view.findViewById(R.id.frg_login_password_tiet);
+        registerNowButton = view.findViewById(R.id.frg_login_button_register);
+        loginButton = view.findViewById(R.id.frg_login_button_login);
+        emailTiet = view.findViewById(R.id.frg_login_tiet_email);
+        passwordTiet = view.findViewById(R.id.frg_login_tiet_password);
     }
 }
