@@ -3,7 +3,8 @@
     <string name="menu_home">Home</string>
     <string name="menu_filter">Filter</string>
     <string name="menu_profile">Profile</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- BeginActivity + LoginFragment + RegisterFragment -->
     <string name="begin_email">Email</string>
     <string name="begin_password">Password</string>
     <string name="begin_login_button">Let\'s go</string>
@@ -15,4 +16,12 @@
     <string name="begin_register_button">Let\'s get started</string>
     <string name="begin_login_now">Sign in</string>
     <string name="begin_invalid_credentials">Invalid email or password</string>
+
+    <!--  MainActivity  -->
+    <!--  HomeFragment  -->
+    <string name="home_welcome_back">Welcome back, %1$s!</string> <!--  %1$s -> user's name  -->
+    <string name="home_m_n">%1$d/%2$d</string>  <!--  ex: 3/5  -->
+    <string name="home_payments_status">Status:</string>
+    <string name="home_total_to_pay">%1$f %2$s</string> <!-- Not sure if it works with %1%f ex: 130 USD, 250 RON  -->
+
 </resources>
