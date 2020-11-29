@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/frg_home_welcome_user"
+                android:id="@+id/frg_home_tv_welcome_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -48,7 +48,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frg_home_welcome_user" />
+                app:layout_constraintTop_toBottomOf="@+id/frg_home_tv_welcome_user" />
 
             <TextView
                 android:id="@+id/frg_home_tv_payed_out_of"
@@ -83,7 +83,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ListView
-            android:id="@+id/frg_home_list_view"
+            android:id="@+id/frg_home_lv_bills"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"

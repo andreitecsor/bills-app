@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/frg_register_name_til"
+                android:id="@+id/frg_register_til_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -43,14 +43,14 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/frg_register_name_tiet"
+                    android:id="@+id/frg_register_tiet_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/begin_name" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/frg_register_email_til"
+                android:id="@+id/frg_register_til_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -60,17 +60,17 @@
                 android:layout_marginRight="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/frg_register_name_til">
+                app:layout_constraintTop_toBottomOf="@id/frg_register_til_name">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/frg_register_email_tiet"
+                    android:id="@+id/frg_register_tiet_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/begin_email" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/frg_register_password_til"
+                android:id="@+id/frg_register_til_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -80,17 +80,17 @@
                 android:layout_marginRight="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/frg_register_email_til">
+                app:layout_constraintTop_toBottomOf="@id/frg_register_til_email">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/frg_register_password_tiet"
+                    android:id="@+id/frg_register_tiet_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/begin_password" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/frg_register_password_confirm_til"
+                android:id="@+id/frg_register_til_password_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -100,17 +100,17 @@
                 android:layout_marginRight="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/frg_register_password_til">
+                app:layout_constraintTop_toBottomOf="@id/frg_register_til_password">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/frg_register_password_confirm_tiet"
+                    android:id="@+id/frg_register_tiet_password_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/begin_confirm_password" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/frg_register_button"
+                android:id="@+id/frg_register_button_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -119,12 +119,12 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frg_register_password_confirm_til" />
+                app:layout_constraintTop_toBottomOf="@+id/frg_register_til_password_confirm" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
-            android:id="@+id/frg_register_login_button"
+            android:id="@+id/frg_register_button_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
@@ -134,11 +134,11 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/frg_register_login_tv"
+            android:id="@+id/frg_register_tv_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/begin_login_now_text"
-            app:layout_constraintBottom_toTopOf="@+id/frg_register_login_button"
+            app:layout_constraintBottom_toTopOf="@+id/frg_register_button_login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

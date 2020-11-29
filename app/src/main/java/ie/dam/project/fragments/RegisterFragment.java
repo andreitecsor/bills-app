@@ -37,6 +37,6 @@ public class RegisterFragment extends Fragment {
     }
 
     private void initialiseComponents(View view) {
-        loginNowButton = view.findViewById(R.id.frg_register_login_button);
+        loginNowButton = view.findViewById(R.id.frg_register_button_login);
     }
 }
