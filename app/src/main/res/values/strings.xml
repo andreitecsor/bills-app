@@ -3,6 +3,8 @@
     <string name="menu_home">Home</string>
     <string name="menu_filter">Filter</string>
     <string name="menu_profile">Profile</string>
+    <string name="menu_add">Add</string>
+    <string name="menu_currency">Currency</string>
 
     <!-- BeginActivity + LoginFragment + RegisterFragment -->
     <string name="begin_email">Email</string>
@@ -26,6 +28,7 @@
     <string name="filter_button">Filter</string>
     <string name="filter_supplier">Supplier</string>
     <string name="filter_type">Type</string>
+    <string name="currency_choose">Choose your currency</string>
     <!--  FilterFragment  -->
 
 
