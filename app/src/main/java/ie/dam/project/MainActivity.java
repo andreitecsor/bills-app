@@ -3,6 +3,7 @@ package ie.dam.project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import ie.dam.project.fragments.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavMenu;
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
                     new HomeFragment()).commit();
             bottomNavMenu.setSelectedItemId(R.id.menu_home);
         }
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener selectMenuItem() {
@@ -56,10 +59,13 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.menu_profile:
                         selectedFragment = new ProfileFragment();
+
+
                         break;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.act_main_frame_layout,
                         selectedFragment).commit();
+
                 return true;
             }
         };

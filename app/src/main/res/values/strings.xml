@@ -31,6 +31,14 @@
     <string name="filter_type">Type</string>
     <!--  Currency Fragment  -->
     <string name="currency_choose">Choose your currency</string>
+    <string name="email">Email</string>
+    <string name="new_password">New Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="nickname">Nickname</string>
+    <string name="change_password">Change password</string>
+    <string name="cancel">Cancel</string>
+    <string name="save_changes">Save changes</string>
 
 
 </resources>
