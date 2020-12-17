@@ -1,52 +1,63 @@
 package ie.dam.project.data.domain;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@Entity(tableName = "bills")
 public class Bill implements Serializable {
-    private Long id;
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "billId")
+    private long billId;
 
-    private Supplier supplier;
-
-    //TODO: Decide dueTo final data type
+    @ColumnInfo(name = "dueTo")
     private Date dueTo;
 
-    private Float sum;
+    @ColumnInfo(name = "amount")
+    private double amount;
 
-    private Boolean payed;
+    @ColumnInfo(name = "payed")
+    private boolean payed;
 
-    private Boolean recurrent;
+    @ColumnInfo(name = "recurrent")
+    private boolean recurrent;
 
-    private BillType type;
+    @ColumnInfo(name = "type")
+    private String type;
 
-    public Bill() {
-    }
+    @ColumnInfo(name = "supplierId")
+    private long supplierId;
 
-    public Bill(Long id, Supplier supplier, Date dueTo, Float sum, Boolean payed, Boolean recurrent, BillType type) {
-        this.id = id;
-        this.supplier = supplier;
+    public Bill(long billId, Date dueTo, double amount, boolean payed, boolean recurrent, String type, long supplierId) {
+        this.billId = billId;
         this.dueTo = dueTo;
-        this.sum = sum;
+        this.amount = amount;
         this.payed = payed;
         this.recurrent = recurrent;
         this.type = type;
+        this.supplierId = supplierId;
     }
 
-    public Long getId() {
-        return id;
+    @Ignore
+    public Bill(Date dueTo, double amount, boolean payed, boolean recurrent, String type, long supplierId) {
+        this.dueTo = dueTo;
+        this.amount = amount;
+        this.payed = payed;
+        this.recurrent = recurrent;
+        this.type = type;
+        this.supplierId = supplierId;
     }
 
-    //TODO: Delete setId here
-    public void setId(Long id) {
-        this.id = id;
+    public long getBillId() {
+        return billId;
     }
 
-    public Supplier getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
+    public void setBillId(long billId) {
+        this.billId = billId;
     }
 
     public Date getDueTo() {
@@ -57,36 +68,44 @@ public class Bill implements Serializable {
         this.dueTo = dueTo;
     }
 
-    public Float getSum() {
-        return sum;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setSum(Float sum) {
-        this.sum = sum;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
-    public Boolean getPayed() {
+    public boolean isPayed() {
         return payed;
     }
 
-    public void setPayed(Boolean payed) {
+    public void setPayed(boolean payed) {
         this.payed = payed;
     }
 
-    public Boolean getRecurrent() {
+    public boolean isRecurrent() {
         return recurrent;
     }
 
-    public void setRecurrent(Boolean recurrent) {
+    public void setRecurrent(boolean recurrent) {
         this.recurrent = recurrent;
     }
 
-    public BillType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(BillType type) {
+    public void setType(String type) {
         this.type = type;
+    }
+
+    public long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(long supplierId) {
+        this.supplierId = supplierId;
     }
 
     @Override
@@ -96,39 +115,40 @@ public class Bill implements Serializable {
 
         Bill bill = (Bill) o;
 
-        if (id != null ? !id.equals(bill.id) : bill.id != null) return false;
-        if (supplier != null ? !supplier.equals(bill.supplier) : bill.supplier != null)
-            return false;
+        if (billId != bill.billId) return false;
+        if (Double.compare(bill.amount, amount) != 0) return false;
+        if (payed != bill.payed) return false;
+        if (recurrent != bill.recurrent) return false;
+        if (supplierId != bill.supplierId) return false;
         if (dueTo != null ? !dueTo.equals(bill.dueTo) : bill.dueTo != null) return false;
-        if (sum != null ? !sum.equals(bill.sum) : bill.sum != null) return false;
-        if (payed != null ? !payed.equals(bill.payed) : bill.payed != null) return false;
-        if (recurrent != null ? !recurrent.equals(bill.recurrent) : bill.recurrent != null)
-            return false;
-        return type == bill.type;
+        return type != null ? type.equals(bill.type) : bill.type == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (supplier != null ? supplier.hashCode() : 0);
+        int result;
+        long temp;
+        result = (int) (billId ^ (billId >>> 32));
         result = 31 * result + (dueTo != null ? dueTo.hashCode() : 0);
-        result = 31 * result + (sum != null ? sum.hashCode() : 0);
-        result = 31 * result + (payed != null ? payed.hashCode() : 0);
-        result = 31 * result + (recurrent != null ? recurrent.hashCode() : 0);
+        temp = Double.doubleToLongBits(amount);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (payed ? 1 : 0);
+        result = 31 * result + (recurrent ? 1 : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (int) (supplierId ^ (supplierId >>> 32));
         return result;
     }
 
     @Override
     public String toString() {
         return "Bill{" +
-                "id=" + id +
-                ", supplier=" + supplier +
+                "billId=" + billId +
                 ", dueTo=" + dueTo +
-                ", sum=" + sum +
+                ", amount=" + amount +
                 ", payed=" + payed +
                 ", recurrent=" + recurrent +
-                ", type=" + type +
+                ", type='" + type + '\'' +
+                ", supplierId=" + supplierId +
                 '}';
     }
 }

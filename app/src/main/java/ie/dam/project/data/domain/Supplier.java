@@ -1,31 +1,50 @@
 package ie.dam.project.data.domain;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity(tableName = "suppliers")
 public class Supplier implements Serializable {
-    private Long id;
 
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "supplierId")
+    private long supplierId;
+
+    @ColumnInfo(name = "name")
     private String name;
 
-    private Set<Bill> bills;
+    @ColumnInfo(name = "phone")
+    private String phone;
 
-    public Supplier() {
-    }
+    @ColumnInfo(name = "email")
+    private String email;
 
-    public Supplier(String name) {
+    public Supplier(long supplierId, String name, String phone, String email) {
+        this.supplierId = supplierId;
         this.name = name;
-        this.bills = new HashSet<>();
+        this.phone = phone;
+        this.email = email;
     }
 
-    public Long getId() {
-        return id;
+    @Ignore
+    public Supplier(String name, String phone, String email) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
     }
 
-    //TODO: Delete setId here
-    public void setId(Long id) {
-        this.id = id;
+    public long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(long supplierId) {
+        this.supplierId = supplierId;
     }
 
     public String getName() {
@@ -36,12 +55,20 @@ public class Supplier implements Serializable {
         this.name = name;
     }
 
-    public Set<Bill> getBills() {
-        return bills;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setBills(Set<Bill> bills) {
-        this.bills = bills;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -51,23 +78,28 @@ public class Supplier implements Serializable {
 
         Supplier supplier = (Supplier) o;
 
-        if (id != null ? !id.equals(supplier.id) : supplier.id != null) return false;
-        return name != null ? name.equals(supplier.name) : supplier.name == null;
+        if (supplierId != supplier.supplierId) return false;
+        if (name != null ? !name.equals(supplier.name) : supplier.name != null) return false;
+        if (phone != null ? !phone.equals(supplier.phone) : supplier.phone != null) return false;
+        return email != null ? email.equals(supplier.email) : supplier.email == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = (int) (supplierId ^ (supplierId >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Supplier{" +
-                "id=" + id +
+                "supplierId=" + supplierId +
                 ", name='" + name + '\'' +
-                ", bills=" + bills +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }
