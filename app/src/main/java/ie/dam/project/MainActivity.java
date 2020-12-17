@@ -18,7 +18,6 @@ import ie.dam.project.fragments.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavMenu;
-    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initialiseComponents(Bundle savedInstanceState) {
         bottomNavMenu = findViewById(R.id.act_main_menu);
+
         //Start-up fragment
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.act_main_frame_layout,
@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.menu_profile:
                         selectedFragment = new ProfileFragment();
-
-
                         break;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.act_main_frame_layout,

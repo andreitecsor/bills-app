@@ -21,7 +21,7 @@ public class ProfileFragment extends Fragment {
 
 
     private ImageView imageView;
-    private ToggleButton changePass;
+    private ToggleButton changePassToggleBtn;
     private EditText nickname;
     private EditText email;
     private EditText pass;
@@ -35,26 +35,21 @@ public class ProfileFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         initialiseComponents(view);
-        changePass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        changePassToggleBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(changePass.isChecked()){
-
+                if (changePassToggleBtn.isChecked()) {
                     enableChangePass(view);
-                }
-                else disableChangePass(view);
+                } else disableChangePass(view);
             }
         });
         return view;
     }
-
 
 
     private void enableChangePass(View view) {
@@ -69,16 +64,16 @@ public class ProfileFragment extends Fragment {
 
 
     private void initialiseComponents(View view) {
-        imageView=view.findViewById(R.id.frg_profile_imgv);
-        nickname=view.findViewById(R.id.frg_profile_nickname_edit_text);
-        email=view.findViewById(R.id.frg_profile_email_edit_text);
-        pass=view.findViewById(R.id.frg_profile_new_pass_edit_text);
-        confirmPass=view.findViewById(R.id.frg_profile_confirm_pass_edit_text);
-        oldpass=view.findViewById(R.id.frg_profile_old_pass_edit_text);
-        changePass=view.findViewById(R.id.frg_profile_btn_change_pass);
-        saveButton=view.findViewById(R.id.frg_profile_btn_save);
-        passLayout=view.findViewById(R.id.frg_profile_new_pass_layout);
-        confirmPassLayout=view.findViewById(R.id.frg_profile_confirm_pass_layout);
+        imageView = view.findViewById(R.id.frg_profile_imgv);
+        nickname = view.findViewById(R.id.frg_profile_nickname_edit_text);
+        email = view.findViewById(R.id.frg_profile_email_edit_text);
+        pass = view.findViewById(R.id.frg_profile_new_pass_edit_text);
+        confirmPass = view.findViewById(R.id.frg_profile_confirm_pass_edit_text);
+        oldpass = view.findViewById(R.id.frg_profile_old_pass_edit_text);
+        changePassToggleBtn = view.findViewById(R.id.frg_profile_btn_change_pass);
+        saveButton = view.findViewById(R.id.frg_profile_btn_save);
+        passLayout = view.findViewById(R.id.frg_profile_new_pass_layout);
+        confirmPassLayout = view.findViewById(R.id.frg_profile_confirm_pass_layout);
         disableChangePass(view);
     }
 

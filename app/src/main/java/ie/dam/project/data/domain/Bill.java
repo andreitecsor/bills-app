@@ -1,4 +1,4 @@
-package ie.dam.project.domain;
+package ie.dam.project.data.domain;
 
 import java.io.Serializable;
 import java.util.Date;
