@@ -7,14 +7,15 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import ie.dam.project.data.dao.BillDao;
+import ie.dam.project.data.dao.SupplierDao;
 import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.Supplier;
-import ie.dam.project.util.asynctask.converters.DateConverter;
+import ie.dam.project.util.converters.DateConverter;
 
 /**version trebuie incrementat atunci cand schimbam structura tabelei*/
 @Database(entities = {Bill.class, Supplier.class}, exportSchema = true, version = 1)
 @TypeConverters({DateConverter.class})
-//TODO: exportSchema true -> pt documentatia finala.
 public abstract class DatabaseManager extends RoomDatabase {
     private static final String DATABASE_NAME = "bm_db";
     private static DatabaseManager databaseManager;
@@ -31,4 +32,7 @@ public abstract class DatabaseManager extends RoomDatabase {
         }
         return databaseManager;
     }
+
+    public abstract BillDao getBillDao();
+    public abstract SupplierDao getSupplierDao();
 }

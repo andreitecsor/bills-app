@@ -1,4 +1,4 @@
-package ie.dam.project.util.asynctask.converters;
+package ie.dam.project.util.converters;
 
 import androidx.room.TypeConverter;
 

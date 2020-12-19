@@ -1,5 +1,6 @@
 package ie.dam.project.data.domain;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -16,12 +17,15 @@ public class Supplier implements Serializable {
     @ColumnInfo(name = "supplierId")
     private long supplierId;
 
+    @NonNull
     @ColumnInfo(name = "name")
     private String name;
 
+    @NonNull
     @ColumnInfo(name = "phone")
     private String phone;
 
+    @NonNull
     @ColumnInfo(name = "email")
     private String email;
 

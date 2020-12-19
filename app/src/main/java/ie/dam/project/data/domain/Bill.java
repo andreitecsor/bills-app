@@ -1,35 +1,49 @@
 package ie.dam.project.data.domain;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity(tableName = "bills")
+@Entity(tableName = "bills",
+        foreignKeys =
+        @ForeignKey(entity = Supplier.class,
+                parentColumns = "supplierId",
+                childColumns = "supplierId",
+                onDelete = ForeignKey.CASCADE,
+                onUpdate = ForeignKey.CASCADE))
 public class Bill implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "billId")
     private long billId;
 
+    @NonNull
     @ColumnInfo(name = "dueTo")
     private Date dueTo;
 
+    @NonNull
     @ColumnInfo(name = "amount")
     private double amount;
 
+    @NonNull
     @ColumnInfo(name = "payed")
     private boolean payed;
 
+    @NonNull
     @ColumnInfo(name = "recurrent")
     private boolean recurrent;
 
+    @NonNull
     @ColumnInfo(name = "type")
     private String type;
 
-    @ColumnInfo(name = "supplierId")
+    @NonNull
+    @ColumnInfo(name = "supplierId", index = true)
     private long supplierId;
 
     public Bill(long billId, Date dueTo, double amount, boolean payed, boolean recurrent, String type, long supplierId) {
