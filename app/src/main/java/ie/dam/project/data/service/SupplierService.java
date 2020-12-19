@@ -13,11 +13,11 @@ import ie.dam.project.util.asynctask.Callback;
 
 public class SupplierService {
     private final SupplierDao dao;
-    private final AsyncTaskRunner taskRunner;
+    private final AsyncTaskRunner asyncTaskRunner;
 
     public SupplierService(Context context) {
         dao = DatabaseManager.getInstance(context).getSupplierDao();
-        taskRunner = new AsyncTaskRunner();
+        asyncTaskRunner = new AsyncTaskRunner();
     }
 
     public void getAll(Callback<List<Supplier>> callback) {
@@ -27,7 +27,7 @@ public class SupplierService {
                 return dao.getAll();
             }
         };
-        taskRunner.executeAsync(callable, callback);
+        asyncTaskRunner.executeAsync(callable, callback);
     }
 
     public void getById(Callback<Supplier> callback, long id) {
@@ -37,7 +37,7 @@ public class SupplierService {
                 return dao.getById(id);
             }
         };
-        taskRunner.executeAsync(callable, callback);
+        asyncTaskRunner.executeAsync(callable, callback);
     }
 
     public void insert(Callback<Supplier> callback, final Supplier supplier) {
@@ -55,7 +55,7 @@ public class SupplierService {
                 return supplier;
             }
         };
-        taskRunner.executeAsync(callable, callback);
+        asyncTaskRunner.executeAsync(callable, callback);
     }
 
     public void update(Callback<Supplier> callback, final Supplier supplier) {
@@ -72,7 +72,7 @@ public class SupplierService {
                 return supplier;
             }
         };
-        taskRunner.executeAsync(callable, callback);
+        asyncTaskRunner.executeAsync(callable, callback);
     }
 
     public void delete(Callback<Integer> callback, final Supplier supplier) {
@@ -85,7 +85,7 @@ public class SupplierService {
                 return dao.delete(supplier);
             }
         };
-        taskRunner.executeAsync(callable, callback);
+        asyncTaskRunner.executeAsync(callable, callback);
     }
 
 
