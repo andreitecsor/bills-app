@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Billsmanagement" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.ST_dam_prj" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/glacier_blue</item>
         <item name="colorPrimaryVariant">@color/glacier_blue</item>

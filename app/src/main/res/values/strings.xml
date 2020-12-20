@@ -19,6 +19,13 @@
     <string name="begin_login_now">Sign in</string>
     <string name="begin_invalid_credentials">Invalid email or password</string>
 
+
+    <!--  DashboardActivity  -->
+    <string name="dashboard_hi_user">Hi, User!</string>
+    <string name="dashboard_stats">Here are your stats:</string>
+    <string name="dashboard_to_pay">Bills to pay: NUMBER</string>
+    <string name="dashboard_overdue">Overdue bills: NUMBER</string>
+    <string name="dashboard_overall">Overall progress</string>
     <!--  MainActivity  -->
 
 

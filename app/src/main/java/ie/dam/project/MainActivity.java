@@ -1,8 +1,12 @@
 package ie.dam.project;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private BillService billService;
     private List<Supplier> supplierList = new ArrayList<>();
     private List<Bill> billList = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initialiseComponents(Bundle savedInstanceState) {
-
         //Start-up fragment
 //        if (savedInstanceState == null) {
 //            getSupportFragmentManager().beginTransaction().replace(R.id.act_main_frame_layout,
