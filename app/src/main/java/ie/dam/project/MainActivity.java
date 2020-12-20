@@ -1,28 +1,19 @@
 package ie.dam.project;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import ie.dam.project.data.domain.Bill;
-import ie.dam.project.data.domain.BillType;
 import ie.dam.project.data.domain.Supplier;
 import ie.dam.project.data.service.BillService;
 import ie.dam.project.data.service.SupplierService;
-import ie.dam.project.fragments.CurrencyFragment;
-import ie.dam.project.fragments.FilterFragment;
-import ie.dam.project.fragments.HomeFragment;
-import ie.dam.project.fragments.ProfileFragment;
 import ie.dam.project.util.asynctask.Callback;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,55 +31,21 @@ public class MainActivity extends AppCompatActivity {
         initialiseComponents(savedInstanceState);
         supplierService = new SupplierService(getApplicationContext());
         billService = new BillService(getApplicationContext());
-        bottomNavMenu.setOnNavigationItemSelectedListener(selectMenuItem());
-//        supplierService.getAll(getAllSuppliers());
-        Bill bill = new Bill(new Date(), 77.39, false, true, BillType.CONNECTIVITY.toString(), 10);
-        billService.insert(insertBill(), bill);
+        supplierService.getAll(getAllSuppliers());
         billService.getAll(getAllBills());
     }
 
     private void initialiseComponents(Bundle savedInstanceState) {
-        bottomNavMenu = findViewById(R.id.act_main_menu);
 
         //Start-up fragment
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.act_main_frame_layout,
-                    new HomeFragment()).commit();
-            bottomNavMenu.setSelectedItemId(R.id.menu_home);
-
-        }
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction().replace(R.id.act_main_frame_layout,
+//                    new HomeFragment()).commit();
+//
+//        }
 
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener selectMenuItem() {
-        return new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment = new HomeFragment();
-                switch (item.getItemId()) {
-                    case R.id.menu_home:
-                        selectedFragment = new HomeFragment();
-                        break;
-                    case R.id.menu_currency:
-                        selectedFragment = new CurrencyFragment();
-                        break;
-                    case R.id.menu_add:
-                        Intent intent = new Intent(getApplicationContext(), AddEditActivity.class);
-                        startActivity(intent);
-                    case R.id.menu_filter:
-                        selectedFragment = new FilterFragment();
-                        break;
-                    case R.id.menu_profile:
-                        selectedFragment = new ProfileFragment();
-                        break;
-                }
-                getSupportFragmentManager().beginTransaction().replace(R.id.act_main_frame_layout,
-                        selectedFragment).commit();
-
-                return true;
-            }
-        };
-    }
 
     //region Supplier DB CRUD
     private Callback<List<Supplier>> getAllSuppliers() {

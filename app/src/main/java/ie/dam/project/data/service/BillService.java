@@ -10,7 +10,6 @@ import ie.dam.project.data.DatabaseManager;
 import ie.dam.project.data.dao.BillDao;
 import ie.dam.project.data.dao.SupplierDao;
 import ie.dam.project.data.domain.Bill;
-import ie.dam.project.data.domain.Supplier;
 import ie.dam.project.util.asynctask.AsyncTaskRunner;
 import ie.dam.project.util.asynctask.Callback;
 
