@@ -12,23 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ST_dam_prj">
         <activity android:name=".DashboardActivity">
-<!--             <intent-filter>-->
-<!--             <action android:name="android.intent.action.MAIN" />-->
-
-
-<!--             <category android:name="android.intent.category.LAUNCHER" />-->
-<!--             </intent-filter>-->
-        </activity>
-        <activity android:name=".AddEditActivity" />
-        <activity android:name=".BeginActivity">
-
-            <!-- TODO:uncomment this and delete the others when finishing the app -->
              <intent-filter>
              <action android:name="android.intent.action.MAIN" />
 
 
              <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
+        </activity>
+        <activity android:name=".AddEditActivity" />
+        <activity android:name=".BeginActivity">
+<!--            &lt;!&ndash; TODO:uncomment this and delete the others when finishing the app &ndash;&gt;-->
+<!--             <intent-filter>-->
+<!--             <action android:name="android.intent.action.MAIN" />-->
+
+
+<!--             <category android:name="android.intent.category.LAUNCHER" />-->
+<!--             </intent-filter>-->
         </activity>
         <activity android:name=".MainActivity">
         </activity>

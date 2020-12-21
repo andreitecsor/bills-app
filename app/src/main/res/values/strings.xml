@@ -26,6 +26,11 @@
     <string name="dashboard_to_pay">Bills to pay: NUMBER</string>
     <string name="dashboard_overdue">Overdue bills: NUMBER</string>
     <string name="dashboard_overall">Overall progress</string>
+    <string name="dashboard_bills">Bills</string>
+    <string name="dsahboard_profile">Profile</string>
+    <string name="dashboard_preferences">Preferences</string>
+    <string name="dashboard_users">Community</string>
+
     <!--  MainActivity  -->
 
 
