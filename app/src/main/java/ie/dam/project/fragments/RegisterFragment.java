@@ -14,6 +14,7 @@ import ie.dam.project.BeginActivity;
 
 public class RegisterFragment extends Fragment {
     private Button loginNowButton;
+    //TODO: Register button impl
 
     public RegisterFragment() {
     }

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import ie.dam.project.DashboardActivity;
 import ie.dam.project.MainActivity;
 import ie.dam.project.R;
 import ie.dam.project.BeginActivity;
@@ -58,7 +59,7 @@ public class LoginFragment extends Fragment {
                 BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
                 if (beginActivity != null) {
                     if (emailTiet.getText().toString().equals("a") && passwordTiet.getText().toString().equals("a")) {
-                        Intent intent = new Intent(beginActivity, MainActivity.class);
+                        Intent intent = new Intent(beginActivity, DashboardActivity.class);
                         beginActivity.startActivity(intent);
                         beginActivity.finish();
                     } else {
