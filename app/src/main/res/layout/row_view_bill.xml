@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/overcast_white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_payment" />
+
+    <TextView
+        android:id="@+id/rv_tv_supplier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/rv_supplier"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/rv_tv_due_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="4dp"
+        android:text="@string/bills_date"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView" />
+
+    <LinearLayout
+        android:id="@+id/rv_line"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.62"
+        app:layout_constraintStart_toEndOf="@+id/rv_tv_supplier"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal"></LinearLayout>
+
+    <TextView
+        android:id="@+id/rv_tv_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/rv_amount"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_line"
+        app:layout_constraintEnd_toEndOf="@+id/rv_iv_checked"
+        app:layout_constraintStart_toStartOf="@+id/rv_iv_checked"
+        app:layout_constraintTop_toBottomOf="@+id/rv_iv_checked" />
+
+    <ImageView
+        android:id="@+id/rv_iv_checked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rv_line"
+        app:layout_constraintTop_toTopOf="@+id/rv_line"
+        app:srcCompat="@drawable/ic_checked"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/rv_bill_tv_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/rv_type"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/iv_recurrent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_tv_due_to"
+        app:layout_constraintStart_toEndOf="@+id/rv_tv_due_to"
+        app:layout_constraintTop_toTopOf="@+id/rv_tv_due_to"
+        app:srcCompat="@drawable/ic_recurrent"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/item_iv_not_payed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rv_line"
+        app:layout_constraintTop_toTopOf="@+id/rv_line"
+        app:srcCompat="@drawable/ic_not_payed" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

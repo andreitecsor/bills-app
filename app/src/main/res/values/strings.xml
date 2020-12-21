@@ -32,9 +32,11 @@
     <string name="dashboard_users">Community</string>
 
     <!--  BillsActivity  -->
-    <string name="bills_currentdate">CurrentDate</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bills_date">dd MMM yyyy</string>
+    <string name="rv_amount">Amount€</string>
+    <string name="rv_supplier">Supplier</string>
+    <string name="rv_type">Type</string>
+    <!--    BillList Fragment-->
 
 
 </resources>

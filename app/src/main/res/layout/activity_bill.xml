@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/overcast_white"
     android:theme="@style/Theme.ST_dam_prj"
-    tools:context=".BillsActivity">
+    tools:context=".BillActivity">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/act_bills_fab_add"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/bills_currentdate"
+                android:text="@string/bills_date"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
