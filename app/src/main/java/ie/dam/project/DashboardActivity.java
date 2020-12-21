@@ -2,17 +2,26 @@ package ie.dam.project;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ie.dam.project.data.domain.Bill;
+import ie.dam.project.data.service.BillService;
+import ie.dam.project.util.asynctask.Callback;
 
 public class DashboardActivity extends AppCompatActivity {
     private CardView billCardButton;
     private CardView profileCardButton;
     private CardView preferencesCardButton;
     private CardView usersCardButton;
+
+    private BillService billService;
+    private List<Bill> billList = new ArrayList<>();
 
     //TODO:
     // 1. CREATE A QUERY TO FIND THE NUMBER OF ALL UNPAYED BILLS AND THEIR TOTAL SUM
@@ -23,7 +32,9 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         initialiseComponents();
-
+        billService = new BillService(getApplicationContext());
+        billService.getAll(getAllBills());
+        System.out.println(billList);
 
     }
 
@@ -41,11 +52,12 @@ public class DashboardActivity extends AppCompatActivity {
         usersCardButton.setOnClickListener(goToUsersActivity());
     }
 
+
     private View.OnClickListener goToBillsActivity() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BillsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), BillActivity.class);
                 startActivity(intent);
             }
         };
@@ -77,6 +89,19 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                Intent intent = new Intent(getApplicationContext(), UsersActivity.class);
 //                startActivity(intent);
+            }
+        };
+    }
+
+    private Callback<List<Bill>> getAllBills() {
+        return new Callback<List<Bill>>() {
+            @Override
+            public void runResultOnUiThread(List<Bill> result) {
+                if (result != null) {
+                    billList.clear();
+                    billList.addAll(result);
+                    //TODO: populate brief
+                }
             }
         };
     }
