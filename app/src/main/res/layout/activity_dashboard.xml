@@ -22,6 +22,7 @@
         android:padding="20dp"
         app:alignmentMode="alignMargins"
         app:columnCount="2"
+        android:background="@color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

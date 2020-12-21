@@ -1,13 +1,11 @@
 package ie.dam.project;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -18,19 +16,23 @@ import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.Supplier;
 import ie.dam.project.data.service.BillService;
 import ie.dam.project.data.service.SupplierService;
+import ie.dam.project.fragments.BillListFragment;
 import ie.dam.project.util.asynctask.Callback;
 
-public class MainActivity extends AppCompatActivity {
+public class BillsActivity extends AppCompatActivity {
     private Fragment currentFragment;
-    private BottomNavigationView bottomNavMenu;
+
     private SupplierService supplierService;
     private BillService billService;
+
     private List<Supplier> supplierList = new ArrayList<>();
     private List<Bill> billList = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_bills);
         initialiseComponents(savedInstanceState);
         supplierService = new SupplierService(getApplicationContext());
         billService = new BillService(getApplicationContext());
@@ -39,12 +41,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initialiseComponents(Bundle savedInstanceState) {
-        //Start-up fragment
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction().replace(R.id.act_main_frame_layout,
-//                    new HomeFragment()).commit();
-//
-//        }
+        currentFragment = BillListFragment.newInstance();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.act_bills_frame,
+                    currentFragment).commit();
+        }
 
     }
 

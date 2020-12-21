@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 
 import ie.dam.project.DashboardActivity;
-import ie.dam.project.MainActivity;
 import ie.dam.project.R;
 import ie.dam.project.BeginActivity;
 

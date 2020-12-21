@@ -31,8 +31,10 @@
     <string name="dashboard_preferences">Preferences</string>
     <string name="dashboard_users">Community</string>
 
-    <!--  MainActivity  -->
-
+    <!--  BillsActivity  -->
+    <string name="bills_currentdate">CurrentDate</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
