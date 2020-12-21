@@ -31,8 +31,12 @@
     <string name="dashboard_preferences">Preferences</string>
     <string name="dashboard_users">Community</string>
 
-    <!--  MainActivity  -->
-
+    <!--  BillsActivity  -->
+    <string name="bills_date">dd MMM yyyy</string>
+    <string name="rv_amount">Amount€</string>
+    <string name="rv_supplier">Supplier</string>
+    <string name="rv_type">Type</string>
+    <!--    BillList Fragment-->
 
 
 </resources>

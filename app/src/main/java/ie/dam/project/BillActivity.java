@@ -1,55 +1,57 @@
 package ie.dam.project;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.Supplier;
 import ie.dam.project.data.service.BillService;
 import ie.dam.project.data.service.SupplierService;
+import ie.dam.project.fragments.BillListFragment;
 import ie.dam.project.util.asynctask.Callback;
 
-public class MainActivity extends AppCompatActivity {
+public class BillActivity extends AppCompatActivity {
     private Fragment currentFragment;
-    private BottomNavigationView bottomNavMenu;
+
     private SupplierService supplierService;
     private BillService billService;
+
     private List<Supplier> supplierList = new ArrayList<>();
     private List<Bill> billList = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initialiseComponents(savedInstanceState);
+        setContentView(R.layout.activity_bill);
+        initialiseComponents();
         supplierService = new SupplierService(getApplicationContext());
         billService = new BillService(getApplicationContext());
-        supplierService.getAll(getAllSuppliers());
+//        supplierService.insert(insertSupplier(), new Supplier("ORANGE", "300", "contact@orange.com"));
+        billService.insert(insertBill(), new Bill(new Date(), 77, false, false, "CONNECTIVITY", 1));
         billService.getAll(getAllBills());
     }
 
-    private void initialiseComponents(Bundle savedInstanceState) {
-        //Start-up fragment
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction().replace(R.id.act_main_frame_layout,
-//                    new HomeFragment()).commit();
-//
-//        }
-
+    private void initialiseComponents() {
+        setCurrentDate();
     }
 
+    private void openBillListFragment(List<Bill> bills) {
+        currentFragment = BillListFragment.newInstance(bills);
+        getSupportFragmentManager().beginTransaction().replace(R.id.act_bills_frame,
+                currentFragment).commit();
+    }
 
     //region Supplier DB CRUD
+
     private Callback<List<Supplier>> getAllSuppliers() {
         return new Callback<List<Supplier>>() {
             @Override
@@ -57,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
                 if (result != null) {
                     supplierList.clear();
                     supplierList.addAll(result);
-                    //TODO: Send it to HomeFragment
                 }
             }
         };
@@ -115,9 +116,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
+
     //endregion SUPPLIER CRUD
 
     //region Bill DB CRUD
+
     private Callback<List<Bill>> getAllBills() {
         return new Callback<List<Bill>>() {
             @Override
@@ -125,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
                 if (result != null) {
                     billList.clear();
                     billList.addAll(result);
-                    System.out.println(billList);
-                    //TODO: Send it to HomeFragment
+                    System.out.println("BILLS:" + billList);
+                    openBillListFragment(billList);
                 }
             }
         };
@@ -177,6 +180,13 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
+
     //endregion Bill DB CRUD
 
+    private void setCurrentDate() {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+        TextView currentDate = findViewById(R.id.act_bills_tv_date);
+        currentDate.setText(formatter.format(date));
+    }
 }
