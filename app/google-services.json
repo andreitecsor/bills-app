@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "73491995543",
+    "project_id": "billsapp-67831",
+    "storage_bucket": "billsapp-67831.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73491995543:android:193d1a26960d0233b002d2",
+        "android_client_info": {
+          "package_name": "ie.dam.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73491995543-f8qal9teg83t1btg1eb93m3h1a4733co.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD693dku92Hylaik-1NNq5MFufmcghBiAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73491995543-f8qal9teg83t1btg1eb93m3h1a4733co.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

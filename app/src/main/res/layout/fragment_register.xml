@@ -90,6 +90,7 @@
                     android:id="@+id/frg_register_tiet_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:hint="@string/begin_password" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,6 +111,7 @@
                     android:id="@+id/frg_register_tiet_password_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:hint="@string/begin_confirm_password" />
             </com.google.android.material.textfield.TextInputLayout>
 
