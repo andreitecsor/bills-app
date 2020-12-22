@@ -10,9 +10,14 @@ import androidx.room.Update;
 import java.util.List;
 
 import ie.dam.project.data.domain.Supplier;
+import ie.dam.project.data.domain.SupplierWithBills;
 
 @Dao
 public interface SupplierDao {
+
+    @Transaction
+    @Query("SELECT * FROM suppliers")
+    List<SupplierWithBills> getAllWithBills();
 
     @Query("SELECT * FROM suppliers")
     List<Supplier> getAll();

@@ -55,6 +55,10 @@
     <string name="register_password_lenght_error">Password have at least 8 characters!</string>
     <string name="register_confirmPassword_empty_error">Please reenter your password!</string>
     <string name="register_confirmPassword_noMatch_error">Passwords do not match!</string>
+    <string name="aebill_dueto">Due to</string>
+    <string name="aebill_amount">Amount</string>
+    <string name="aebil_recurrent">Recurrent Payment</string>
+    <string name="aebill_already_payed">Already payed</string>
     <!--    BillList Fragment-->
 
 

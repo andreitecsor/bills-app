@@ -10,6 +10,7 @@ import ie.dam.project.data.DatabaseManager;
 import ie.dam.project.data.dao.BillDao;
 import ie.dam.project.data.dao.SupplierDao;
 import ie.dam.project.data.domain.Bill;
+import ie.dam.project.data.domain.BillShownInfo;
 import ie.dam.project.util.asynctask.AsyncTaskRunner;
 import ie.dam.project.util.asynctask.Callback;
 
@@ -22,6 +23,16 @@ public class BillService {
         billDao = DatabaseManager.getInstance(context).getBillDao();
         supplierDao = DatabaseManager.getInstance(context).getSupplierDao();
         asyncTaskRunner = new AsyncTaskRunner();
+    }
+
+    public void getAllWithSupplierName(Callback<List<BillShownInfo>> callback) {
+        Callable<List<BillShownInfo>> callable = new Callable<List<BillShownInfo>>() {
+            @Override
+            public List<BillShownInfo> call() throws Exception {
+                return billDao.getAllWithSupplierName();
+            }
+        };
+        asyncTaskRunner.executeAsync(callable, callback);
     }
 
     public void getAll(Callback<List<Bill>> callback) {

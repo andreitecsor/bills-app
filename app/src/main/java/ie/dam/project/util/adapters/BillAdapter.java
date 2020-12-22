@@ -12,48 +12,48 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ie.dam.project.R;
-import ie.dam.project.data.domain.Bill;
+import ie.dam.project.data.domain.BillShownInfo;
 import ie.dam.project.util.converters.DateConverter;
 
 public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
-    private List<Bill> billList;
+    private List<BillShownInfo> billShownInfos;
 
-    public BillAdapter(List<Bill> billList) {
-        this.billList = billList;
+    public BillAdapter(List<BillShownInfo> billShownInfos) {
+        this.billShownInfos = billShownInfos;
     }
 
     @NonNull
     @Override
     public BillAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.row_view_bill,parent,false);
+        View view = layoutInflater.inflate(R.layout.row_view_bill, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull BillAdapter.ViewHolder holder, int position) {
-        holder.tvSupplierName.setText("SUP");
-        holder.tvDueTo.setText(DateConverter.toString(billList.get(position).getDueTo()));
-        if(billList.get(position).isRecurrent()){
+        holder.tvSupplierName.setText(billShownInfos.get(position).getName());
+        holder.tvDueTo.setText(DateConverter.toString(billShownInfos.get(position).getBill().getDueTo()));
+        if (billShownInfos.get(position).getBill().isRecurrent()) {
             holder.ivRecurrent.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.ivRecurrent.setVisibility(View.INVISIBLE);
         }
-        if(billList.get(position).isPayed()){
+        if (billShownInfos.get(position).getBill().isPayed()) {
             holder.ivChecked.setVisibility(View.VISIBLE);
             holder.ivNotPayed.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             holder.ivChecked.setVisibility(View.INVISIBLE);
             holder.ivNotPayed.setVisibility(View.VISIBLE);
         }
-        holder.tvType.setText(billList.get(position).getType());
-        holder.tvAmount.setText(String.valueOf(billList.get(position).getAmount())+"€");
+        holder.tvType.setText(billShownInfos.get(position).getBill().getType());
+        holder.tvAmount.setText(String.valueOf(billShownInfos.get(position).getBill().getAmount()) + "€");
     }
 
     @Override
     public int getItemCount() {
-        return billList.size();
+        return billShownInfos.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -65,11 +65,13 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
         private TextView tvDueTo;
         private TextView tvType;
         private TextView tvAmount;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             initialiseComponents(itemView);
 
         }
+
         private void initialiseComponents(@NonNull View itemView) {
             ivPayment = itemView.findViewById(R.id.rv_iv_payment);
             ivRecurrent = itemView.findViewById(R.id.iv_recurrent);
