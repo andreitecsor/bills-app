@@ -1,10 +1,5 @@
 <resources>
     <string name="app_name">bills-management</string>
-    <string name="menu_home">Home</string>
-    <string name="menu_filter">Filter</string>
-    <string name="menu_profile">Profile</string>
-    <string name="menu_add">Add</string>
-    <string name="menu_currency">Currency</string>
 
     <!-- BeginActivity + LoginFragment + RegisterFragment -->
     <string name="begin_email">Email</string>
@@ -27,16 +22,18 @@
     <string name="dashboard_overdue">Overdue bills: NUMBER</string>
     <string name="dashboard_overall">Overall progress</string>
     <string name="dashboard_bills">Bills</string>
-    <string name="dsahboard_profile">Profile</string>
+    <string name="dashboard_profile">Profile</string>
     <string name="dashboard_preferences">Preferences</string>
     <string name="dashboard_logout">Logout</string>
 
     <!--  BillsActivity  -->
     <string name="bills_date">dd MMM yyyy</string>
-    <!--    Bill Row View-->
+
+    <!--    BillRowView-->
     <string name="rv_amount">Amount€</string>
     <string name="rv_supplier">Supplier</string>
     <string name="rv_type">Type</string>
+
     <!--    ProfileActivity-->
     <string name="profile_name">Name</string>
     <string name="profile_email">Email</string>
@@ -44,6 +41,8 @@
     <string name="profile_new_password">New Password</string>
     <string name="profile_confirm_old_password">Write old password to confirm changes</string>
     <string name="profile_save_changes">Save changes</string>
+    <string name="bill_list_removed">Bill deleted</string>
+
     <!--    BillList Fragment-->
 
 
