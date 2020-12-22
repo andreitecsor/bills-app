@@ -2,6 +2,8 @@ package ie.dam.project.data.domain;
 
 import androidx.room.Embedded;
 
+import java.util.Comparator;
+
 public class BillShownInfo {
     @Embedded private Bill bill;
 

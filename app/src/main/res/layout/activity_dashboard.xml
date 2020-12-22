@@ -109,7 +109,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="16dp"
                     android:textSize="18dp"
-                    android:text="@string/dashboard_profile"
+                    android:text="@string/dsahboard_profile"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/act_dashboard_iv_profile"
                     app:layout_constraintStart_toStartOf="@+id/act_dashboard_iv_profile"

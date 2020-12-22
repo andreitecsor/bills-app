@@ -1,10 +1,16 @@
 package ie.dam.project;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,19 +19,16 @@ import java.util.List;
 
 import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.BillShownInfo;
-import ie.dam.project.data.domain.BillType;
-import ie.dam.project.data.domain.Supplier;
-import ie.dam.project.data.domain.SupplierWithBills;
 import ie.dam.project.data.service.BillService;
-import ie.dam.project.data.service.SupplierService;
 import ie.dam.project.fragments.BillListFragment;
 import ie.dam.project.util.asynctask.Callback;
-import ie.dam.project.util.converters.DateConverter;
 
 public class BillActivity extends AppCompatActivity {
+    public static final int ADD_BILL = 101;
+
     private Fragment currentFragment;
     private BillService billService;
-    private List<BillShownInfo> billShownInfos = new ArrayList<>();
+    private FloatingActionButton fabAddBill;
 
 
     @Override
@@ -34,32 +37,52 @@ public class BillActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bill);
         initialiseComponents();
         billService = new BillService(getApplicationContext());
-        billService.getAllWithSupplierName(getAllWithSupplierName());
+//        billService.getAllWithSupplierName(getAllWithSupplierName());
     }
 
     private void initialiseComponents() {
         setCurrentDate();
+        fabAddBill = findViewById(R.id.act_bills_fab_add);
+        fabAddBill.setOnClickListener(openAddEditActivity());
+        openBillListFragment();
     }
 
-    private Callback<List<BillShownInfo>> getAllWithSupplierName() {
-        return new Callback<List<BillShownInfo>>() {
+    private View.OnClickListener openAddEditActivity() {
+        return new View.OnClickListener() {
             @Override
-            public void runResultOnUiThread(List<BillShownInfo> result) {
-                if (result != null) {
-                    billShownInfos.clear();
-                    billShownInfos.addAll(result);
-                    System.out.println(billShownInfos);
-                    openBillListFragment(billShownInfos);
-
-                }
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddEditBillActivity.class);
+                startActivityForResult(intent, ADD_BILL);
             }
         };
     }
 
-    private void openBillListFragment(List<BillShownInfo> billShownInfos) {
-        currentFragment = BillListFragment.newInstance(billShownInfos);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == ADD_BILL) {
+                Bill newBill = (Bill) data.getSerializableExtra(AddEditBillActivity.NEW_BILL);
+                billService.insert(insertBill(),newBill);
+            }
+        }
+    }
+
+    private void openBillListFragment() {
+        currentFragment = BillListFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.act_bills_frame,
                 currentFragment).commit();
+    }
+
+    private Callback<Bill> insertBill() {
+        return new Callback<Bill>() {
+            @Override
+            public void runResultOnUiThread(Bill result) {
+                if (result != null) {
+                    openBillListFragment();
+                }
+            }
+        };
     }
 
 

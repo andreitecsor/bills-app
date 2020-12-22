@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ie.dam.project.R;
@@ -22,9 +25,8 @@ import ie.dam.project.util.asynctask.Callback;
 
 public class BillListFragment extends Fragment {
     public static final String ALL_BILLS = "ALL_BILLS";
-    private List<BillShownInfo> billShownInfos;
+    private List<BillShownInfo> billShownInfos = new ArrayList<>();
     private BillService billService;
-    private Bill auxiliaryBill;
 
     private RecyclerView recyclerView;
     private BillAdapter billAdapter;
@@ -32,10 +34,9 @@ public class BillListFragment extends Fragment {
     public BillListFragment() {
     }
 
-    public static BillListFragment newInstance(List<BillShownInfo> billShownInfos) {
+    public static BillListFragment newInstance() {
         BillListFragment fragment = new BillListFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ALL_BILLS, (Serializable) billShownInfos);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,9 +44,6 @@ public class BillListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            billShownInfos = (List<BillShownInfo>) getArguments().get(ALL_BILLS);
-        }
         billService = new BillService(getContext());
     }
 
@@ -59,10 +57,9 @@ public class BillListFragment extends Fragment {
 
     private void initialiseComponents(View view) {
         recyclerView = view.findViewById(R.id.frg_bill_list_rv);
-        billAdapter = new BillAdapter(billShownInfos);
-        recyclerView.setAdapter(billAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+        billService.getAllWithSupplierName(getAllWithSupplierName());
     }
 
     private ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -76,7 +73,7 @@ public class BillListFragment extends Fragment {
             int position = viewHolder.getAdapterPosition();
             switch (direction) {
                 case ItemTouchHelper.RIGHT: //LEFT -> RIGHT
-                    billService.delete(deleteBill(position),billShownInfos.get(position).getBill());
+                    billService.delete(deleteBill(position), billShownInfos.get(position).getBill());
                     break;
 
                 case ItemTouchHelper.LEFT: //RIGHT <- LEFT
@@ -84,6 +81,31 @@ public class BillListFragment extends Fragment {
             }
         }
     };
+
+    private Callback<List<BillShownInfo>> getAllWithSupplierName() {
+        return new Callback<List<BillShownInfo>>() {
+            @Override
+            public void runResultOnUiThread(List<BillShownInfo> result) {
+                if (result != null) {
+                    billShownInfos.clear();
+                    billShownInfos.addAll(result);
+                    Collections.sort(billShownInfos, new Comparator<BillShownInfo>() {
+                        @Override
+                        public int compare(BillShownInfo o1, BillShownInfo o2) {
+                            int result;
+                            result = Boolean.compare(o1.getBill().isPayed(), o2.getBill().isPayed());
+                            if (result == 0) {
+                                result = o1.getBill().getDueTo().compareTo(o2.getBill().getDueTo());
+                            }
+                            return result;
+                        }
+                    });
+                    billAdapter = new BillAdapter(billShownInfos);
+                    recyclerView.setAdapter(billAdapter);
+                }
+            }
+        };
+    }
 
     private Callback<Integer> deleteBill(final int selectedPosition) {
         return new Callback<Integer>() {
