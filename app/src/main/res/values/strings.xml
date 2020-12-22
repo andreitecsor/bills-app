@@ -44,6 +44,17 @@
     <string name="profile_new_password">New Password</string>
     <string name="profile_confirm_old_password">Write old password to confirm changes</string>
     <string name="profile_save_changes">Save changes</string>
+    <string name="register_name_error">Insert your name(or nickname)!</string>
+    <string name="register_invalid_email_error">Not a valid email adress!</string>
+    <string name="email_empty">Please insert your email!</string>
+    <string name="login_empty_password">Please enter your password!</string>
+    <string name="logout_yes">Yes</string>
+    <string name="logout_no">No</string>
+    <string name="dashboard_logout_message">Are you sure you want to log out?</string>
+    <string name="dashboard_logout_title">Logout confirmation</string>
+    <string name="register_password_lenght_error">Password have at least 8 characters!</string>
+    <string name="register_confirmPassword_empty_error">Please reenter your password!</string>
+    <string name="register_confirmPassword_noMatch_error">Passwords do not match!</string>
     <!--    BillList Fragment-->
 
 
