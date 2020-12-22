@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:theme="@style/Theme.ST_dam_prj"
     tools:context=".BeginActivity"
-    android:background="@drawable/login">
+    android:background="@drawable/begin_background">
 
     <FrameLayout
         android:id="@+id/act_begin_frame_layout"

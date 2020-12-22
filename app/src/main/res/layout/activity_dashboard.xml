@@ -192,13 +192,13 @@
                     app:srcCompat="@drawable/ic_bills" />
 
                 <TextView
-                    android:id="@+id/act_dashboard_tv_users"
+                    android:id="@+id/act_dashboard_tv_logout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="16dp"
                     android:textSize="18dp"
-                    android:text="@string/dashboard_users"
+                    android:text="@string/dashboard_logout"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/act_dashboard_iv_users"
                     app:layout_constraintStart_toStartOf="@+id/act_dashboard_iv_users"
