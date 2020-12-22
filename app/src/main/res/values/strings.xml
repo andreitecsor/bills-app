@@ -29,13 +29,21 @@
     <string name="dashboard_bills">Bills</string>
     <string name="dsahboard_profile">Profile</string>
     <string name="dashboard_preferences">Preferences</string>
-    <string name="dashboard_users">Community</string>
+    <string name="dashboard_logout">Logout</string>
 
     <!--  BillsActivity  -->
     <string name="bills_date">dd MMM yyyy</string>
+    <!--    Bill Row View-->
     <string name="rv_amount">Amount€</string>
     <string name="rv_supplier">Supplier</string>
     <string name="rv_type">Type</string>
+    <!--    ProfileActivity-->
+    <string name="profile_name">Name</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_sex">Sex</string>
+    <string name="profile_new_password">New Password</string>
+    <string name="profile_confirm_old_password">Write old password to confirm changes</string>
+    <string name="profile_save_changes">Save changes</string>
     <!--    BillList Fragment-->
 
 
