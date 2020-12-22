@@ -1,11 +1,15 @@
 package ie.dam.project;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +22,7 @@ public class DashboardActivity extends AppCompatActivity {
     private CardView billCardButton;
     private CardView profileCardButton;
     private CardView preferencesCardButton;
-    private CardView usersCardButton;
+    private CardView logoutCardButton;
 
     private BillService billService;
     private List<Bill> billList = new ArrayList<>();
@@ -48,8 +52,8 @@ public class DashboardActivity extends AppCompatActivity {
         preferencesCardButton = findViewById(R.id.act_dashboard_card_preferences);
         preferencesCardButton.setOnClickListener(goToPreferencesActivity());
 
-        usersCardButton = findViewById(R.id.act_dashboard_card_users);
-        usersCardButton.setOnClickListener(goToUsersActivity());
+        logoutCardButton = findViewById(R.id.act_dashboard_card_users);
+        logoutCardButton.setOnClickListener(logoutClickEvent());
     }
 
 
@@ -83,14 +87,43 @@ public class DashboardActivity extends AppCompatActivity {
         };
     }
 
-    private View.OnClickListener goToUsersActivity() {
+    private View.OnClickListener logoutClickEvent() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Intent intent = new Intent(getApplicationContext(), UsersActivity.class);
 //                startActivity(intent);
+
+                AlertDialog dialog = getAlertDialogLogout();
+                dialog.show();
             }
         };
+    }
+
+    private AlertDialog getAlertDialogLogout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
+        builder.setMessage(R.string.dashboard_logout_message);
+        builder.setTitle(R.string.dashboard_logout_title);
+        builder.setPositiveButton(R.string.logout_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logout();
+            }
+        });
+        builder.setNegativeButton(R.string.logout_no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        return builder.create();
+    }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getApplicationContext(), BeginActivity.class));
+        finish();
     }
 
     private Callback<List<Bill>> getAllBills() {

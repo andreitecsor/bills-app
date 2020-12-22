@@ -3,7 +3,7 @@ package ie.dam.project.data.domain;
 import java.io.Serializable;
 
 public class AppUser implements Serializable {
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -11,21 +11,23 @@ public class AppUser implements Serializable {
 
     private String email;
 
+    private Gender gender;
+
     public AppUser() {
     }
 
-    public AppUser(String name, String password, String email) {
+    public AppUser(String name, String password, String email,Gender gender) {
         this.name = name;
         this.password = password;
         this.email = email;
+        this.gender=gender;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    //TODO: Delete setId here
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -53,6 +55,14 @@ public class AppUser implements Serializable {
         this.email = email;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,28 +71,30 @@ public class AppUser implements Serializable {
         AppUser appUser = (AppUser) o;
 
         if (id != null ? !id.equals(appUser.id) : appUser.id != null) return false;
-        if (name != null ? !name.equals(appUser.name) : appUser.name != null) return false;
-        if (password != null ? !password.equals(appUser.password) : appUser.password != null)
-            return false;
-        return email != null ? email.equals(appUser.email) : appUser.email == null;
+        if (!name.equals(appUser.name)) return false;
+        if (!password.equals(appUser.password)) return false;
+        if (!email.equals(appUser.email)) return false;
+        return gender == appUser.gender;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + name.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + gender.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
         return "AppUser{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", gender=" + gender +
                 '}';
     }
 }
