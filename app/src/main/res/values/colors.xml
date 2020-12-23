@@ -11,4 +11,7 @@
     <color name="semi_transparent_white">#77FFFFFF</color>
     <color name="low_transparent_white">#B5FFFFFF</color>
     <color name="gray">#888888</color>
+    <color name="red">#F35050</color>
+    <color name="green">#56D35B</color>
+
 </resources>

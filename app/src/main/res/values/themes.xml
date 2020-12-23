@@ -19,6 +19,6 @@
     <style name="CustomDatePicker" parent="@android:style/Widget.DatePicker">
         <item name="android:calendarViewShown">false</item>
         <item name="android:datePickerMode">spinner</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 </resources>
