@@ -1,31 +1,46 @@
 package ie.dam.project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.service.BillService;
+import ie.dam.project.fragments.RegisterFragment;
 import ie.dam.project.util.asynctask.Callback;
 
 public class DashboardActivity extends AppCompatActivity {
+
+    private FirebaseUser currentUser;
     private CardView billCardButton;
     private CardView profileCardButton;
     private CardView preferencesCardButton;
     private CardView logoutCardButton;
-
+    private TextView hiUser;
     private BillService billService;
     private List<Bill> billList = new ArrayList<>();
+
+    private SharedPreferences preferences;
+    private String name;
 
     //TODO:
     // 1. CREATE A QUERY TO FIND THE NUMBER OF ALL UNPAYED BILLS AND THEIR TOTAL SUM
@@ -35,14 +50,27 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
         initialiseComponents();
         billService = new BillService(getApplicationContext());
         billService.getAll(getAllBills());
         System.out.println(billList);
+        updateUser(name,null);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hiUser.setText(getString(R.string.dashboard_hi_user, preferences.getString(RegisterFragment.NAME_KEY,getString(R.string.preference_name_default))));
+
 
     }
 
     private void initialiseComponents() {
+        //Preferences
+        preferences=getSharedPreferences(RegisterFragment.SHARED_PREF_FILE,MODE_PRIVATE);
         billCardButton = findViewById(R.id.act_dashboard_card_bills);
         billCardButton.setOnClickListener(goToBillsActivity());
 
@@ -54,6 +82,10 @@ public class DashboardActivity extends AppCompatActivity {
 
         logoutCardButton = findViewById(R.id.act_dashboard_card_users);
         logoutCardButton.setOnClickListener(logoutClickEvent());
+
+        hiUser = findViewById(R.id.act_dashboard_tv_hi_user);
+        name=preferences.getString(RegisterFragment.NAME_KEY,getString(R.string.preference_name_default));
+        hiUser.setText(getString(R.string.dashboard_hi_user, name));
     }
 
 
@@ -73,6 +105,8 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
+
+
             }
         };
     }
@@ -126,6 +160,9 @@ public class DashboardActivity extends AppCompatActivity {
         finish();
     }
 
+
+
+
     private Callback<List<Bill>> getAllBills() {
         return new Callback<List<Bill>>() {
             @Override
@@ -138,4 +175,24 @@ public class DashboardActivity extends AppCompatActivity {
             }
         };
     }
+    public void updateUser(String name, Uri photoUri) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(name)
+                    .build();
+
+            currentUser.updateProfile(profileUpdate)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("OK", "User profile updated.");
+                            } else Log.d("ERROR", task.getException().getMessage());
+                        }
+                    });
+        }
+
+    }
+
 }
