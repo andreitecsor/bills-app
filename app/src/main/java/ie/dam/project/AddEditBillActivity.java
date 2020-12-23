@@ -116,7 +116,7 @@ public class AddEditBillActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), R.string.validate_pick_date, Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (amountEt.getText() == null || Double.parseDouble(amountEt.getText().toString()) < 0) {
+        if (amountEt.getText() == null || amountEt.getText().toString().isEmpty() || Double.parseDouble(amountEt.getText().toString()) < 0) {
             Toast.makeText(getApplicationContext(), R.string.validate_amount, Toast.LENGTH_SHORT).show();
             return false;
         }

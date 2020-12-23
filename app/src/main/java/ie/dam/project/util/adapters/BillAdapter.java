@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import ie.dam.project.BillActivity;
 import ie.dam.project.R;
-import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.BillShownInfo;
 import ie.dam.project.util.converters.DateConverter;
 
