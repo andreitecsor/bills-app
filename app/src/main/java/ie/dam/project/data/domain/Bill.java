@@ -46,6 +46,10 @@ public class Bill implements Serializable {
     @ColumnInfo(name = "supplierId", index = true)
     private long supplierId;
 
+    @Ignore
+    public Bill() {
+    }
+
     public Bill(long billId, Date dueTo, double amount, boolean payed, boolean recurrent, String type, long supplierId) {
         this.billId = billId;
         this.dueTo = dueTo;
