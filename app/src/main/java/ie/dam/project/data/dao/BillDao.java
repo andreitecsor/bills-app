@@ -10,17 +10,19 @@ import androidx.room.Update;
 import java.util.List;
 
 import ie.dam.project.data.domain.Bill;
+import ie.dam.project.data.domain.BillShownInfo;
 
 @Dao
 public interface BillDao {
     @Query("SELECT * FROM bills")
     List<Bill> getAll();
 
-    @Transaction
+    @Query("SELECT bills.*, suppliers.name  FROM bills JOIN suppliers ON bills.supplierId = suppliers.supplierId")
+    List<BillShownInfo> getAllWithSupplierName();
+
     @Query("SELECT bills.* FROM bills WHERE supplierId= :supplierId")
     List<Bill> getAllBySupplierId(long supplierId);
 
-    @Transaction
     @Query("SELECT bills.* FROM bills JOIN suppliers ON bills.supplierId = suppliers.supplierId WHERE suppliers.name = :name")
     List<Bill> getAllBySupplierName(String name);
 

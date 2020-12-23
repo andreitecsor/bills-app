@@ -21,7 +21,7 @@
 
 
     <!--  DashboardActivity  -->
-    <string name="dashboard_hi_user">Hi, %1$s!</string>
+    <string name="dashboard_hi_user">Hi, User!</string>
     <string name="dashboard_stats">Here are your stats:</string>
     <string name="dashboard_to_pay">Bills to pay: NUMBER</string>
     <string name="dashboard_overdue">Overdue bills: NUMBER</string>
@@ -55,7 +55,10 @@
     <string name="register_password_lenght_error">Password have at least 8 characters!</string>
     <string name="register_confirmPassword_empty_error">Please reenter your password!</string>
     <string name="register_confirmPassword_noMatch_error">Passwords do not match!</string>
-    <string name="preference_name_default">Anonymous</string>
+    <string name="aebill_dueto">Due to</string>
+    <string name="aebill_amount">Amount</string>
+    <string name="aebil_recurrent">Recurrent Payment</string>
+    <string name="aebill_already_payed">Already payed</string>
     <!--    BillList Fragment-->
 
 
