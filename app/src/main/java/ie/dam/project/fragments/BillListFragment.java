@@ -1,11 +1,13 @@
 package ie.dam.project.fragments;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,12 +18,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import ie.dam.project.BillActivity;
 import ie.dam.project.R;
 import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.BillShownInfo;
 import ie.dam.project.data.service.BillService;
 import ie.dam.project.util.adapters.BillAdapter;
 import ie.dam.project.util.asynctask.Callback;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class BillListFragment extends Fragment {
     public static final String ALL_BILLS = "ALL_BILLS";
@@ -77,8 +81,28 @@ public class BillListFragment extends Fragment {
                     break;
 
                 case ItemTouchHelper.LEFT: //RIGHT <- LEFT
+                    Bill billToUpdate = billShownInfos.get(position).getBill();
+                    if (billToUpdate.isPayed()) {
+                        billToUpdate.setPayed(false);
+                    } else {
+                        billToUpdate.setPayed(true);
+                    }
+                    billService.update(updateBill(position), billToUpdate);
                     break;
             }
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.red))
+                    .addSwipeRightActionIcon(R.drawable.ic_delete)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.green))
+                    .addSwipeLeftActionIcon(R.drawable.ic_checked)
+                    .create()
+                    .decorate();
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
 
@@ -102,6 +126,17 @@ public class BillListFragment extends Fragment {
                     });
                     billAdapter = new BillAdapter(billShownInfos);
                     recyclerView.setAdapter(billAdapter);
+                }
+            }
+        };
+    }
+
+    private Callback<Bill> updateBill(final int selectedPosition) {
+        return new Callback<Bill>() {
+            @Override
+            public void runResultOnUiThread(Bill result) {
+                if (result != null) {
+                    billAdapter.notifyItemChanged(selectedPosition);
                 }
             }
         };
