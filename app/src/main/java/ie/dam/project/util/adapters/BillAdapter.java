@@ -11,15 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import ie.dam.project.BillActivity;
 import ie.dam.project.R;
+import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.BillShownInfo;
 import ie.dam.project.util.converters.DateConverter;
 
 public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
     private List<BillShownInfo> billShownInfos;
+    private RecyclerViewItemClick recyclerViewItemClick;
 
-    public BillAdapter(List<BillShownInfo> billShownInfos) {
+    public BillAdapter(List<BillShownInfo> billShownInfos, RecyclerViewItemClick recyclerViewItemClick) {
         this.billShownInfos = billShownInfos;
+        this.recyclerViewItemClick = recyclerViewItemClick;
     }
 
     @NonNull
@@ -56,7 +60,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
         return billShownInfos.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    protected class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivPayment;
         private ImageView ivRecurrent;
         private ImageView ivChecked;
@@ -69,6 +73,11 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             initialiseComponents(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    recyclerViewItemClick.onItemClickListener(getAdapterPosition()); }
+            });
 
         }
 
@@ -82,5 +91,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
             tvType = itemView.findViewById(R.id.rv_bill_tv_type);
             tvAmount = itemView.findViewById(R.id.rv_tv_amount);
         }
+
+
     }
 }

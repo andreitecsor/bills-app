@@ -59,6 +59,8 @@
     <string name="aebill_amount">Amount</string>
     <string name="aebil_recurrent">Recurrent Payment</string>
     <string name="aebill_already_payed">Already payed</string>
+    <string name="validate_pick_date">Please pick a date</string>
+    <string name="validate_amount">Please write a valid amount</string>
     <!--    BillList Fragment-->
 
 
