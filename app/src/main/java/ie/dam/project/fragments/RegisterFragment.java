@@ -75,6 +75,7 @@ public class RegisterFragment extends Fragment {
                 String email = emailET.getText().toString().trim();
                 String password = passwordET.getText().toString();
                 String confirmPass = confirmPasswordET.getText().toString();
+                
                 if (TextUtils.isEmpty(name)) {
                     nameET.setError(getString(R.string.register_name_error));
                     return;
