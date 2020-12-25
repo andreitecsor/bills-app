@@ -62,6 +62,7 @@
     <string name="validate_pick_date">Please pick a date</string>
     <string name="validate_amount">Please write a valid amount</string>
     <string name="preference_name_default">Anonymous</string>
+    <string name="preference_save_succes">The preferences were updated succesfully!</string>
     <!--    BillList Fragment-->
 
 

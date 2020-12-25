@@ -26,7 +26,7 @@ import ie.dam.project.fragments.RegisterFragment;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextInputEditText nameET;
+
     EditText emailET;
     EditText passwordET;
     EditText oldPasswordET;
@@ -41,16 +41,15 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         initializeComponents();
         if (currentUser.getDisplayName() != null) {
-            nameET.setText(currentUser.getDisplayName().toString());
             emailET.setText(currentUser.getEmail().toString());
+
         }
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String oldPassword = oldPasswordET.getText().toString();
                 String password = passwordET.getText().toString();
-                String name = nameET.getText().toString();
-                String email = emailET.getText().toString();
+                String email = emailET.getText().toString().trim();
 
                 if (!oldPassword.isEmpty()) {
 
@@ -64,8 +63,30 @@ public class ProfileActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         Log.d("OK", "User re-authenticated.");
-                                        callUpdates(name, null, email, password);
-                                        finish();
+                                        int emailValid = validateEmail(email, currentUser.getEmail());
+                                        switch (emailValid) {
+                                            case 0:
+                                                break;
+                                            case 1: {
+                                                updateEmail(email);
+
+                                            }
+                                        }
+                                        int passwordValid = validatePassword(password);
+                                        switch (passwordValid) {
+                                            case 0:
+                                                break;
+                                            case 1:
+                                                updatePassword(password);
+                                        }
+
+
+                                        if (emailValid != 0 && passwordValid != 0) {
+                                            Toast.makeText(getApplicationContext(), "Account updated succesfully", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        }
+
+
                                     } else {
                                         Log.d("FAILED", "ERROR REAUTHENTICATING");
                                         Toast.makeText(getApplicationContext(), "Invalid Confirm Password", Toast.LENGTH_SHORT).show();
@@ -83,8 +104,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initializeComponents() {
-        preferences=getSharedPreferences(RegisterFragment.SHARED_PREF_FILE,MODE_PRIVATE);
-        nameET = findViewById(R.id.act_profile_tiet_name);
+        preferences = getSharedPreferences(RegisterFragment.SHARED_PREF_FILE, MODE_PRIVATE);
         emailET = findViewById(R.id.act_profile_et_email);
         passwordET = findViewById(R.id.act_profile_et_new_password);
         oldPasswordET = findViewById(R.id.act_profile_et_confirm_old_pass);
@@ -135,32 +155,13 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
-    private void callUpdates(String name, Uri photo, String email, String password) {
-        String currentName = currentUser.getDisplayName().toString();
+    private void callUpdates(String email, String password) {
+
         String currentEmail = currentUser.getEmail().toString();
-        Boolean profileUpdate = false;
         Boolean passwordUpdate = false;
         Boolean emailUpdate = false;
 
-        if (!name.equals(currentName)) {
-            if (!currentName.isEmpty())
-                profileUpdate = true;
-            else {
-                Toast.makeText(getApplicationContext(), "Name should not be empty", Toast.LENGTH_SHORT).show();
-                return;
-            }
 
-        }
-
-        if (!email.equals(currentEmail)) {
-            if (RegisterFragment.isEmailValid(email))
-                emailUpdate = true;
-
-            else {
-                Toast.makeText(getApplicationContext(), "Email is not valid", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
         if (!password.isEmpty()) {
             if (password.length() >= 8) {
                 passwordUpdate = true;
@@ -173,10 +174,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         }
 
-        if (profileUpdate == true) {
-            updateUser(name, photo);
-            addNameToSharedPreferences(name);
-        }
         if (passwordUpdate == true) {
             updatePassword(password);
         }
@@ -184,9 +181,33 @@ public class ProfileActivity extends AppCompatActivity {
             updateEmail(email);
         }
     }
-    private void addNameToSharedPreferences(String name) {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(RegisterFragment.NAME_KEY, name).apply();
+
+    public int validateEmail(String email, String currentEmail) {
+
+        if (email.isEmpty() || email.trim().isEmpty()) {
+            emailET.setError("Email cannot be empty");
+            return 0;
+        }
+        if (!email.equals(currentEmail)) {
+            if (RegisterFragment.isEmailValid(email))
+                return 1;
+            else {
+                emailET.setError("Email does not have a valid format");
+                return 0;
+            }
+        } else return -1;
+
+
+    }
+
+    public int validatePassword(String password) {
+        if (password.isEmpty()) {
+            return -1;
+        }
+        if (password.length() < 8) {
+            passwordET.setError("New password must have at least 8 characters!");
+            return 0;
+        } else return 1;
     }
 }
 
