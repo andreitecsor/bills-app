@@ -26,6 +26,12 @@ public interface BillDao {
     @Query("SELECT bills.* FROM bills JOIN suppliers ON bills.supplierId = suppliers.supplierId WHERE suppliers.name = :name")
     List<Bill> getAllBySupplierName(String name);
 
+    @Query("SELECT COUNT(*) FROM bills WHERE payed = :paid")
+    int getNoBillsByPaymentType(boolean paid);
+
+    @Query("SELECT SUM(amount) FROM bills WHERE payed = :paid")
+    double getAmountByPaymentType(boolean paid);
+
     @Insert
     long insert(Bill bill);
 
@@ -34,6 +40,4 @@ public interface BillDao {
 
     @Delete
     int delete(Bill bill);
-
-
 }

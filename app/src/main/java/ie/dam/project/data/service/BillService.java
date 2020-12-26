@@ -45,6 +45,27 @@ public class BillService {
         asyncTaskRunner.executeAsync(callable, callback);
     }
 
+    public void getNoBillsByPayed(Callback<Integer> callback, final boolean payed) {
+        Callable<Integer> callable = new Callable<Integer>() {
+            @Override
+            public Integer call() {
+                return billDao.getNoBillsByPaymentType(payed);
+            }
+        };
+        asyncTaskRunner.executeAsync(callable, callback);
+    }
+
+    public void getAmountToPay(Callback<Double> callback, final boolean payed) {
+        Callable<Double> callable = new Callable<Double>() {
+            @Override
+            public Double call() {
+                Double double2  = billDao.getAmountByPaymentType(payed);
+                return double2;
+            }
+        };
+        asyncTaskRunner.executeAsync(callable, callback);
+    }
+
     public void insert(Callback<Bill> callback, final Bill bill) {
         Callable<Bill> callable = new Callable<Bill>() {
             @Override
@@ -53,7 +74,7 @@ public class BillService {
                     return null;
                 }
                 if (supplierDao.getById(bill.getSupplierId()) == null) {
-                    Log.w("FOREIGN KEY PROBLEM","INVALID SUPPLIER ID");
+                    Log.w("FOREIGN KEY PROBLEM", "INVALID SUPPLIER ID");
                     return null;
                 }
                 long insertedId = billDao.insert(bill);
@@ -75,7 +96,7 @@ public class BillService {
                     return null;
                 }
                 if (supplierDao.getById(bill.getSupplierId()) == null) {
-                    Log.w("FOREIGN KEY PROBLEM","INVALID SUPPLIER ID");
+                    Log.w("FOREIGN KEY PROBLEM", "INVALID SUPPLIER ID");
                     return null;
                 }
                 int updatedRows = billDao.update(bill);

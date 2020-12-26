@@ -41,7 +41,6 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
     public static final String BILL_TO_UPDATE = "BILL_TO_UPDATE";
 
     private BillService billService;
-    private SupplierService supplierService;
     private List<BillShownInfo> billShownInfos = new ArrayList<>();
 
 
@@ -82,6 +81,14 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
                 startActivityForResult(intent, ADD_BILL);
             }
         };
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
