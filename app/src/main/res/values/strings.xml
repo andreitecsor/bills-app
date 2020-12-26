@@ -63,7 +63,21 @@
     <string name="validate_amount">Please write a valid amount</string>
     <string name="preference_name_default">Anonymous</string>
     <string name="preference_save_succes">The preferences were updated succesfully!</string>
-    <!--    BillList Fragment-->
+    <string name="aebill_add_supplier">Add new supplier</string>
+    <string name="aebill_edit_supplier">Edit supplier</string>
+    <string name="aesupplier_name">Name</string>
+    <string name="aesupplier_email">Email</string>
+    <string name="aesupplier_phone">Phone</string>
+    <string name="aesupplier_delete">Delete supplier</string>
+    <string name="invalid_email">Invalid email.</string>
+    <string name="invalid_name">Invalid supplier name.</string>
+    <string name="invalid_phone">Invalid phone number.</string>
+    <string name="supplier_exists">Supplier already exists.</string>
+    <string name="save">Save</string>
+    <string name="no_suppliers">No suppliers found</string>
+    <string name="no_supplier_found">Looks like there are no suppliers to attach to your bills. You need to add a new one.</string>
+    <string name="OK">OK</string>
+    <string name="cancel">CANCEL</string>
 
 
 </resources>

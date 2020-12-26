@@ -1,13 +1,16 @@
 package ie.dam.project;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -24,7 +27,9 @@ import java.util.List;
 
 import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.BillShownInfo;
+import ie.dam.project.data.domain.Supplier;
 import ie.dam.project.data.service.BillService;
+import ie.dam.project.data.service.SupplierService;
 import ie.dam.project.util.adapters.BillAdapter;
 import ie.dam.project.util.adapters.RecyclerViewItemClick;
 import ie.dam.project.util.asynctask.Callback;
@@ -36,6 +41,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
     public static final String BILL_TO_UPDATE = "BILL_TO_UPDATE";
 
     private BillService billService;
+    private SupplierService supplierService;
     private List<BillShownInfo> billShownInfos = new ArrayList<>();
 
 
@@ -51,20 +57,6 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         initialiseComponents();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && data != null) {
-            Bill bill = (Bill) data.getSerializableExtra(AddEditBillActivity.PROCESSED_BILL);
-            if (requestCode == ADD_BILL) {
-                billService.insert(insertBill(), bill);
-            }
-            if (requestCode == EDIT_BILL) {
-                billService.update(updateBill(), bill);
-            }
-        }
-    }
-
     private void initialiseComponents() {
         setCurrentDate();
         fabAddBill = findViewById(R.id.act_bills_fab_add);
@@ -73,6 +65,13 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         billService.getAllWithSupplierName(getAllBillShownInfos());
+    }
+
+    private void setCurrentDate() {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+        TextView currentDate = findViewById(R.id.act_bills_tv_date);
+        currentDate.setText(formatter.format(date));
     }
 
     private View.OnClickListener openAddBillActivity() {
@@ -136,17 +135,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
                 if (result != null) {
                     billShownInfos.clear();
                     billShownInfos.addAll(result);
-                    Collections.sort(billShownInfos, new Comparator<BillShownInfo>() {
-                        @Override
-                        public int compare(BillShownInfo o1, BillShownInfo o2) {
-                            int result;
-                            result = Boolean.compare(o1.getBill().isPayed(), o2.getBill().isPayed());
-                            if (result == 0) {
-                                result = o1.getBill().getDueTo().compareTo(o2.getBill().getDueTo());
-                            }
-                            return result;
-                        }
-                    });
+                    Collections.sort(billShownInfos, billsComparator());
                     if (billAdapter == null) {
                         billAdapter = new BillAdapter(billShownInfos, BillActivity.this);
                         recyclerView.setAdapter(billAdapter);
@@ -154,6 +143,20 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
                         billAdapter.notifyDataSetChanged();
                     }
                 }
+            }
+        };
+    }
+
+    private Comparator<BillShownInfo> billsComparator() {
+        return new Comparator<BillShownInfo>() {
+            @Override
+            public int compare(BillShownInfo o1, BillShownInfo o2) {
+                int result;
+                result = Boolean.compare(o1.getBill().isPayed(), o2.getBill().isPayed());
+                if (result == 0) {
+                    result = o1.getBill().getDueTo().compareTo(o2.getBill().getDueTo());
+                }
+                return result;
             }
         };
     }
@@ -168,6 +171,35 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
                 }
             }
         };
+    }
+
+    private Callback<Integer> deleteBill(final int selectedPosition) {
+        return new Callback<Integer>() {
+            @Override
+            public void runResultOnUiThread(Integer result) {
+                if (result != -1) {
+                    billShownInfos.remove(selectedPosition);
+                    billAdapter.notifyItemRemoved(selectedPosition);
+                }
+            }
+        };
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            Bill bill = (Bill) data.getSerializableExtra(AddEditBillActivity.PROCESSED_BILL);
+            if (requestCode == ADD_BILL) {
+                billService.insert(insertBill(), bill);
+                return;
+            }
+            if (requestCode == EDIT_BILL) {
+                billService.update(updateBill(), bill);
+                return;
+            }
+        }
+        billService.getAllWithSupplierName(getAllBillShownInfos());
     }
 
     private Callback<Bill> insertBill() {
@@ -190,25 +222,6 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
                 }
             }
         };
-    }
-
-    private Callback<Integer> deleteBill(final int selectedPosition) {
-        return new Callback<Integer>() {
-            @Override
-            public void runResultOnUiThread(Integer result) {
-                if (result != -1) {
-                    billShownInfos.remove(selectedPosition);
-                    billAdapter.notifyItemRemoved(selectedPosition);
-                }
-            }
-        };
-    }
-
-    private void setCurrentDate() {
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
-        TextView currentDate = findViewById(R.id.act_bills_tv_date);
-        currentDate.setText(formatter.format(date));
     }
 
     @Override

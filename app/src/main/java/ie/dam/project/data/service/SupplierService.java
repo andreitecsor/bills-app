@@ -61,6 +61,16 @@ public class SupplierService {
         asyncTaskRunner.executeAsync(callable, callback);
     }
 
+    public void getByName(Callback<Supplier> callback, String name) {
+        Callable<Supplier> callable = new Callable<Supplier>() {
+            @Override
+            public Supplier call() throws Exception {
+                return dao.getByName(name);
+            }
+        };
+        asyncTaskRunner.executeAsync(callable, callback);
+    }
+
     public void insert(Callback<Supplier> callback, final Supplier supplier) {
         Callable<Supplier> callable = new Callable<Supplier>() {
             @Override
