@@ -8,7 +8,6 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -49,7 +48,7 @@ public class AddEditBillActivity extends AppCompatActivity {
     private Button saveButton;
     private Button supplierButton;
     private Switch recurrentSwitch;
-    private Switch payedSwitch;
+    private Switch paidSwitch;
 
     private SupplierService supplierService;
     private List<Supplier> supplierList = new ArrayList<>();
@@ -76,7 +75,7 @@ public class AddEditBillActivity extends AppCompatActivity {
         amountEt = findViewById(R.id.act_aebill_et_amount);
         saveButton = findViewById(R.id.act_aebil_button_save);
         supplierButton = findViewById(R.id.act_aebill_button_aesupplier);
-        payedSwitch = findViewById(R.id.act_aebill_switch_payed);
+        paidSwitch = findViewById(R.id.act_aebill_switch_paid);
         recurrentSwitch = findViewById(R.id.act_aebill_switch_recurrent);
         saveButton.setOnClickListener(saveBillAction());
         selectedDateTv.setOnClickListener(openDateDialogPicker());
@@ -98,7 +97,7 @@ public class AddEditBillActivity extends AppCompatActivity {
                 if (validate()) {
                     auxBill.setDueTo(DateConverter.toDate(selectedDateTv.getText().toString()));
                     auxBill.setAmount(Double.parseDouble(amountEt.getText().toString()));
-                    auxBill.setPayed(payedSwitch.isChecked());
+                    auxBill.setPaid(paidSwitch.isChecked());
                     auxBill.setRecurrent(recurrentSwitch.isChecked());
                     auxBill.setType(typeSpinner.getSelectedItem().toString());
                     auxBill.setSupplierId(nameIdMap.get(supplierSpinner.getSelectedItem().toString()));
@@ -204,7 +203,7 @@ public class AddEditBillActivity extends AppCompatActivity {
         setTypeOnSpinner(auxBill);
         setSupplierOnSpinner(auxBill);
         selectedDateTv.setText(DateConverter.toString(auxBill.getDueTo()));
-        payedSwitch.setChecked(auxBill.isPayed());
+        paidSwitch.setChecked(auxBill.isPaid());
         recurrentSwitch.setChecked(auxBill.isRecurrent());
         amountEt.setText(String.valueOf(auxBill.getAmount()));
     }

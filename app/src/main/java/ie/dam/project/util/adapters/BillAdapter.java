@@ -42,12 +42,12 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
         } else {
             holder.ivRecurrent.setVisibility(View.INVISIBLE);
         }
-        if (billShownInfos.get(position).getBill().isPayed()) {
+        if (billShownInfos.get(position).getBill().isPaid()) {
             holder.ivChecked.setVisibility(View.VISIBLE);
-            holder.ivNotPayed.setVisibility(View.INVISIBLE);
+            holder.ivNotPaid.setVisibility(View.INVISIBLE);
         } else {
             holder.ivChecked.setVisibility(View.INVISIBLE);
-            holder.ivNotPayed.setVisibility(View.VISIBLE);
+            holder.ivNotPaid.setVisibility(View.VISIBLE);
         }
         holder.tvType.setText(billShownInfos.get(position).getBill().getType());
         holder.tvAmount.setText(billShownInfos.get(position).getBill().getAmount() + "€");
@@ -62,7 +62,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
         private ImageView ivPayment;
         private ImageView ivRecurrent;
         private ImageView ivChecked;
-        private ImageView ivNotPayed;
+        private ImageView ivNotPaid;
         private TextView tvSupplierName;
         private TextView tvDueTo;
         private TextView tvType;
@@ -85,7 +85,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
             ivPayment = itemView.findViewById(R.id.rv_iv_payment);
             ivRecurrent = itemView.findViewById(R.id.iv_recurrent);
             ivChecked = itemView.findViewById(R.id.rv_iv_checked);
-            ivNotPayed = itemView.findViewById(R.id.rv_iv_not_payed);
+            ivNotPaid = itemView.findViewById(R.id.rv_iv_not_paid);
             tvSupplierName = itemView.findViewById(R.id.rv_tv_supplier);
             tvDueTo = itemView.findViewById(R.id.rv_tv_due_to);
             tvType = itemView.findViewById(R.id.rv_bill_tv_type);

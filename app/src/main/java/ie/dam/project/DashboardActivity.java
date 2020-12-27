@@ -79,7 +79,7 @@ public class DashboardActivity extends AppCompatActivity {
         hiUser.setText(getString(R.string.dashboard_hi_user, name));
 
         billService.getAll(overdueBillsSort());
-        billService.getNoBillsByPayed(getUnpaidBills(), false);
+        billService.getNoBillsByPaymentType(getUnpaidBills(), false);
         billService.getAmountToPay(getAmountToPay(), false);
     }
 
@@ -182,7 +182,7 @@ public class DashboardActivity extends AppCompatActivity {
                     int overdueCount = 0;
                     Date today = new Date();
                     for (Bill bill : billList) {
-                        if (bill.isPayed() == false && today.after(bill.getDueTo())) {
+                        if (bill.isPaid() == false && today.after(bill.getDueTo())) {
                             overdueCount++;
                         }
                     }

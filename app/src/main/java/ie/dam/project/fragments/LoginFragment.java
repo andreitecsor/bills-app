@@ -33,6 +33,7 @@ public class LoginFragment extends Fragment {
     private TextInputEditText passwordTiet;
 
     FirebaseAuth fbAuth;
+
     public LoginFragment() {
     }
 
@@ -64,31 +65,26 @@ public class LoginFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email=emailTiet.getText().toString().trim();
-                String password=passwordTiet.getText().toString();
-                if(TextUtils.isEmpty(email))
-                {
+                String email = emailTiet.getText().toString().trim();
+                String password = passwordTiet.getText().toString();
+                if (TextUtils.isEmpty(email)) {
                     emailTiet.setError(getString(R.string.email_empty));
                 }
-                if(!RegisterFragment.isEmailValid(email))
-                {
+                if (!RegisterFragment.isEmailValid(email)) {
                     emailTiet.setError(getString(R.string.register_invalid_email_error));
                 }
-                if(TextUtils.isEmpty(password))
-                {
+                if (TextUtils.isEmpty(password)) {
                     passwordTiet.setError(getString(R.string.login_empty_password));
                 }
 
-                fbAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                fbAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful())
-                        {
-                            Toast.makeText(getContext(),"You've been successfully signed in!",Toast.LENGTH_SHORT).show();
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getContext(), "You've been successfully signed in!", Toast.LENGTH_SHORT).show();
                             createDashboardActivity();
-                        }
-                        else{
-                            Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -101,18 +97,18 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fbAuth=FirebaseAuth.getInstance();
+        fbAuth = FirebaseAuth.getInstance();
     }
 
-    private void createDashboardActivity()
-    {
+    private void createDashboardActivity() {
         BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
         if (beginActivity != null) {
-                Intent intent = new Intent(beginActivity, DashboardActivity.class);
-                beginActivity.startActivity(intent);
-                beginActivity.finish();
+            Intent intent = new Intent(beginActivity, DashboardActivity.class);
+            beginActivity.startActivity(intent);
+            beginActivity.finish();
         }
     }
+
     private void initialiseComponents(View view) {
         registerNowButton = view.findViewById(R.id.frg_login_button_register);
         loginButton = view.findViewById(R.id.frg_login_button_login);

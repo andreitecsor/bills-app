@@ -123,7 +123,7 @@
             app:srcCompat="@drawable/ic_recurrent" />
 
         <ImageView
-            android:id="@+id/rv_iv_not_payed"
+            android:id="@+id/rv_iv_not_paid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

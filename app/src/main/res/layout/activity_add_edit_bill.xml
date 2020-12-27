@@ -126,7 +126,7 @@
             app:layout_constraintTop_toBottomOf="@+id/act_aebill_et_amount" />
 
         <Switch
-            android:id="@+id/act_aebill_switch_payed"
+            android:id="@+id/act_aebill_switch_paid"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

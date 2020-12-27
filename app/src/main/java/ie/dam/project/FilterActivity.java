@@ -129,7 +129,7 @@ public class FilterActivity extends AppCompatActivity {
                     max = 999999999;
                 }
                 if (validate(min, max)) {
-                    billService.getFilteredBils(getFilteredBills(), min, max, paidSwitch.isChecked(), recurrentSwitch.isChecked());
+                    billService.getFilteredBills(getFilteredBills(), min, max, paidSwitch.isChecked(), recurrentSwitch.isChecked());
                     filterDialog.cancel();
                 }
             }

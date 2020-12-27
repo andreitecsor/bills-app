@@ -110,12 +110,12 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
 
                 case ItemTouchHelper.LEFT: //RIGHT <- LEFT
                     Bill billToUpdate = billShownInfos.get(position).getBill();
-                    if (billToUpdate.isPayed()) {
-                        billToUpdate.setPayed(false);
+                    if (billToUpdate.isPaid()) {
+                        billToUpdate.setPaid(false);
                     } else {
-                        billToUpdate.setPayed(true);
+                        billToUpdate.setPaid(true);
                     }
-                    billService.update(updatePayedBill(position), billToUpdate);
+                    billService.update(updatePaidBill(position), billToUpdate);
                     break;
             }
         }
@@ -158,7 +158,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
             @Override
             public int compare(BillShownInfo o1, BillShownInfo o2) {
                 int result;
-                result = Boolean.compare(o1.getBill().isPayed(), o2.getBill().isPayed());
+                result = Boolean.compare(o1.getBill().isPaid(), o2.getBill().isPaid());
                 if (result == 0) {
                     result = o1.getBill().getDueTo().compareTo(o2.getBill().getDueTo());
                 }
@@ -167,7 +167,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         };
     }
 
-    private Callback<Bill> updatePayedBill(final int selectedPosition) {
+    private Callback<Bill> updatePaidBill(final int selectedPosition) {
         return new Callback<Bill>() {
             @Override
             public void runResultOnUiThread(Bill result) {

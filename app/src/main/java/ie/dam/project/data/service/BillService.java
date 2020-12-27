@@ -35,7 +35,7 @@ public class BillService {
         asyncTaskRunner.executeAsync(callable, callback);
     }
 
-    public void getFilteredBils(Callback<List<BillShownInfo>> callback, double min, double max, boolean paid, boolean recurrent) {
+    public void getFilteredBills(Callback<List<BillShownInfo>> callback, double min, double max, boolean paid, boolean recurrent) {
         Callable<List<BillShownInfo>> callable = new Callable<List<BillShownInfo>>() {
             @Override
             public List<BillShownInfo> call() throws Exception {
@@ -55,7 +55,7 @@ public class BillService {
         asyncTaskRunner.executeAsync(callable, callback);
     }
 
-    public void getNoBillsByPayed(Callback<Integer> callback, final boolean paid) {
+    public void getNoBillsByPaymentType(Callback<Integer> callback, final boolean paid) {
         Callable<Integer> callable = new Callable<Integer>() {
             @Override
             public Integer call() {
