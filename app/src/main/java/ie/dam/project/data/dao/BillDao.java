@@ -20,6 +20,13 @@ public interface BillDao {
     @Query("SELECT bills.*, suppliers.name  FROM bills JOIN suppliers ON bills.supplierId = suppliers.supplierId")
     List<BillShownInfo> getAllWithSupplierName();
 
+    @Query("SELECT bills.*, suppliers.name  " +
+            "FROM bills JOIN suppliers ON bills.supplierId = suppliers.supplierId " +
+            "WHERE bills.amount BETWEEN :min AND :max " +
+            "AND bills.payed = :paid " +
+            "AND bills.recurrent = :recurrent")
+    List<BillShownInfo> getFilteredBill(double min, double max, boolean paid, boolean recurrent);
+
     @Query("SELECT bills.* FROM bills WHERE supplierId= :supplierId")
     List<Bill> getAllBySupplierId(long supplierId);
 

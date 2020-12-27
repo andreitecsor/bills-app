@@ -181,6 +181,71 @@ public class AddEditBillActivity extends AppCompatActivity {
                 }).create();
     }
 
+    private void addOrEditCheck() {
+        if (billActIntent.hasExtra(BillActivity.BILL_TO_UPDATE)) {
+            auxBill = (Bill) billActIntent.getSerializableExtra(BillActivity.BILL_TO_UPDATE);
+            setComponentsValues(auxBill);
+            supplierButton.setText(getString(R.string.aebill_edit_supplier));
+            saveButton.setText(getString(R.string.profile_save_changes));
+            supplierButton.setOnClickListener(editSupplierAction());
+        } else {
+            auxBill = new Bill();
+            supplierButton.setOnClickListener(insertSupplierAction());
+        }
+    }
+
+    private void setComponentsValues(Bill auxBill) {
+        setTypeOnSpinner(auxBill);
+        setSupplierOnSpinner(auxBill);
+        selectedDateTv.setText(DateConverter.toString(auxBill.getDueTo()));
+        payedSwitch.setChecked(auxBill.isPayed());
+        recurrentSwitch.setChecked(auxBill.isRecurrent());
+        amountEt.setText(String.valueOf(auxBill.getAmount()));
+    }
+
+    private void setTypeOnSpinner(Bill bill) {
+        ArrayAdapter spinnerAdapter = (ArrayAdapter) typeSpinner.getAdapter();
+        for (int i = 0; i < spinnerAdapter.getCount(); i++) {
+            String item = spinnerAdapter.getItem(i).toString();
+            if (item != null && item.equals(bill.getType())) {
+                typeSpinner.setSelection(i);
+                break;
+            }
+        }
+    }
+
+    private void setSupplierOnSpinner(Bill bill) {
+        ArrayAdapter spinnerAdapter = (ArrayAdapter) supplierSpinner.getAdapter();
+        for (int i = 0; i < spinnerAdapter.getCount(); i++) {
+            String item = spinnerAdapter.getItem(i).toString();
+            if (item != null && item.equals(idNameMap.get(bill.getSupplierId()))) {
+                supplierSpinner.setSelection(i);
+                break;
+            }
+        }
+    }
+
+    private View.OnClickListener insertSupplierAction() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addBillIntent = new Intent(getApplicationContext(), AddEditSupplierActivity.class);
+                startActivityForResult(addBillIntent, INSERT_OPERATION);
+            }
+        };
+    }
+
+    private View.OnClickListener editSupplierAction() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editBillIntent = new Intent(getApplicationContext(), AddEditSupplierActivity.class);
+                editBillIntent.putExtra(SUPPLIER_TO_UPDATE, auxBill.getSupplierId());
+                startActivityForResult(editBillIntent, UPDATE_DELETE_OPERATION);
+            }
+        };
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -235,71 +300,6 @@ public class AddEditBillActivity extends AppCompatActivity {
                 if (result != -1) {
                     finish();
                 }
-            }
-        };
-    }
-
-    private void addOrEditCheck() {
-        if (billActIntent.hasExtra(BillActivity.BILL_TO_UPDATE)) {
-            auxBill = (Bill) billActIntent.getSerializableExtra(BillActivity.BILL_TO_UPDATE);
-            setComponentsValues(auxBill);
-            supplierButton.setText(getString(R.string.aebill_edit_supplier));
-            saveButton.setText(getString(R.string.profile_save_changes));
-            supplierButton.setOnClickListener(editSupplierAction());
-        } else {
-            auxBill = new Bill();
-            supplierButton.setOnClickListener(insertSupplierAction());
-        }
-    }
-
-    private void setComponentsValues(Bill auxBill) {
-        setTypeOnSpinner(auxBill);
-        setSupplierOnSpinner(auxBill);
-        selectedDateTv.setText(DateConverter.toString(auxBill.getDueTo()));
-        payedSwitch.setChecked(auxBill.isPayed());
-        recurrentSwitch.setChecked(auxBill.isRecurrent());
-        amountEt.setText(String.valueOf(auxBill.getAmount()));
-    }
-
-    private void setTypeOnSpinner(Bill bill) {
-        ArrayAdapter spinnerAdapter = (ArrayAdapter) typeSpinner.getAdapter();
-        for (int i = 0; i < spinnerAdapter.getCount(); i++) {
-            String item = spinnerAdapter.getItem(i).toString();
-            if (item != null && item.equals(bill.getType())) {
-                typeSpinner.setSelection(i);
-                break;
-            }
-        }
-    }
-
-    private void setSupplierOnSpinner(Bill bill) {
-        ArrayAdapter spinnerAdapter = (ArrayAdapter) supplierSpinner.getAdapter();
-        for (int i = 0; i < spinnerAdapter.getCount(); i++) {
-            String item = spinnerAdapter.getItem(i).toString();
-            if (item != null && item.equals(idNameMap.get(bill.getSupplierId()))) {
-                supplierSpinner.setSelection(i);
-                break;
-            }
-        }
-    }
-
-    private View.OnClickListener editSupplierAction() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent editBillIntent = new Intent(getApplicationContext(), AddEditSupplierActivity.class);
-                editBillIntent.putExtra(SUPPLIER_TO_UPDATE, auxBill.getSupplierId());
-                startActivityForResult(editBillIntent, UPDATE_DELETE_OPERATION);
-            }
-        };
-    }
-
-    private View.OnClickListener insertSupplierAction() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent addBillIntent = new Intent(getApplicationContext(), AddEditSupplierActivity.class);
-                startActivityForResult(addBillIntent, INSERT_OPERATION);
             }
         };
     }

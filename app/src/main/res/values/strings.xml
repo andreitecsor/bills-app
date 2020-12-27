@@ -83,6 +83,13 @@
     <string name="no">No</string>
     <string name="delete_supplier_check">ATTENTION! If you delete this supplier, you will also delete all the bills attached to it. Do you wish to proceed?</string>
     <string name="filter">Filter</string>
+    <string name="minimum_amount">Min amount</string>
+    <string name="maximum_amount">Max amount</string>
+    <string name="payed_bill">Payed bill</string>
+    <string name="recurrent_bill">Recurrent bill</string>
+    <string name="apply_filters">Apply filters</string>
+    <string name="no_results_found">No results found</string>
+    <string name="invalid_amounts">Invalid amounts. Max must be bigger than min.</string>
 
 
 </resources>

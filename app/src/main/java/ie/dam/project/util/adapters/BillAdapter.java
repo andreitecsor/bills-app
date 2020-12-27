@@ -50,7 +50,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
             holder.ivNotPayed.setVisibility(View.VISIBLE);
         }
         holder.tvType.setText(billShownInfos.get(position).getBill().getType());
-        holder.tvAmount.setText(String.valueOf(billShownInfos.get(position).getBill().getAmount()) + "€");
+        holder.tvAmount.setText(billShownInfos.get(position).getBill().getAmount() + "€");
     }
 
     @Override
@@ -74,9 +74,11 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    recyclerViewItemClick.onItemClickListener(getAdapterPosition()); }
+                    if (recyclerViewItemClick != null) {
+                        recyclerViewItemClick.onItemClickListener(getAdapterPosition());
+                    }
+                }
             });
-
         }
 
         private void initialiseComponents(@NonNull View itemView) {

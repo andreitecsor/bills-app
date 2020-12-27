@@ -35,6 +35,16 @@ public class BillService {
         asyncTaskRunner.executeAsync(callable, callback);
     }
 
+    public void getFilteredBils(Callback<List<BillShownInfo>> callback, double min, double max, boolean paid, boolean recurrent) {
+        Callable<List<BillShownInfo>> callable = new Callable<List<BillShownInfo>>() {
+            @Override
+            public List<BillShownInfo> call() throws Exception {
+                return billDao.getFilteredBill(min, max, paid, recurrent);
+            }
+        };
+        asyncTaskRunner.executeAsync(callable, callback);
+    }
+
     public void getAll(Callback<List<Bill>> callback) {
         Callable<List<Bill>> callable = new Callable<List<Bill>>() {
             @Override
@@ -45,22 +55,21 @@ public class BillService {
         asyncTaskRunner.executeAsync(callable, callback);
     }
 
-    public void getNoBillsByPayed(Callback<Integer> callback, final boolean payed) {
+    public void getNoBillsByPayed(Callback<Integer> callback, final boolean paid) {
         Callable<Integer> callable = new Callable<Integer>() {
             @Override
             public Integer call() {
-                return billDao.getNoBillsByPaymentType(payed);
+                return billDao.getNoBillsByPaymentType(paid);
             }
         };
         asyncTaskRunner.executeAsync(callable, callback);
     }
 
-    public void getAmountToPay(Callback<Double> callback, final boolean payed) {
+    public void getAmountToPay(Callback<Double> callback, final boolean paid) {
         Callable<Double> callable = new Callable<Double>() {
             @Override
             public Double call() {
-                Double double2  = billDao.getAmountByPaymentType(payed);
-                return double2;
+                return billDao.getAmountByPaymentType(paid);
             }
         };
         asyncTaskRunner.executeAsync(callable, callback);
