@@ -78,6 +78,11 @@
     <string name="no_supplier_found">Looks like there are no suppliers to attach to your bills. You need to add a new one.</string>
     <string name="OK">OK</string>
     <string name="cancel">CANCEL</string>
+    <string name="delete_supplier">DELETE SUPPLIER</string>
+    <string name="yes">YES</string>
+    <string name="no">No</string>
+    <string name="delete_supplier_check">ATTENTION! If you delete this supplier, you will also delete all the bills attached to it. Do you wish to proceed?</string>
+    <string name="filter">Filter</string>
 
 
 </resources>

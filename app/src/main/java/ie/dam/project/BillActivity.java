@@ -1,16 +1,13 @@
 package ie.dam.project;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -27,9 +24,7 @@ import java.util.List;
 
 import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.BillShownInfo;
-import ie.dam.project.data.domain.Supplier;
 import ie.dam.project.data.service.BillService;
-import ie.dam.project.data.service.SupplierService;
 import ie.dam.project.util.adapters.BillAdapter;
 import ie.dam.project.util.adapters.RecyclerViewItemClick;
 import ie.dam.project.util.asynctask.Callback;
@@ -47,6 +42,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
     private RecyclerView recyclerView;
     private BillAdapter billAdapter;
     private FloatingActionButton fabAddBill;
+    private FloatingActionButton fabFilterBill;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +54,29 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
 
     private void initialiseComponents() {
         setCurrentDate();
-        fabAddBill = findViewById(R.id.act_bills_fab_add);
-        fabAddBill.setOnClickListener(openAddBillActivity());
+        fabAddBill = findViewById(R.id.act_bill_fab_add);
+        fabFilterBill = findViewById(R.id.act_bill_fab_filter);
         recyclerView = findViewById(R.id.act_bill_list_rv);
+        fabAddBill.setOnClickListener(openAddBillActivity());
+        fabFilterBill.setOnClickListener(openFilterActivity());
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         billService.getAllWithSupplierName(getAllBillShownInfos());
     }
 
+    private View.OnClickListener openFilterActivity() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), FilterActivity.class));
+            }
+        };
+    }
+
     private void setCurrentDate() {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
-        TextView currentDate = findViewById(R.id.act_bills_tv_date);
+        TextView currentDate = findViewById(R.id.act_bill_tv_date);
         currentDate.setText(formatter.format(date));
     }
 
@@ -81,14 +88,6 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
                 startActivityForResult(intent, ADD_BILL);
             }
         };
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     private ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -237,5 +236,13 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         Intent intent = new Intent(getApplicationContext(), AddEditBillActivity.class);
         intent.putExtra(BILL_TO_UPDATE, billToUpdate);
         startActivityForResult(intent, EDIT_BILL);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

@@ -1,7 +1,9 @@
 package ie.dam.project;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -45,8 +47,8 @@ public class AddEditSupplierActivity extends AppCompatActivity {
         emailTiet = findViewById(R.id.act_aesupplier_tiet_email);
         phoneTiet = findViewById(R.id.act_aesupplier_tiet_phone);
         buttonSave = findViewById(R.id.act_aesupplier_button_save);
-        buttonSave.setOnClickListener(saveSupplierAction());
         buttonDelete = findViewById(R.id.act_aesupplier_button_delete);
+        buttonSave.setOnClickListener(saveSupplierAction());
         buttonDelete.setOnClickListener(deleteSupplierAction());
         addOrEditCheck();
     }
@@ -85,12 +87,27 @@ public class AddEditSupplierActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent.putExtra(PROCESSED_SUPPLIER, auxSupplier);
-                intent.putExtra(TO_BE_DELETED, true);
-                setResult(RESULT_OK, intent);
-                finish();
+                AlertDialog alertDialog = getDeleteCheckAlertDialog();
+                alertDialog.show();
             }
         };
+    }
+
+    private AlertDialog getDeleteCheckAlertDialog() {
+        return new AlertDialog.Builder(AddEditSupplierActivity.this)
+                .setTitle(R.string.delete_supplier)
+                .setMessage(R.string.delete_supplier_check)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        intent.putExtra(PROCESSED_SUPPLIER, auxSupplier);
+                        intent.putExtra(TO_BE_DELETED, true);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.no, null)
+                .create();
     }
 
     private View.OnClickListener saveSupplierAction() {
