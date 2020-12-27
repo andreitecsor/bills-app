@@ -137,6 +137,12 @@ public class AddEditBillActivity extends AppCompatActivity {
         };
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        supplierService.getAll(getSuppliersMapping());
+    }
+
     private Callback<List<Supplier>> getSuppliersMapping() {
         return new Callback<List<Supplier>>() {
             @Override
@@ -252,6 +258,7 @@ public class AddEditBillActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && data != null) {
             Supplier supplier = (Supplier) data.getSerializableExtra(AddEditSupplierActivity.PROCESSED_SUPPLIER);
             if (requestCode == INSERT_OPERATION) {
+                System.out.println("Ajunge aici??");
                 supplierService.insert(insertSupplier(), supplier);
             }
             if (requestCode == UPDATE_DELETE_OPERATION) {
