@@ -69,16 +69,30 @@ public class PreferenceActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         Log.d("FIREBASE", "User re-authenticated.");
 
-                                        switch (validate(name)) {
+                                        int nameValid = validateName(name);
+                                        switch (nameValid) {
                                             case 0:
                                                 break;
                                             case 1: {
                                                 updateUser(name, null);
-                                                addNameAndGenderToSharedPreferences(name, Gender.getEnum(gender));
-                                                finish();
+                                                addNameToSharedPreferences(name);
+
+
                                             }
                                         }
 
+                                        int genderValid = validateGender(gender);
+                                        if (genderValid == 1) {
+                                            addGenderToSharedPreferences(gender);
+                                        }
+
+                                        if (genderValid == -1 && nameValid == -1) {
+                                            Toast.makeText(getApplicationContext(), "Nothing to update!", Toast.LENGTH_SHORT).show();
+
+                                        } else if (nameValid != 0) {
+                                            Toast.makeText(getApplicationContext(), "Account updated succesfully", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        }
 
                                     } else {
                                         Log.d("FIREBASE", "ERROR REAUTHENTICATING");
@@ -96,7 +110,7 @@ public class PreferenceActivity extends AppCompatActivity {
 
     }
 
-    private int validate(String name) {
+    private int validateName(String name) {
         if (name.equals(currentUser.getDisplayName()))
             return -1;
         if (name.isEmpty()) {
@@ -106,14 +120,22 @@ public class PreferenceActivity extends AppCompatActivity {
         return 1;
     }
 
+    private int validateGender(String gender) {
+        String currentGender = preferences.getString(PreferenceActivity.GENDER_KEY, Gender.RATHER_NOT_SAY.toString());
+        if (gender.toString().equals(currentGender)) {
+            return -1;
+        } else return 1;
+    }
+
     private void initializeComponents() {
-        preferences = getSharedPreferences(RegisterFragment.SHARED_PREF_FILE, MODE_PRIVATE);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
 
         genderSpn = findViewById(R.id.act_preference_spinner_sex);
         nameET = findViewById(R.id.act_preference_tiet_name);
         oldPasswordET = findViewById(R.id.act_preference_et_confirm_old_pass);
         saveBtn = findViewById(R.id.act_preference_button_save);
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
         image = findViewById(R.id.act_preference_ib);
     }
 
@@ -136,13 +158,19 @@ public class PreferenceActivity extends AppCompatActivity {
         }
     }
 
-    private void addNameAndGenderToSharedPreferences(String name, Gender gender) {
+    private void addNameToSharedPreferences(String name) {
         SharedPreferences.Editor editor = preferences.edit();
         editor
                 .putString(RegisterFragment.NAME_KEY, name)
-                .putString(GENDER_KEY, gender.toString())
                 .apply();
 
+    }
+
+    private void addGenderToSharedPreferences(String gender) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor
+                .putString(GENDER_KEY, gender)
+                .apply();
     }
 
     private void populateSpinner() {

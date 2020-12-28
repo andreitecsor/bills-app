@@ -31,7 +31,7 @@ import ie.dam.project.R;
 
 public class RegisterFragment extends Fragment {
     public static final String NAME_KEY = "name";
-    public static final String SHARED_PREF_FILE = "profile_shared_pref";
+    public static final String SHARED_PREF_FILE_EXTENSION = "_profile_shared_pref";
 
     private Button loginNowButton;
     private Button registerButton;
@@ -41,9 +41,11 @@ public class RegisterFragment extends Fragment {
     private TextInputEditText confirmPasswordET;
 
     private FirebaseAuth fbAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
     private SharedPreferences preferences;
 
     private String name;
+
     //TODO: Register button impl
 
     public RegisterFragment() {
@@ -104,22 +106,13 @@ public class RegisterFragment extends Fragment {
                 fbAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        boolean task_success = task.isSuccessful();
                         if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "User created succesfully! Please log in with your new account!",
-                                    Toast.LENGTH_LONG).show();
 
 
                             //todo: open dashboard or go to login fragment (redirecting to login currently)
 
 
-                            BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
-                            if (beginActivity != null) {
-                                createLoginFragment(beginActivity);
-                                // fbAuth.signInWithEmailAndPassword(email, password);
-
-                                addNameToSharedPreferences();
-//                                createDashboardActivity();
-                            }
                         } else {
                             Toast.makeText(getContext(), "Cannot create account!" + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
@@ -155,8 +148,32 @@ public class RegisterFragment extends Fragment {
     }
 
     private void initialiseComponents(View view) {
-        //PREFERENCES
-        preferences = getContext().getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE);
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+
+
+                    BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
+                    if (beginActivity != null) {
+                        createLoginFragment(beginActivity);
+//                        Context context=getContext();
+                        Toast.makeText(getContext(), "User created succesfully! Please log in with your new account!",
+                                Toast.LENGTH_LONG).show();
+                        preferences = getContext().getSharedPreferences(FirebaseAuth.getInstance().getCurrentUser().getUid() + SHARED_PREF_FILE_EXTENSION, Context.MODE_PRIVATE);
+                        addNameToSharedPreferences();
+                    }
+
+                }
+
+
+            }
+        };
+
+        fbAuth.addAuthStateListener(authStateListener);
 
         loginNowButton = view.findViewById(R.id.frg_register_button_login);
         registerButton = view.findViewById(R.id.frg_register_button_register);
@@ -179,6 +196,5 @@ public class RegisterFragment extends Fragment {
             beginActivity.finish();
         }
     }
-
-
 }
+
