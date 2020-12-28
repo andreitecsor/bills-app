@@ -293,4 +293,12 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         startActivity(intent);
         finish();
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setFabsVisibility(fabExtendClicked);
+        startFabsAnimation(fabExtendClicked);
+        fabExtendClicked = !fabExtendClicked;
+    }
 }
