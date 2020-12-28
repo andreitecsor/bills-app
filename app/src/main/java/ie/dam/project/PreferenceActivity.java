@@ -97,6 +97,7 @@ public class PreferenceActivity extends AppCompatActivity {
     }
 
     private boolean validate(String name) {
+        //TODO: Baga un elvis operator
         if (!name.equals(nameET.getText().toString()))
             return true;
         else return false;

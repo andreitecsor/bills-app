@@ -20,11 +20,24 @@ public interface BillDao {
     @Query("SELECT bills.*, suppliers.name  FROM bills JOIN suppliers ON bills.supplierId = suppliers.supplierId")
     List<BillShownInfo> getAllWithSupplierName();
 
+    @Query("SELECT bills.*, suppliers.name  " +
+            "FROM bills JOIN suppliers ON bills.supplierId = suppliers.supplierId " +
+            "WHERE bills.amount BETWEEN :min AND :max " +
+            "AND bills.paid = :paid " +
+            "AND bills.recurrent = :recurrent")
+    List<BillShownInfo> getFilteredBill(double min, double max, boolean paid, boolean recurrent);
+
     @Query("SELECT bills.* FROM bills WHERE supplierId= :supplierId")
     List<Bill> getAllBySupplierId(long supplierId);
 
     @Query("SELECT bills.* FROM bills JOIN suppliers ON bills.supplierId = suppliers.supplierId WHERE suppliers.name = :name")
     List<Bill> getAllBySupplierName(String name);
+
+    @Query("SELECT COUNT(*) FROM bills WHERE paid = :paid")
+    int getNoBillsByPaymentType(boolean paid);
+
+    @Query("SELECT SUM(amount) FROM bills WHERE paid = :paid")
+    double getAmountByPaymentType(boolean paid);
 
     @Insert
     long insert(Bill bill);
@@ -34,6 +47,4 @@ public interface BillDao {
 
     @Delete
     int delete(Bill bill);
-
-
 }

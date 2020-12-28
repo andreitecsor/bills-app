@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ie.dam.project.data.domain.Bill;
@@ -29,65 +30,78 @@ import ie.dam.project.fragments.RegisterFragment;
 import ie.dam.project.util.asynctask.Callback;
 
 public class DashboardActivity extends AppCompatActivity {
-
     private FirebaseUser currentUser;
     private CardView billCardButton;
     private CardView profileCardButton;
     private CardView preferencesCardButton;
     private CardView logoutCardButton;
     private TextView hiUser;
+    private TextView unpaidTv;
+    private TextView overdueTv;
+    private TextView amountTv;
+
     private BillService billService;
     private List<Bill> billList = new ArrayList<>();
 
     private SharedPreferences preferences;
     private String name;
 
-    //TODO:
-    // 1. CREATE A QUERY TO FIND THE NUMBER OF ALL UNPAYED BILLS AND THEIR TOTAL SUM
-    // 2. CREATE A QUERY TO FIND THE NUMBER OF ALL OVERDUE BILLS
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        initialiseComponents();
         billService = new BillService(getApplicationContext());
-        billService.getAll(getAllBills());
-        System.out.println(billList);
-        updateUser(name,null);
-
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        hiUser.setText(getString(R.string.dashboard_hi_user, preferences.getString(RegisterFragment.NAME_KEY,getString(R.string.preference_name_default))));
-
-
+        initialiseComponents();
+        updateUser(name, null);
     }
 
     private void initialiseComponents() {
         //Preferences
-        preferences=getSharedPreferences(RegisterFragment.SHARED_PREF_FILE,MODE_PRIVATE);
+        preferences = getSharedPreferences(RegisterFragment.SHARED_PREF_FILE, MODE_PRIVATE);
+
         billCardButton = findViewById(R.id.act_dashboard_card_bills);
-        billCardButton.setOnClickListener(goToBillsActivity());
-
         profileCardButton = findViewById(R.id.act_dashboard_card_profile);
-        profileCardButton.setOnClickListener(goToProfileActivity());
-
         preferencesCardButton = findViewById(R.id.act_dashboard_card_preferences);
-        preferencesCardButton.setOnClickListener(goToPreferencesActivity());
-
         logoutCardButton = findViewById(R.id.act_dashboard_card_users);
+        unpaidTv = findViewById(R.id.act_dashboard_tv_bills_to_pay);
+        overdueTv = findViewById(R.id.act_dashboard_tv_overdue);
+        amountTv = findViewById(R.id.act_dashboard_tv_amount);
+
+        billCardButton.setOnClickListener(goToBillsActivity());
+        profileCardButton.setOnClickListener(goToProfileActivity());
+        preferencesCardButton.setOnClickListener(goToPreferencesActivity());
         logoutCardButton.setOnClickListener(logoutClickEvent());
 
         hiUser = findViewById(R.id.act_dashboard_tv_hi_user);
-        name=preferences.getString(RegisterFragment.NAME_KEY,getString(R.string.preference_name_default));
+        name = preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default));
         hiUser.setText(getString(R.string.dashboard_hi_user, name));
+
+        billService.getAll(overdueBillsSort());
+        billService.getNoBillsByPaymentType(getUnpaidBills(), false);
+        billService.getAmountToPay(getAmountToPay(), false);
     }
 
+    public void updateUser(String name, Uri photoUri) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(name)
+                    .build();
+
+            currentUser.updateProfile(profileUpdate)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("OK", "User profile updated.");
+                            } else Log.d("ERROR", task.getException().getMessage());
+                        }
+                    });
+        }
+
+    }
 
     private View.OnClickListener goToBillsActivity() {
         return new View.OnClickListener() {
@@ -95,6 +109,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), BillActivity.class);
                 startActivity(intent);
+                finish();
             }
         };
     }
@@ -105,8 +120,6 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
-
-
             }
         };
     }
@@ -116,7 +129,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), PreferenceActivity.class);
-               startActivity(intent);
+                startActivity(intent);
             }
         };
     }
@@ -127,7 +140,6 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                Intent intent = new Intent(getApplicationContext(), UsersActivity.class);
 //                startActivity(intent);
-
                 AlertDialog dialog = getAlertDialogLogout();
                 dialog.show();
             }
@@ -160,39 +172,57 @@ public class DashboardActivity extends AppCompatActivity {
         finish();
     }
 
-
-
-
-    private Callback<List<Bill>> getAllBills() {
+    private Callback<List<Bill>> overdueBillsSort() {
         return new Callback<List<Bill>>() {
             @Override
             public void runResultOnUiThread(List<Bill> result) {
                 if (result != null) {
                     billList.clear();
                     billList.addAll(result);
-                    //TODO: populate brief
+                    int overdueCount = 0;
+                    Date today = new Date();
+                    for (Bill bill : billList) {
+                        if (bill.isPaid() == false && today.after(bill.getDueTo())) {
+                            overdueCount++;
+                        }
+                    }
+                    String updatedTv = overdueTv.getText().toString().replace("NUMBER", String.valueOf(overdueCount));
+                    overdueTv.setText(updatedTv);
                 }
             }
         };
     }
-    public void updateUser(String name, Uri photoUri) {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(name)
-                    .build();
 
-            currentUser.updateProfile(profileUpdate)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("OK", "User profile updated.");
-                            } else Log.d("ERROR", task.getException().getMessage());
-                        }
-                    });
-        }
+    private Callback<Integer> getUnpaidBills() {
+        return new Callback<Integer>() {
+            @Override
+            public void runResultOnUiThread(Integer result) {
+                if (result >= 0) {
+                    String updatedTv = unpaidTv.getText().toString().replace("NUMBER", result.toString());
+                    unpaidTv.setText(updatedTv);
+                }
+            }
+        };
+    }
 
+    private Callback<Double> getAmountToPay() {
+        return new Callback<Double>() {
+            @Override
+            public void runResultOnUiThread(Double result) {
+                if (result >= 0) {
+                    String updatedTv = amountTv.getText().toString().replace("NUMBER", result.toString());
+                    //TODO: cu currency-ul selectat din preference files
+                    //updatedTv = amountTv.getText().toString().replace("CURRENCY", ???);
+                    amountTv.setText(updatedTv);
+                }
+            }
+        };
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hiUser.setText(getString(R.string.dashboard_hi_user, preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default))));
     }
 
 }

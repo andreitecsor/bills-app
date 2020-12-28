@@ -31,8 +31,8 @@ public class Bill implements Serializable {
     private double amount;
 
     @NonNull
-    @ColumnInfo(name = "payed")
-    private boolean payed;
+    @ColumnInfo(name = "paid")
+    private boolean paid;
 
     @NonNull
     @ColumnInfo(name = "recurrent")
@@ -50,21 +50,21 @@ public class Bill implements Serializable {
     public Bill() {
     }
 
-    public Bill(long billId, Date dueTo, double amount, boolean payed, boolean recurrent, String type, long supplierId) {
+    public Bill(long billId, Date dueTo, double amount, boolean paid, boolean recurrent, String type, long supplierId) {
         this.billId = billId;
         this.dueTo = dueTo;
         this.amount = amount;
-        this.payed = payed;
+        this.paid = paid;
         this.recurrent = recurrent;
         this.type = type;
         this.supplierId = supplierId;
     }
 
     @Ignore
-    public Bill(Date dueTo, double amount, boolean payed, boolean recurrent, String type, long supplierId) {
+    public Bill(Date dueTo, double amount, boolean paid, boolean recurrent, String type, long supplierId) {
         this.dueTo = dueTo;
         this.amount = amount;
-        this.payed = payed;
+        this.paid = paid;
         this.recurrent = recurrent;
         this.type = type;
         this.supplierId = supplierId;
@@ -94,12 +94,12 @@ public class Bill implements Serializable {
         this.amount = amount;
     }
 
-    public boolean isPayed() {
-        return payed;
+    public boolean isPaid() {
+        return paid;
     }
 
-    public void setPayed(boolean payed) {
-        this.payed = payed;
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
     public boolean isRecurrent() {
@@ -135,7 +135,7 @@ public class Bill implements Serializable {
 
         if (billId != bill.billId) return false;
         if (Double.compare(bill.amount, amount) != 0) return false;
-        if (payed != bill.payed) return false;
+        if (paid != bill.paid) return false;
         if (recurrent != bill.recurrent) return false;
         if (supplierId != bill.supplierId) return false;
         if (dueTo != null ? !dueTo.equals(bill.dueTo) : bill.dueTo != null) return false;
@@ -150,7 +150,7 @@ public class Bill implements Serializable {
         result = 31 * result + (dueTo != null ? dueTo.hashCode() : 0);
         temp = Double.doubleToLongBits(amount);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (payed ? 1 : 0);
+        result = 31 * result + (paid ? 1 : 0);
         result = 31 * result + (recurrent ? 1 : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (int) (supplierId ^ (supplierId >>> 32));
@@ -163,7 +163,7 @@ public class Bill implements Serializable {
                 "billId=" + billId +
                 ", dueTo=" + dueTo +
                 ", amount=" + amount +
-                ", payed=" + payed +
+                ", payed=" + paid +
                 ", recurrent=" + recurrent +
                 ", type='" + type + '\'' +
                 ", supplierId=" + supplierId +

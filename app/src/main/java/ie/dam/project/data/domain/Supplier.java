@@ -43,6 +43,11 @@ public class Supplier implements Serializable {
         this.email = email;
     }
 
+    @Ignore
+    public Supplier() {
+
+    }
+
     public long getSupplierId() {
         return supplierId;
     }
@@ -82,18 +87,16 @@ public class Supplier implements Serializable {
 
         Supplier supplier = (Supplier) o;
 
-        if (supplierId != supplier.supplierId) return false;
-        if (name != null ? !name.equals(supplier.name) : supplier.name != null) return false;
-        if (phone != null ? !phone.equals(supplier.phone) : supplier.phone != null) return false;
-        return email != null ? email.equals(supplier.email) : supplier.email == null;
+        if (!name.equals(supplier.name)) return false;
+        if (!phone.equals(supplier.phone)) return false;
+        return email.equals(supplier.email);
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (supplierId ^ (supplierId >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
+        int result = name.hashCode();
+        result = 31 * result + phone.hashCode();
+        result = 31 * result + email.hashCode();
         return result;
     }
 

@@ -35,11 +35,41 @@ public class BillService {
         asyncTaskRunner.executeAsync(callable, callback);
     }
 
+    public void getFilteredBills(Callback<List<BillShownInfo>> callback, double min, double max, boolean paid, boolean recurrent) {
+        Callable<List<BillShownInfo>> callable = new Callable<List<BillShownInfo>>() {
+            @Override
+            public List<BillShownInfo> call() throws Exception {
+                return billDao.getFilteredBill(min, max, paid, recurrent);
+            }
+        };
+        asyncTaskRunner.executeAsync(callable, callback);
+    }
+
     public void getAll(Callback<List<Bill>> callback) {
         Callable<List<Bill>> callable = new Callable<List<Bill>>() {
             @Override
             public List<Bill> call() throws Exception {
                 return billDao.getAll();
+            }
+        };
+        asyncTaskRunner.executeAsync(callable, callback);
+    }
+
+    public void getNoBillsByPaymentType(Callback<Integer> callback, final boolean paid) {
+        Callable<Integer> callable = new Callable<Integer>() {
+            @Override
+            public Integer call() {
+                return billDao.getNoBillsByPaymentType(paid);
+            }
+        };
+        asyncTaskRunner.executeAsync(callable, callback);
+    }
+
+    public void getAmountToPay(Callback<Double> callback, final boolean paid) {
+        Callable<Double> callable = new Callable<Double>() {
+            @Override
+            public Double call() {
+                return billDao.getAmountByPaymentType(paid);
             }
         };
         asyncTaskRunner.executeAsync(callable, callback);
@@ -53,7 +83,7 @@ public class BillService {
                     return null;
                 }
                 if (supplierDao.getById(bill.getSupplierId()) == null) {
-                    Log.w("FOREIGN KEY PROBLEM","INVALID SUPPLIER ID");
+                    Log.w("FOREIGN KEY PROBLEM", "INVALID SUPPLIER ID");
                     return null;
                 }
                 long insertedId = billDao.insert(bill);
@@ -75,7 +105,7 @@ public class BillService {
                     return null;
                 }
                 if (supplierDao.getById(bill.getSupplierId()) == null) {
-                    Log.w("FOREIGN KEY PROBLEM","INVALID SUPPLIER ID");
+                    Log.w("FOREIGN KEY PROBLEM", "INVALID SUPPLIER ID");
                     return null;
                 }
                 int updatedRows = billDao.update(bill);

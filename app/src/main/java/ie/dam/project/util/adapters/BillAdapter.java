@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import ie.dam.project.BillActivity;
 import ie.dam.project.R;
-import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.BillShownInfo;
 import ie.dam.project.util.converters.DateConverter;
 
@@ -44,15 +42,15 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
         } else {
             holder.ivRecurrent.setVisibility(View.INVISIBLE);
         }
-        if (billShownInfos.get(position).getBill().isPayed()) {
+        if (billShownInfos.get(position).getBill().isPaid()) {
             holder.ivChecked.setVisibility(View.VISIBLE);
-            holder.ivNotPayed.setVisibility(View.INVISIBLE);
+            holder.ivNotPaid.setVisibility(View.INVISIBLE);
         } else {
             holder.ivChecked.setVisibility(View.INVISIBLE);
-            holder.ivNotPayed.setVisibility(View.VISIBLE);
+            holder.ivNotPaid.setVisibility(View.VISIBLE);
         }
         holder.tvType.setText(billShownInfos.get(position).getBill().getType());
-        holder.tvAmount.setText(String.valueOf(billShownInfos.get(position).getBill().getAmount()) + "€");
+        holder.tvAmount.setText(billShownInfos.get(position).getBill().getAmount() + "€");
     }
 
     @Override
@@ -64,7 +62,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
         private ImageView ivPayment;
         private ImageView ivRecurrent;
         private ImageView ivChecked;
-        private ImageView ivNotPayed;
+        private ImageView ivNotPaid;
         private TextView tvSupplierName;
         private TextView tvDueTo;
         private TextView tvType;
@@ -76,16 +74,18 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    recyclerViewItemClick.onItemClickListener(getAdapterPosition()); }
+                    if (recyclerViewItemClick != null) {
+                        recyclerViewItemClick.onItemClickListener(getAdapterPosition());
+                    }
+                }
             });
-
         }
 
         private void initialiseComponents(@NonNull View itemView) {
             ivPayment = itemView.findViewById(R.id.rv_iv_payment);
             ivRecurrent = itemView.findViewById(R.id.iv_recurrent);
             ivChecked = itemView.findViewById(R.id.rv_iv_checked);
-            ivNotPayed = itemView.findViewById(R.id.rv_iv_not_payed);
+            ivNotPaid = itemView.findViewById(R.id.rv_iv_not_paid);
             tvSupplierName = itemView.findViewById(R.id.rv_tv_supplier);
             tvDueTo = itemView.findViewById(R.id.rv_tv_due_to);
             tvType = itemView.findViewById(R.id.rv_bill_tv_type);

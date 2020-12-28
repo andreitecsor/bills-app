@@ -14,7 +14,7 @@ import ie.dam.project.data.domain.Supplier;
 import ie.dam.project.util.converters.DateConverter;
 
 /**version trebuie incrementat atunci cand schimbam structura tabelei*/
-@Database(entities = {Bill.class, Supplier.class}, exportSchema = true, version = 1)
+@Database(entities = {Bill.class, Supplier.class}, exportSchema = true, version = 2)
 @TypeConverters({DateConverter.class})
 public abstract class DatabaseManager extends RoomDatabase {
     private static final String DATABASE_NAME = "bm_db";
