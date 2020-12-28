@@ -86,6 +86,7 @@ public class LoginFragment extends Fragment {
                         if (task.isSuccessful()) {
                             Toast.makeText(getContext(), "You've been successfully signed in!", Toast.LENGTH_SHORT).show();
                             createDashboardActivity();
+                            getActivity().finish();
                         } else {
                             Toast.makeText(getContext(), "Invalid email or password", Toast.LENGTH_SHORT).show();
 

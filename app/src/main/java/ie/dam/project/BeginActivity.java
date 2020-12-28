@@ -22,6 +22,13 @@ public class BeginActivity extends AppCompatActivity {
     }
 
 
+    private void initialiseComponents(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.act_begin_frame_layout,
+                    new LoginFragment()).commit();
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -36,12 +43,5 @@ public class BeginActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
         finish();
 
-    }
-
-    private void initialiseComponents(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.act_begin_frame_layout,
-                    new LoginFragment()).commit();
-        }
     }
 }
