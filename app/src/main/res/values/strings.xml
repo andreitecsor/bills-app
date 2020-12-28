@@ -90,6 +90,7 @@
     <string name="apply_filters">Apply filters</string>
     <string name="no_results_found">No results found</string>
     <string name="invalid_amounts">Invalid amounts. Max must be bigger than min.</string>
+    <string name="progress_status">PAID/TOTAL</string>
 
 
 </resources>
