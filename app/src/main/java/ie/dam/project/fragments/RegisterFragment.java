@@ -61,8 +61,7 @@ public class RegisterFragment extends Fragment {
             public void onClick(View v) {
                 BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
                 if (beginActivity != null) {
-                    beginActivity.getSupportFragmentManager().beginTransaction().replace(R.id.act_begin_frame_layout,
-                            new LoginFragment()).commit();
+                    createLoginFragment(beginActivity);
                 }
             }
         });
@@ -115,12 +114,11 @@ public class RegisterFragment extends Fragment {
 
                             BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
                             if (beginActivity != null) {
-//                           beginActivity.getSupportFragmentManager().beginTransaction().replace(R.id.act_begin_frame_layout,
-//                                   new LoginFragment()).commit();
-                                fbAuth.signInWithEmailAndPassword(email, password);
+                                createLoginFragment(beginActivity);
+                                // fbAuth.signInWithEmailAndPassword(email, password);
 
                                 addNameToSharedPreferences();
-                                createDashboardActivity();
+//                                createDashboardActivity();
                             }
                         } else {
                             Toast.makeText(getContext(), "Cannot create account!" + task.getException().getMessage(),
@@ -132,6 +130,11 @@ public class RegisterFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void createLoginFragment(BeginActivity beginActivity) {
+        beginActivity.getSupportFragmentManager().beginTransaction().replace(R.id.act_begin_frame_layout,
+                new LoginFragment()).commit();
     }
 
     private void addNameToSharedPreferences() {

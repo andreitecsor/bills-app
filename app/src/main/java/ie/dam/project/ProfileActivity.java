@@ -79,12 +79,16 @@ public class ProfileActivity extends AppCompatActivity {
                                             case 1:
                                                 updatePassword(password);
                                         }
+                                         if(emailValid==-1 && passwordValid==-1)
+                                        {
+                                            Toast.makeText(getApplicationContext(), "Nothing to update!", Toast.LENGTH_SHORT).show();
 
-
-                                        if (emailValid != 0 && passwordValid != 0) {
+                                        }
+                                        else if (emailValid != 0 && passwordValid != 0 && emailET.getError()==null) {
                                             Toast.makeText(getApplicationContext(), "Account updated succesfully", Toast.LENGTH_SHORT).show();
                                             finish();
                                         }
+
 
 
                                     } else {
@@ -151,36 +155,13 @@ public class ProfileActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.d("Ok", "User email address updated.");
                         }
+                        else{
+                            emailET.setError("Email already exists in the database! Enter a different email!");
+                        }
                     }
                 });
     }
 
-    private void callUpdates(String email, String password) {
-
-        String currentEmail = currentUser.getEmail().toString();
-        Boolean passwordUpdate = false;
-        Boolean emailUpdate = false;
-
-
-        if (!password.isEmpty()) {
-            if (password.length() >= 8) {
-                passwordUpdate = true;
-                passwordET.setError("");
-            } else {
-                Toast.makeText(getApplicationContext(), "The new password should be at least 8 characters long!",
-                        Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-        }
-
-        if (passwordUpdate == true) {
-            updatePassword(password);
-        }
-        if (emailUpdate == true) {
-            updateEmail(email);
-        }
-    }
 
     public int validateEmail(String email, String currentEmail) {
 

@@ -69,12 +69,15 @@ public class LoginFragment extends Fragment {
                 String password = passwordTiet.getText().toString();
                 if (TextUtils.isEmpty(email)) {
                     emailTiet.setError(getString(R.string.email_empty));
+                    return;
                 }
                 if (!RegisterFragment.isEmailValid(email)) {
                     emailTiet.setError(getString(R.string.register_invalid_email_error));
+                    return;
                 }
                 if (TextUtils.isEmpty(password)) {
                     passwordTiet.setError(getString(R.string.login_empty_password));
+                    return;
                 }
 
                 fbAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -84,7 +87,7 @@ public class LoginFragment extends Fragment {
                             Toast.makeText(getContext(), "You've been successfully signed in!", Toast.LENGTH_SHORT).show();
                             createDashboardActivity();
                         } else {
-                            Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Invalid email or password", Toast.LENGTH_SHORT).show();
 
                         }
                     }
