@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +40,8 @@ public class DashboardActivity extends AppCompatActivity {
     private TextView unpaidTv;
     private TextView overdueTv;
     private TextView amountTv;
+    private TextView overallTv;
+    private ProgressBar progressBar;
 
     private BillService billService;
     private List<Bill> billList = new ArrayList<>();
@@ -68,6 +71,9 @@ public class DashboardActivity extends AppCompatActivity {
         unpaidTv = findViewById(R.id.act_dashboard_tv_bills_to_pay);
         overdueTv = findViewById(R.id.act_dashboard_tv_overdue);
         amountTv = findViewById(R.id.act_dashboard_tv_amount);
+        overallTv = findViewById(R.id.act_dashboard_tv_overall);
+        progressBar = findViewById(R.id.act_dashboard_progress_bar);
+        progressBar.setProgress(0);
 
         billCardButton.setOnClickListener(goToBillsActivity());
         profileCardButton.setOnClickListener(goToProfileActivity());
@@ -138,8 +144,6 @@ public class DashboardActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), UsersActivity.class);
-//                startActivity(intent);
                 AlertDialog dialog = getAlertDialogLogout();
                 dialog.show();
             }
@@ -180,17 +184,38 @@ public class DashboardActivity extends AppCompatActivity {
                     billList.clear();
                     billList.addAll(result);
                     int overdueCount = 0;
+                    int paid = 0;
+                    int notPaid = 0;
                     Date today = new Date();
                     for (Bill bill : billList) {
                         if (bill.isPaid() == false && today.after(bill.getDueTo())) {
                             overdueCount++;
                         }
+                        if (bill.isPaid()) {
+                            paid++;
+                        } else {
+                            notPaid++;
+                        }
+                        System.out.println("PAID:" + paid);
+                        System.out.println("notPAID:" + notPaid);
                     }
                     String updatedTv = overdueTv.getText().toString().replace("NUMBER", String.valueOf(overdueCount));
                     overdueTv.setText(updatedTv);
+                    updateProgressBar(paid, notPaid);
                 }
             }
         };
+    }
+
+    private void updateProgressBar(int paid, int notPaid) {
+        progressBar.setProgress(0);
+        int progress = (notPaid == 0) ? 100 : (paid * (100 / (paid + notPaid)));
+        System.out.println("PROGRESS:" + progress);
+        progressBar.setProgress(progress);
+        String toBeReplaced = overallTv.getText().toString();
+        String updatedTv = toBeReplaced.replace("PAID", String.valueOf(paid));
+        updatedTv = updatedTv.replace("TOTAL", String.valueOf(notPaid + paid));
+        overallTv.setText(updatedTv);
     }
 
     private Callback<Integer> getUnpaidBills() {
