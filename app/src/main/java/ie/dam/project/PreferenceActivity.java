@@ -68,18 +68,18 @@ public class PreferenceActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         Log.d("FIREBASE", "User re-authenticated.");
-                                        if (validate(name)) ;
-                                        {
-                                            if (name.isEmpty()) {
-                                                nameET.setError("Name cannot be empty");
-                                                return;
-                                            }
-                                            updateUser(name, null);
-                                        }
-                                        addNameAndGenderToSharedPreferences(name, Gender.getEnum(gender));
-                                        Toast.makeText(getApplicationContext(), getString(R.string.preference_save_succes), Toast.LENGTH_SHORT).show();
 
-                                        finish();
+                                        switch (validate(name)) {
+                                            case 0:
+                                                break;
+                                            case 1: {
+                                                updateUser(name, null);
+                                                addNameAndGenderToSharedPreferences(name, Gender.getEnum(gender));
+                                                finish();
+                                            }
+                                        }
+
+
                                     } else {
                                         Log.d("FIREBASE", "ERROR REAUTHENTICATING");
                                         Toast.makeText(getApplicationContext(), "Invalid Confirm Password", Toast.LENGTH_SHORT).show();
@@ -96,11 +96,14 @@ public class PreferenceActivity extends AppCompatActivity {
 
     }
 
-    private boolean validate(String name) {
-        //TODO: Baga un elvis operator
-        if (!name.equals(nameET.getText().toString()))
-            return true;
-        else return false;
+    private int validate(String name) {
+        if (name.equals(currentUser.getDisplayName()))
+            return -1;
+        if (name.isEmpty()) {
+            nameET.setError("Name cannot be empty");
+            return 0;
+        }
+        return 1;
     }
 
     private void initializeComponents() {
@@ -126,6 +129,7 @@ public class PreferenceActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Log.d("FIREBASE", "User profile updated.");
+                                Toast.makeText(getApplicationContext(), getString(R.string.preference_save_succes), Toast.LENGTH_SHORT).show();
                             } else Log.d("FIREBASE", task.getException().getMessage());
                         }
                     });

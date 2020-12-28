@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ie.dam.project.data.DatabaseManager;
 import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.service.BillService;
 import ie.dam.project.fragments.RegisterFragment;
@@ -172,6 +173,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void logout() {
         FirebaseAuth.getInstance().signOut();
+        DatabaseManager.disableDataBaseManager();
         startActivity(new Intent(getApplicationContext(), BeginActivity.class));
         finish();
     }
