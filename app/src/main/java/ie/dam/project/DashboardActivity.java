@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.app.ActivityOptions;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -117,6 +118,7 @@ public class DashboardActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), BillActivity.class);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
             }
         };
     }

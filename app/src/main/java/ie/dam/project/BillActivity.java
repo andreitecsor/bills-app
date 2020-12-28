@@ -91,11 +91,11 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
     }
 
     private void startFabsAnimation(boolean fabExtendClicked) {
-        if(!fabExtendClicked){
+        if (!fabExtendClicked) {
             fabExtend.startAnimation(rotateOpen);
             fabAddBill.startAnimation(fromBottom);
             fabFilterBill.startAnimation(fromBottom);
-        }else{
+        } else {
             fabExtend.startAnimation(rotateClose);
             fabAddBill.startAnimation(toBottom);
             fabFilterBill.startAnimation(toBottom);
@@ -117,6 +117,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), FilterActivity.class));
+                overridePendingTransition(R.anim.left_to_right_in,R.anim.left_to_right_out);
             }
         };
     }

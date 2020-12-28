@@ -8,12 +8,16 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/glacier_blue</item>
         <item name="colorSecondaryVariant">@color/overcast_white</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/overcast_white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/ice_blue</item>
         <!-- Customize your theme here. -->
         <item name="android:datePickerStyle">@style/CustomDatePicker</item>
         <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/montserrat</item>
+
+        <item name="android:navigationBarColor">@color/ice_blue</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 
     <style name="CustomDatePicker" parent="@android:style/Widget.DatePicker">

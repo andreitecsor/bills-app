@@ -50,7 +50,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
             holder.ivNotPaid.setVisibility(View.VISIBLE);
         }
         holder.tvType.setText(billShownInfos.get(position).getBill().getType());
-        holder.tvAmount.setText(billShownInfos.get(position).getBill().getAmount() + "€");
+        holder.tvAmount.setText(billShownInfos.get(position).getBill().getAmount() + "EUR");
     }
 
     @Override
