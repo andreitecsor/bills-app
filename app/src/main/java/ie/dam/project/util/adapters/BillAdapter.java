@@ -50,7 +50,28 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
             holder.ivNotPaid.setVisibility(View.VISIBLE);
         }
         holder.tvType.setText(billShownInfos.get(position).getBill().getType());
-        holder.tvAmount.setText(billShownInfos.get(position).getBill().getAmount() + "€");
+        String type = billShownInfos.get(position).getBill().getType();
+        switch (type) {
+            case "MISCELLANEOUS":
+                holder.ivPayment.setImageResource(R.drawable.ic_billtype_misc);
+                break;
+            case "GAS":
+                holder.ivPayment.setImageResource(R.drawable.ic_billtype_gas);
+                break;
+            case "ELECTRICITY":
+                holder.ivPayment.setImageResource(R.drawable.ic_billtype_electricity);
+                break;
+            case "WATER":
+                holder.ivPayment.setImageResource(R.drawable.ic_billtype_water);
+                break;
+            case "ENTERTAINMENT":
+                holder.ivPayment.setImageResource(R.drawable.ic_billtype_entertainment);
+                break;
+            case "CONNECTIVITY":
+                holder.ivPayment.setImageResource(R.drawable.ic_billtype_connectivity);
+                break;
+        }
+        holder.tvAmount.setText(billShownInfos.get(position).getBill().getAmount() + "EUR");
     }
 
     @Override

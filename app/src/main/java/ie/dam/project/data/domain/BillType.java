@@ -4,8 +4,7 @@ public enum BillType {
     GAS,
     ELECTRICITY,
     WATER,
-    RENT,
     ENTERTAINMENT,
-    CONNECTIVITY, //INTERNET,PHONE,TV
+    CONNECTIVITY,
     MISCELLANEOUS
 }

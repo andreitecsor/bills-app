@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +45,13 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
     private BillAdapter billAdapter;
     private FloatingActionButton fabAddBill;
     private FloatingActionButton fabFilterBill;
+    private FloatingActionButton fabExtend;
+
+    private boolean fabExtendClicked = false;
+    private Animation rotateOpen;
+    private Animation rotateClose;
+    private Animation fromBottom;
+    private Animation toBottom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +63,53 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
 
     private void initialiseComponents() {
         setCurrentDate();
+        rotateOpen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_open);
+        rotateClose = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_close);
+        fromBottom = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.from_bot);
+        toBottom = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.to_bot);
         fabAddBill = findViewById(R.id.act_bill_fab_add);
         fabFilterBill = findViewById(R.id.act_bill_fab_filter);
+        fabExtend = findViewById(R.id.act_bill_fab_extend);
         recyclerView = findViewById(R.id.act_bill_list_rv);
         fabAddBill.setOnClickListener(openAddBillActivity());
         fabFilterBill.setOnClickListener(openFilterActivity());
+        fabExtend.setOnClickListener(moreFabs());
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         billService.getAllWithSupplierName(getAllBillShownInfos());
+    }
+
+    private View.OnClickListener moreFabs() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFabsVisibility(fabExtendClicked);
+                startFabsAnimation(fabExtendClicked);
+                fabExtendClicked = !fabExtendClicked;
+            }
+        };
+    }
+
+    private void startFabsAnimation(boolean fabExtendClicked) {
+        if (!fabExtendClicked) {
+            fabExtend.startAnimation(rotateOpen);
+            fabAddBill.startAnimation(fromBottom);
+            fabFilterBill.startAnimation(fromBottom);
+        } else {
+            fabExtend.startAnimation(rotateClose);
+            fabAddBill.startAnimation(toBottom);
+            fabFilterBill.startAnimation(toBottom);
+        }
+    }
+
+    private void setFabsVisibility(boolean fabExtendClicked) {
+        if (!fabExtendClicked) {
+            fabAddBill.setVisibility(View.VISIBLE);
+            fabFilterBill.setVisibility(View.VISIBLE);
+        } else {
+            fabAddBill.setVisibility(View.INVISIBLE);
+            fabFilterBill.setVisibility(View.INVISIBLE);
+        }
     }
 
     private View.OnClickListener openFilterActivity() {
@@ -69,6 +117,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), FilterActivity.class));
+                overridePendingTransition(R.anim.left_to_right_in,R.anim.left_to_right_out);
             }
         };
     }
@@ -126,7 +175,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
                     .addSwipeRightBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red))
                     .addSwipeRightActionIcon(R.drawable.ic_delete)
                     .addSwipeLeftBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
-                    .addSwipeLeftActionIcon(R.drawable.ic_checked)
+                    .addSwipeLeftActionIcon(R.drawable.ic_check_mark)
                     .create()
                     .decorate();
 
@@ -244,5 +293,13 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setFabsVisibility(fabExtendClicked);
+        startFabsAnimation(fabExtendClicked);
+        fabExtendClicked = !fabExtendClicked;
     }
 }

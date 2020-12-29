@@ -68,7 +68,6 @@ public class PreferenceActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         Log.d("FIREBASE", "User re-authenticated.");
-
                                         switch (validate(name)) {
                                             case 0:
                                                 break;
@@ -78,13 +77,9 @@ public class PreferenceActivity extends AppCompatActivity {
                                                 finish();
                                             }
                                         }
-
-
                                     } else {
                                         Log.d("FIREBASE", "ERROR REAUTHENTICATING");
                                         Toast.makeText(getApplicationContext(), "Invalid Confirm Password", Toast.LENGTH_SHORT).show();
-
-
                                     }
                                 }
                             });

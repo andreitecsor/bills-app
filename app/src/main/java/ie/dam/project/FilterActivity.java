@@ -167,5 +167,6 @@ public class FilterActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(getApplicationContext(),BillActivity.class));
         finish();
+        overridePendingTransition(R.anim.right_to_left_in,R.anim.right_to_left_out);
     }
 }
