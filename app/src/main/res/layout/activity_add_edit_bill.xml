@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/overcast_white"
     android:theme="@style/Theme.ST_dam_prj"
     tools:context=".AddEditBillActivity">
 
@@ -33,13 +34,13 @@
 
         <Spinner
             android:id="@+id/act_aebill_spinner_supplier"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/act_aebill_tv_supplier"
             app:layout_constraintTop_toBottomOf="@+id/act_aebill_tv_supplier" />
 
         <TextView
@@ -58,13 +59,10 @@
             android:id="@+id/act_aebill_spinner_type"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/act_aebill_tv_type"
             app:layout_constraintTop_toBottomOf="@+id/act_aebill_tv_type" />
 
         <TextView
@@ -93,20 +91,25 @@
 
         <TextView
             android:id="@+id/act_aebill_tv_display_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
             android:text="@string/bills_date"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/act_aebill_spinner_type"
+            app:layout_constraintStart_toStartOf="@+id/act_aebill_tv_due_to"
             app:layout_constraintTop_toBottomOf="@+id/act_aebill_tv_due_to" />
 
         <EditText
             android:id="@+id/act_aebill_et_amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:textSize="18sp"
             android:ems="10"
             android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="@+id/act_aebill_spinner_type"
@@ -121,6 +124,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="80dp"
             android:text="@string/aebil_recurrent"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/act_aebill_et_amount" />
@@ -131,6 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/aebill_already_payed"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/act_aebill_switch_recurrent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="@+id/act_aebill_switch_recurrent"
@@ -142,8 +147,8 @@
         android:id="@+id/act_aebil_button_save"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -156,6 +161,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/aebill_add_supplier"
+        android:backgroundTint="@color/a_little_darker_green"
         app:layout_constraintBottom_toTopOf="@+id/act_aebil_button_save"
         app:layout_constraintEnd_toEndOf="@+id/act_aebil_button_save"
         app:layout_constraintStart_toStartOf="@+id/act_aebil_button_save" />

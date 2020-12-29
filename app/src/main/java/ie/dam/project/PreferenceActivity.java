@@ -3,6 +3,7 @@ package ie.dam.project;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -118,6 +119,7 @@ public class PreferenceActivity extends AppCompatActivity {
 
 
     private void initializeComponents() {
+        getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.overcast_white));
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
         storage = FirebaseStorage.getInstance();
@@ -132,7 +134,9 @@ public class PreferenceActivity extends AppCompatActivity {
     }
 
     private void populateSpinner() {
-        genderSpn.setAdapter(new ArrayAdapter<Gender>(this, R.layout.support_simple_spinner_dropdown_item, Gender.values()));
+        ArrayAdapter genderAdapter = new ArrayAdapter<Gender>(this, R.layout.spinner_view, Gender.values());
+        genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_view);
+        genderSpn.setAdapter(genderAdapter);
         if (preferences != null) {
             if (preferences.contains(GENDER_KEY)) {
                 String preferenceGender = preferences.getString(GENDER_KEY, Gender.RATHER_NOT_SAY.toString());
@@ -379,6 +383,13 @@ public class PreferenceActivity extends AppCompatActivity {
                 // Handle any errors
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //TODO:Aici modifica si tu daca e
+        overridePendingTransition(R.anim.bot_to_top_in, R.anim.bot_to_top_out);
     }
 }
 

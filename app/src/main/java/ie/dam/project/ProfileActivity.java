@@ -2,6 +2,7 @@ package ie.dam.project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -85,6 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
                                         } else if (emailValid != 0 && passwordValid != 0 && emailET.getError() == null) {
                                             Toast.makeText(getApplicationContext(), "Account updated succesfully", Toast.LENGTH_SHORT).show();
                                             finish();
+                                            overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
                                         }
 
 
@@ -105,6 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initializeComponents() {
+        getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.overcast_white));
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
         emailET = findViewById(R.id.act_profile_et_email);
@@ -186,6 +189,12 @@ public class ProfileActivity extends AppCompatActivity {
             passwordET.setError("New password must have at least 8 characters!");
             return 0;
         } else return 1;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
     }
 }
 
