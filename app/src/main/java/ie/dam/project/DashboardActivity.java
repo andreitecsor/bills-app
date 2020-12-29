@@ -65,7 +65,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void initialiseComponents() {
         //Preferences
-
+        preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
         billCardButton = findViewById(R.id.act_dashboard_card_bills);
         profileCardButton = findViewById(R.id.act_dashboard_card_profile);
         preferencesCardButton = findViewById(R.id.act_dashboard_card_preferences);
@@ -120,6 +120,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), PreferenceActivity.class);
                 startActivity(intent);
+                finish();
             }
         };
     }
@@ -222,8 +223,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void runResultOnUiThread(Double result) {
                 if (result >= 0) {
                     String updatedTv = amountTv.getText().toString().replace("NUMBER", result.toString());
-                    //TODO: cu currency-ul selectat din preference files
-                    //updatedTv = amountTv.getText().toString().replace("CURRENCY", ???);
+                    updatedTv=updatedTv.replace("CURRENCY",preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
                     amountTv.setText(updatedTv);
                 }
             }
@@ -233,8 +233,14 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
+
         hiUser.setText(getString(R.string.dashboard_hi_user, preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default))));
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        billService.getAmountToPay(getAmountToPay(),false);
+    }
 }

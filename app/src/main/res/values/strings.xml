@@ -40,7 +40,7 @@
     <!--    ProfileActivity-->
     <string name="profile_name">Name</string>
     <string name="profile_email">Email</string>
-    <string name="profile_sex">Sex</string>
+    <string name="profile_gender">Gender</string>
     <string name="profile_new_password">New Password</string>
     <string name="profile_confirm_old_password">Write old password to confirm changes</string>
     <string name="profile_save_changes">Save changes</string>

@@ -38,6 +38,7 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.internal.InternalTokenProvider;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -50,6 +51,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
+import ie.dam.project.data.DatabaseManager;
 import ie.dam.project.data.domain.Gender;
 import ie.dam.project.fragments.RegisterFragment;
 
@@ -104,6 +106,8 @@ public class PreferenceActivity extends AppCompatActivity {
 
                     currentUser.reauthenticate(credential)
                             .addOnCompleteListener(getOnCompleteListener(name, uploadUri, gender, currency));
+
+
                 } else
                     Toast.makeText(getApplicationContext(), "No confirm password", Toast.LENGTH_SHORT).show();
 
@@ -189,6 +193,7 @@ public class PreferenceActivity extends AppCompatActivity {
 
                     } else if (nameValid != 0 && currencyValid != 0) {
                         Toast.makeText(getApplicationContext(), "Account updated succesfully", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
                         finish();
                     }
 //endregion
