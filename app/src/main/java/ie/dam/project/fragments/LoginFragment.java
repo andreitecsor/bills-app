@@ -70,8 +70,10 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
                 if (beginActivity != null) {
-                    beginActivity.getSupportFragmentManager().beginTransaction().replace(R.id.act_begin_frame_layout,
-                            new RegisterFragment()).commit();
+                    beginActivity.getSupportFragmentManager()
+                            .beginTransaction().setCustomAnimations(R.anim.left_to_right_in,R.anim.left_to_right_out)
+                            .replace(R.id.act_begin_frame_layout, new RegisterFragment())
+                            .commit();
                 }
             }
         };

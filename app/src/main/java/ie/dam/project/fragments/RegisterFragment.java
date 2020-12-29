@@ -126,7 +126,10 @@ public class RegisterFragment extends Fragment {
     }
 
     private void createLoginFragment(BeginActivity beginActivity) {
-        beginActivity.getSupportFragmentManager().beginTransaction().replace(R.id.act_begin_frame_layout,
+        beginActivity.getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.right_to_left_in,R.anim.right_to_left_out)
+                .replace(R.id.act_begin_frame_layout,
                 new LoginFragment()).commit();
     }
 
@@ -144,7 +147,6 @@ public class RegisterFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fbAuth = FirebaseAuth.getInstance();
-
     }
 
     private void initialiseComponents(View view) {

@@ -5,41 +5,28 @@
         <item name="colorPrimary">@color/glacier_blue</item>
         <item name="colorPrimaryVariant">@color/glacier_blue</item>
         <item name="colorOnPrimary">@color/white</item>
+
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/glacier_blue</item>
         <item name="colorSecondaryVariant">@color/overcast_white</item>
         <item name="colorOnSecondary">@color/overcast_white</item>
-        <!-- Status bar color. -->
+
+        <!-- Navigation and status bar customisation . -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/ice_blue</item>
+        <item name="android:navigationBarColor">@color/ice_blue</item>
+        <item name="android:windowLightNavigationBar">true</item>
+
         <!-- Customize your theme here. -->
-        <item name="android:datePickerStyle">@style/CustomDatePicker</item>
         <item name="android:textColor">@color/black</item>
         <item name="fontFamily">@font/montserrat</item>
 
-        <item name="android:navigationBarColor">@color/ice_blue</item>
-        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:datePickerStyle">@style/ST_CustomDatePicker</item>
     </style>
 
-    <style name="CustomDatePicker" parent="@android:style/Widget.DatePicker">
+    <style name="ST_CustomDatePicker" parent="@android:style/Widget.DatePicker">
         <item name="android:calendarViewShown">false</item>
         <item name="android:datePickerMode">spinner</item>
         <item name="android:gravity">center_vertical</item>
-    </style>
-
-    <style name="Theme.crop" parent="Theme.AppCompat.DayNight">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/glacier_blue</item>
-        <item name="colorPrimaryVariant">@color/glacier_blue</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/glacier_blue</item>
-        <item name="colorSecondaryVariant">@color/overcast_white</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-        <item name="android:datePickerStyle">@style/CustomDatePicker</item>
-        <item name="android:textColor">@color/black</item>
     </style>
 
 </resources>
