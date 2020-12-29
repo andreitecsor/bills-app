@@ -111,6 +111,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.bot_to_top_in, R.anim.bot_to_top_out);
             }
         };
     }
@@ -122,6 +123,7 @@ public class DashboardActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), PreferenceActivity.class);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
             }
         };
     }

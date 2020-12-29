@@ -10,9 +10,11 @@
 
     <Button
         android:id="@+id/act_profile_button_save"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
         android:layout_weight="1"
         android:text="@string/profile_save_changes"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,9 +23,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/act_profile_cl_upper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/white_banner"
+        app:layout_constraintBottom_toTopOf="@+id/act_profile_button_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -34,105 +38,72 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
             android:text="@string/profile_email"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.26999998" />
 
         <EditText
             android:id="@+id/act_profile_et_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:ems="10"
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/act_profile_tv_email"
             app:layout_constraintTop_toBottomOf="@+id/act_profile_tv_email" />
 
         <TextView
             android:id="@+id/act_profile_tv_new_pass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/profile_new_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/act_profile_et_email"
             app:layout_constraintTop_toBottomOf="@id/act_profile_et_email" />
 
         <EditText
             android:id="@+id/act_profile_et_new_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:ems="10"
             android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/act_profile_et_email"
+            app:layout_constraintStart_toStartOf="@+id/act_profile_tv_new_pass"
             app:layout_constraintTop_toBottomOf="@+id/act_profile_tv_new_pass" />
 
         <TextView
             android:id="@+id/act_profile_tv_confirm_old_pass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:text="@string/profile_confirm_old_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/act_profile_et_new_password"
             app:layout_constraintTop_toBottomOf="@+id/act_profile_et_new_password" />
 
         <EditText
             android:id="@+id/act_profile_et_confirm_old_pass"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:ems="10"
             android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/act_profile_et_new_password"
+            app:layout_constraintStart_toStartOf="@+id/act_profile_tv_confirm_old_pass"
             app:layout_constraintTop_toBottomOf="@+id/act_profile_tv_confirm_old_pass" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/act_profile_fab_community"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/act_profile_button_save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/act_profile_button_save"
-        app:layout_constraintTop_toTopOf="@+id/act_profile_button_save"
-        app:srcCompat="@drawable/ic_community" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

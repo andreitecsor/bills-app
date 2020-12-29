@@ -4,27 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ice_blue"
+    android:background="@color/overcast_white"
     android:theme="@style/Theme.ST_dam_prj"
     tools:context=".ProfileActivity">
 
     <Button
         android:id="@+id/act_preference_button_save"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
         android:layout_weight="1"
         android:text="@string/profile_save_changes"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/act_preference_cl_upper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/white_banner"
+        android:background="@drawable/blue_banner"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -38,33 +42,21 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/act_preference_til_name"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/act_preference_tiet_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/transparent"
+            android:hint="@string/profile_name"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/act_preference_ib">
+            app:layout_constraintEnd_toEndOf="@+id/act_preference_ib"
+            app:layout_constraintStart_toStartOf="@+id/act_preference_ib"
+            app:layout_constraintTop_toBottomOf="@+id/act_preference_ib" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/act_preference_tiet_name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/profile_name"
-                android:textColor="@color/black"
-                android:background="@color/transparent"/>
-        </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
     <TextView
         android:id="@+id/act_preference_tv_sex"
@@ -84,44 +76,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/act_preference_tv_sex"
         app:layout_constraintTop_toBottomOf="@+id/act_preference_tv_sex" />
-
-
-
 
 
     <TextView
         android:id="@+id/act_preference_tv_confirm_old_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/profile_confirm_old_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/act_preference_et_currency"   />
+        app:layout_constraintStart_toStartOf="@+id/act_preference_et_currency"
+        app:layout_constraintTop_toBottomOf="@id/act_preference_et_currency" />
 
     <EditText
         android:id="@+id/act_preference_et_confirm_old_pass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/act_preference_tv_confirm_old_pass"
         app:layout_constraintTop_toBottomOf="@+id/act_preference_tv_confirm_old_pass" />
 
     <TextView
@@ -141,32 +123,13 @@
         android:id="@+id/act_preference_et_currency"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:ems="10"
         android:inputType="textCapCharacters"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/act_preference_tv_currency"
         app:layout_constraintTop_toBottomOf="@id/act_preference_tv_currency" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/act_preference_fab_community"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/act_preference_button_save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/act_preference_button_save"
-        app:layout_constraintTop_toTopOf="@+id/act_preference_button_save"
-        app:srcCompat="@drawable/ic_community" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
