@@ -2,6 +2,7 @@ package ie.dam.project;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +44,7 @@ public class AddEditSupplierActivity extends AppCompatActivity {
     }
 
     private void initialiseComponents() {
+        getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.overcast_white));
         nameTiet = findViewById(R.id.act_aesupplier_tiet_name);
         emailTiet = findViewById(R.id.act_aesupplier_tiet_email);
         phoneTiet = findViewById(R.id.act_aesupplier_tiet_phone);
@@ -121,6 +123,7 @@ public class AddEditSupplierActivity extends AppCompatActivity {
                     intent.putExtra(PROCESSED_SUPPLIER, auxSupplier);
                     setResult(RESULT_OK, intent);
                     finish();
+                    overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_out);
                 }
             }
         };
@@ -141,5 +144,11 @@ public class AddEditSupplierActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_out);
     }
 }

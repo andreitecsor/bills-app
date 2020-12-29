@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ice_blue"
+    android:theme="@style/Theme.ST_dam_prj"
     tools:context=".ProfileActivity">
 
     <Button

@@ -3,6 +3,7 @@ package ie.dam.project;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -69,6 +70,7 @@ public class AddEditBillActivity extends AppCompatActivity {
     }
 
     private void initialiseComponents() {
+        getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.overcast_white));
         typeSpinner = findViewById(R.id.act_aebill_spinner_type);
         supplierSpinner = findViewById(R.id.act_aebill_spinner_supplier);
         selectedDateTv = findViewById(R.id.act_aebill_tv_display_date);
@@ -86,7 +88,9 @@ public class AddEditBillActivity extends AppCompatActivity {
                 selectedDateTv.setText(DateConverter.toString(date));
             }
         };
-        typeSpinner.setAdapter(new ArrayAdapter<BillType>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, BillType.values()));
+        ArrayAdapter typeAdapter = new ArrayAdapter<BillType>(getApplicationContext(), R.layout.spinner_view, BillType.values());
+        typeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_view);
+        typeSpinner.setAdapter(typeAdapter);
         supplierService.getAll(getSuppliersMapping());
     }
 
@@ -157,7 +161,9 @@ public class AddEditBillActivity extends AppCompatActivity {
                         nameIdMap.put(supplier.getName(), supplier.getSupplierId());
                         idNameMap.put(supplier.getSupplierId(), supplier.getName());
                     }
-                    supplierSpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, supplierNames));
+                    ArrayAdapter supplierAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_view, supplierNames);
+                    supplierAdapter.setDropDownViewResource(R.layout.spinner_dropdown_view);
+                    supplierSpinner.setAdapter(supplierAdapter);
                     addOrEditCheck();
                 } else {
                     AlertDialog alertDialog = getSupplierAlertDialog();
@@ -176,6 +182,7 @@ public class AddEditBillActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getApplicationContext(), AddEditSupplierActivity.class);
                         startActivityForResult(intent, INSERT_OPERATION);
+                        overridePendingTransition(R.anim.right_to_left_in, R.anim.right_to_left_out);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -236,6 +243,7 @@ public class AddEditBillActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent addBillIntent = new Intent(getApplicationContext(), AddEditSupplierActivity.class);
                 startActivityForResult(addBillIntent, INSERT_OPERATION);
+                overridePendingTransition(R.anim.right_to_left_in, R.anim.right_to_left_out);
             }
         };
     }
@@ -247,6 +255,7 @@ public class AddEditBillActivity extends AppCompatActivity {
                 Intent editBillIntent = new Intent(getApplicationContext(), AddEditSupplierActivity.class);
                 editBillIntent.putExtra(SUPPLIER_TO_UPDATE, auxBill.getSupplierId());
                 startActivityForResult(editBillIntent, UPDATE_DELETE_OPERATION);
+                overridePendingTransition(R.anim.right_to_left_in, R.anim.right_to_left_out);
             }
         };
     }
@@ -308,5 +317,11 @@ public class AddEditBillActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
     }
 }

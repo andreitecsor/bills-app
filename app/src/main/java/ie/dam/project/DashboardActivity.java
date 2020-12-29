@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import android.app.ActivityOptions;
 import android.content.DialogInterface;
@@ -64,7 +65,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void initialiseComponents() {
-        //Preferences
+        getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.overcast_white));
         preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
         billCardButton = findViewById(R.id.act_dashboard_card_bills);
         profileCardButton = findViewById(R.id.act_dashboard_card_profile);
