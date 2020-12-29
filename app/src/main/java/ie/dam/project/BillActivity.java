@@ -175,7 +175,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
                     .addSwipeRightBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red))
                     .addSwipeRightActionIcon(R.drawable.ic_delete)
                     .addSwipeLeftBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green))
-                    .addSwipeLeftActionIcon(R.drawable.ic_checked)
+                    .addSwipeLeftActionIcon(R.drawable.ic_check_mark)
                     .create()
                     .decorate();
 
