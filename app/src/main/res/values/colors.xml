@@ -14,5 +14,6 @@
     <color name="red">#F35050</color>
     <color name="green">#56D35B</color>
     <color name="yellow">#FFEB3B</color>
+    <color name="almost_transparent_glacier_blue">#401995AD</color>
 
 </resources>
