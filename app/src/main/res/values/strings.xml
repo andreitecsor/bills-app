@@ -21,7 +21,7 @@
 
 
     <!--  DashboardActivity  -->
-    <string name="dashboard_hi_user">Hi, %1$s!</string>
+    <string name="dashboard_hi_user">Welcome back, %1$s!</string>
     <string name="dashboard_stats">Here are your stats:</string>
     <string name="dashboard_to_pay">Bills to pay: NUMBER</string>
     <string name="dashboard_overdue">Overdue bills: NUMBER</string>
@@ -93,6 +93,7 @@
     <string name="progress_status">PAID/TOTAL</string>
     <string name="remember_me">Remember me</string>
     <string name="default_currency">EUR</string>
+    <string name="amount_to_pay_number_currency">Amount to pay: NUMBER CURRENCY</string>
 
 
 </resources>
