@@ -9,11 +9,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lowTo_semi_transparent_white">#D8FFFFFF</color>
     <color name="semi_transparent_white">#77FFFFFF</color>
-    <color name="low_transparent_white">#B5FFFFFF</color>
+    <color name="low_transparent_white">#99FFFFFF</color>
     <color name="gray">#888888</color>
     <color name="red">#F35050</color>
     <color name="green">#56D35B</color>
     <color name="yellow">#FFEB3B</color>
     <color name="almost_transparent_glacier_blue">#401995AD</color>
+    <color name="deep_water_blue">#0085b2</color>
+
 
 </resources>

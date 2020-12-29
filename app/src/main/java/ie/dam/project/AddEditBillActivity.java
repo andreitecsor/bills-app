@@ -130,7 +130,7 @@ public class AddEditBillActivity extends AppCompatActivity {
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(AddEditBillActivity.this, R.style.CustomDatePicker, setDateListener, year, month, day);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AddEditBillActivity.this, R.style.ST_CustomDatePicker, setDateListener, year, month, day);
                 datePickerDialog.show();
             }
         };
