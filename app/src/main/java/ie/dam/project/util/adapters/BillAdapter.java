@@ -18,10 +18,12 @@ import ie.dam.project.util.converters.DateConverter;
 public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
     private List<BillShownInfo> billShownInfos;
     private RecyclerViewItemClick recyclerViewItemClick;
+    private String currency;
 
-    public BillAdapter(List<BillShownInfo> billShownInfos, RecyclerViewItemClick recyclerViewItemClick) {
+    public BillAdapter(List<BillShownInfo> billShownInfos, RecyclerViewItemClick recyclerViewItemClick,String currency) {
         this.billShownInfos = billShownInfos;
         this.recyclerViewItemClick = recyclerViewItemClick;
+        this.currency=currency;
     }
 
     @NonNull
@@ -71,7 +73,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
                 holder.ivPayment.setImageResource(R.drawable.ic_billtype_connectivity);
                 break;
         }
-        holder.tvAmount.setText(billShownInfos.get(position).getBill().getAmount() + "EUR");
+        holder.tvAmount.setText(billShownInfos.get(position).getBill().getAmount() + currency);
     }
 
     @Override

@@ -71,19 +71,35 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:hint="@string/begin_password" />
+
+
             </com.google.android.material.textfield.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/remember_me"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/frg_login_til_password"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp"
+
+                />
 
             <Button
                 android:id="@+id/frg_login_button_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/begin_login_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frg_login_til_password" />
+                app:layout_constraintTop_toBottomOf="@id/checkBox" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
@@ -104,5 +120,6 @@
             app:layout_constraintBottom_toTopOf="@+id/frg_login_button_register"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

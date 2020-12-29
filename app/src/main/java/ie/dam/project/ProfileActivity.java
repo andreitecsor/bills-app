@@ -79,16 +79,13 @@ public class ProfileActivity extends AppCompatActivity {
                                             case 1:
                                                 updatePassword(password);
                                         }
-                                         if(emailValid==-1 && passwordValid==-1)
-                                        {
+                                        if (emailValid == -1 && passwordValid == -1) {
                                             Toast.makeText(getApplicationContext(), "Nothing to update!", Toast.LENGTH_SHORT).show();
 
-                                        }
-                                        else if (emailValid != 0 && passwordValid != 0 && emailET.getError()==null) {
+                                        } else if (emailValid != 0 && passwordValid != 0 && emailET.getError() == null) {
                                             Toast.makeText(getApplicationContext(), "Account updated succesfully", Toast.LENGTH_SHORT).show();
                                             finish();
                                         }
-
 
 
                                     } else {
@@ -108,12 +105,13 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initializeComponents() {
-        preferences = getSharedPreferences(RegisterFragment.SHARED_PREF_FILE, MODE_PRIVATE);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
         emailET = findViewById(R.id.act_profile_et_email);
         passwordET = findViewById(R.id.act_profile_et_new_password);
         oldPasswordET = findViewById(R.id.act_profile_et_confirm_old_pass);
         saveBtn = findViewById(R.id.act_profile_button_save);
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
     }
 
     public void updateUser(String name, Uri photoUri) {
@@ -154,8 +152,7 @@ public class ProfileActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("Ok", "User email address updated.");
-                        }
-                        else{
+                        } else {
                             emailET.setError("Email already exists in the database! Enter a different email!");
                         }
                     }

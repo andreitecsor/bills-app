@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +15,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ie.dam.project.data.domain.BillShownInfo;
 import ie.dam.project.data.service.BillService;
+import ie.dam.project.fragments.RegisterFragment;
 import ie.dam.project.util.adapters.BillAdapter;
 import ie.dam.project.util.asynctask.Callback;
 
@@ -44,6 +48,8 @@ public class FilterActivity extends AppCompatActivity {
     private Switch recurrentSwitch;
     private Switch paidSwitch;
 
+    private SharedPreferences preferences;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,8 @@ public class FilterActivity extends AppCompatActivity {
         });
         billService.getAllWithSupplierName(getAllBillShownInfos());
         billService.getAmountToPay(getTotalAmountPaid(), true);
+        user= FirebaseAuth.getInstance().getCurrentUser();
+        preferences=getSharedPreferences(user.getUid()+ RegisterFragment.SHARED_PREF_FILE_EXTENSION,MODE_PRIVATE);
     }
 
     private Callback<Double> getTotalAmountPaid() {
@@ -75,7 +83,9 @@ public class FilterActivity extends AppCompatActivity {
                 if (result >= 0) {
                     //TODO: Currency based on preference files
                     String updatedTv = totalAmountTv.getText().toString().replace("NUMBER", String.valueOf(result));
+                    updatedTv=updatedTv.replace("CURRENCY",preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
                     totalAmountTv.setText(updatedTv);
+
                 }
             }
         };
@@ -89,7 +99,7 @@ public class FilterActivity extends AppCompatActivity {
                     noFoundTv.setVisibility(View.INVISIBLE);
                     billShownInfos.clear();
                     billShownInfos.addAll(result);
-                    billAdapter = new BillAdapter(billShownInfos, null);
+                    billAdapter = new BillAdapter(billShownInfos, null,preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
                     recyclerView.setAdapter(billAdapter);
                 } else {
                     noFoundTv.setVisibility(View.VISIBLE);
@@ -144,7 +154,7 @@ public class FilterActivity extends AppCompatActivity {
                     noFoundTv.setVisibility(View.INVISIBLE);
                     billShownInfos.clear();
                     billShownInfos.addAll(result);
-                    billAdapter = new BillAdapter(billShownInfos, null);
+                    billAdapter = new BillAdapter(billShownInfos, null,preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
                     recyclerView.setAdapter(billAdapter);
                 } else {
                     recyclerView.setAdapter(null);

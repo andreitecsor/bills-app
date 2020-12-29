@@ -1,6 +1,7 @@
 package ie.dam.project;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +31,7 @@ import java.util.List;
 import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.BillShownInfo;
 import ie.dam.project.data.service.BillService;
+import ie.dam.project.fragments.RegisterFragment;
 import ie.dam.project.util.adapters.BillAdapter;
 import ie.dam.project.util.adapters.RecyclerViewItemClick;
 import ie.dam.project.util.asynctask.Callback;
@@ -53,6 +58,9 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
     private Animation fromBottom;
     private Animation toBottom;
 
+    private SharedPreferences preferences;
+    private FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +85,8 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         billService.getAllWithSupplierName(getAllBillShownInfos());
+        user= FirebaseAuth.getInstance().getCurrentUser();
+        preferences=getSharedPreferences(user.getUid()+ RegisterFragment.SHARED_PREF_FILE_EXTENSION,MODE_PRIVATE);
     }
 
     private View.OnClickListener moreFabs() {
@@ -192,7 +202,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
                     billShownInfos.addAll(result);
                     Collections.sort(billShownInfos, billsComparator());
                     if (billAdapter == null) {
-                        billAdapter = new BillAdapter(billShownInfos, BillActivity.this);
+                        billAdapter = new BillAdapter(billShownInfos, BillActivity.this,preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
                         recyclerView.setAdapter(billAdapter);
                     } else {
                         billAdapter.notifyDataSetChanged();

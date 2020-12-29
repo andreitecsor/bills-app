@@ -25,4 +25,21 @@
         <item name="android:datePickerMode">spinner</item>
         <item name="android:gravity">center_vertical</item>
     </style>
+
+    <style name="Theme.crop" parent="Theme.AppCompat.DayNight">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/glacier_blue</item>
+        <item name="colorPrimaryVariant">@color/glacier_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/glacier_blue</item>
+        <item name="colorSecondaryVariant">@color/overcast_white</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:datePickerStyle">@style/CustomDatePicker</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -59,13 +60,12 @@ public class DashboardActivity extends AppCompatActivity {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         billService = new BillService(getApplicationContext());
         initialiseComponents();
-        updateUser(name, null);
+
     }
 
     private void initialiseComponents() {
         //Preferences
-        preferences = getSharedPreferences(RegisterFragment.SHARED_PREF_FILE, MODE_PRIVATE);
-
+        preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
         billCardButton = findViewById(R.id.act_dashboard_card_bills);
         profileCardButton = findViewById(R.id.act_dashboard_card_profile);
         preferencesCardButton = findViewById(R.id.act_dashboard_card_preferences);
@@ -83,7 +83,7 @@ public class DashboardActivity extends AppCompatActivity {
         logoutCardButton.setOnClickListener(logoutClickEvent());
 
         hiUser = findViewById(R.id.act_dashboard_tv_hi_user);
-        name = preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default));
+        //  name = preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default));
         hiUser.setText(getString(R.string.dashboard_hi_user, name));
 
         billService.getAll(overdueBillsSort());
@@ -91,25 +91,6 @@ public class DashboardActivity extends AppCompatActivity {
         billService.getAmountToPay(getAmountToPay(), false);
     }
 
-    public void updateUser(String name, Uri photoUri) {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(name)
-                    .build();
-
-            currentUser.updateProfile(profileUpdate)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("OK", "User profile updated.");
-                            } else Log.d("ERROR", task.getException().getMessage());
-                        }
-                    });
-        }
-
-    }
 
     private View.OnClickListener goToBillsActivity() {
         return new View.OnClickListener() {
@@ -139,6 +120,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), PreferenceActivity.class);
                 startActivity(intent);
+                finish();
             }
         };
     }
@@ -176,6 +158,7 @@ public class DashboardActivity extends AppCompatActivity {
     private void logout() {
         FirebaseAuth.getInstance().signOut();
         DatabaseManager.disableDataBaseManager();
+        Toast.makeText(getApplicationContext(), "You signed out succesfully", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(getApplicationContext(), BeginActivity.class));
         finish();
     }
@@ -240,8 +223,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void runResultOnUiThread(Double result) {
                 if (result >= 0) {
                     String updatedTv = amountTv.getText().toString().replace("NUMBER", result.toString());
-                    //TODO: cu currency-ul selectat din preference files
-                    //updatedTv = amountTv.getText().toString().replace("CURRENCY", ???);
+                    updatedTv=updatedTv.replace("CURRENCY",preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
                     amountTv.setText(updatedTv);
                 }
             }
@@ -251,7 +233,14 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         hiUser.setText(getString(R.string.dashboard_hi_user, preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default))));
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        billService.getAmountToPay(getAmountToPay(),false);
+    }
 }
