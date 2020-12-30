@@ -23,7 +23,6 @@ public class BillJsonParser {
     public static final String TYPE = "type";
 
 
-
     public static List<Bill> fromJson(String json) {
         try {
             JSONArray array = new JSONArray(json);
@@ -48,14 +47,13 @@ public class BillJsonParser {
         Double amount = object.getDouble(AMOUNT);
         Boolean paid = object.getBoolean(PAID);
         Boolean recurrent = object.getBoolean(RECURRENT);
-        String type=object.getString(TYPE);
-        BillType billType=BillType.MISCELLANEOUS;
-        if(BillType.contains(type))
-        {
-            billType=BillType.valueOf(type);
+        String type = object.getString(TYPE);
+        BillType billType = BillType.MISCELLANEOUS;
+        if (BillType.contains(type)) {
+            billType = BillType.valueOf(type.toUpperCase());
         }
 
-        return new Bill(DateConverter.toDate(dueTo),amount,paid,recurrent,billType.toString());
+        return new Bill(DateConverter.toDate(dueTo), amount, paid, recurrent, billType.toString().toUpperCase());
 
     }
 }
