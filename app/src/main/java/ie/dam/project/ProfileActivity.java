@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,7 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         initializeComponents();
-        if (currentUser.getDisplayName() != null) {
+        if (currentUser != null) {
             emailET.setText(currentUser.getEmail().toString());
 
         }
@@ -194,8 +195,13 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
         overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
+
     }
+
 }
+
+
 
 

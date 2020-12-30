@@ -70,6 +70,16 @@ public class Bill implements Serializable {
         this.supplierId = supplierId;
     }
 
+    @Ignore
+    public Bill(Date dueTo, double amount, boolean paid, boolean recurrent, String type) {
+        this.dueTo = dueTo;
+        this.amount = amount;
+        this.paid = paid;
+        this.recurrent = recurrent;
+        this.type = type;
+
+    }
+
     public long getBillId() {
         return billId;
     }
