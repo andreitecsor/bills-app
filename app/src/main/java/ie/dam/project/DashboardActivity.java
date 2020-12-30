@@ -59,13 +59,16 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         billService = new BillService(getApplicationContext());
+        preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
+        addNameToSharedPreferences();
         initialiseComponents();
+
 
     }
 
     private void initialiseComponents() {
         //Preferences
-        preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
+
         billCardButton = findViewById(R.id.act_dashboard_card_bills);
         profileCardButton = findViewById(R.id.act_dashboard_card_profile);
         preferencesCardButton = findViewById(R.id.act_dashboard_card_preferences);
@@ -83,7 +86,7 @@ public class DashboardActivity extends AppCompatActivity {
         logoutCardButton.setOnClickListener(logoutClickEvent());
 
         hiUser = findViewById(R.id.act_dashboard_tv_hi_user);
-        //  name = preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default));
+        name = preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default));
         hiUser.setText(getString(R.string.dashboard_hi_user, name));
 
         billService.getAll(overdueBillsSort());
@@ -110,6 +113,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
+                finish();
             }
         };
     }
@@ -230,11 +234,19 @@ public class DashboardActivity extends AppCompatActivity {
         };
     }
 
+    private void addNameToSharedPreferences() {
+        if (currentUser != null) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor
+                    .putString(RegisterFragment.NAME_KEY, currentUser.getDisplayName())
+                    .apply();
+        }
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-
-        hiUser.setText(getString(R.string.dashboard_hi_user, preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default))));
     }
 
     @Override

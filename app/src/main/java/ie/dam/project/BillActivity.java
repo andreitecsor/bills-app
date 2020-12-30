@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,13 +29,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.BillShownInfo;
+import ie.dam.project.data.domain.SupplierWithBills;
 import ie.dam.project.data.service.BillService;
 import ie.dam.project.fragments.RegisterFragment;
+import ie.dam.project.util.JSON.HttpManager;
+import ie.dam.project.util.JSON.SupplierJsonParser;
 import ie.dam.project.util.adapters.BillAdapter;
 import ie.dam.project.util.adapters.RecyclerViewItemClick;
+import ie.dam.project.util.asynctask.AsyncTaskRunner;
 import ie.dam.project.util.asynctask.Callback;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -61,11 +68,15 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
     private SharedPreferences preferences;
     private FirebaseUser user;
 
+    private static final AsyncTaskRunner asyncTaskRunner=new AsyncTaskRunner();
+    private static final String URL_JSON="https://jsonkeeper.com/b/VWCL";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill);
         billService = new BillService(getApplicationContext());
+        getSuppliersWithBillsFromNetwork();
         initialiseComponents();
     }
 
@@ -311,5 +322,24 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         setFabsVisibility(fabExtendClicked);
         startFabsAnimation(fabExtendClicked);
         fabExtendClicked = !fabExtendClicked;
+    }
+
+    private void getSuppliersWithBillsFromNetwork(){
+        Callable<String> asyncOperation= new HttpManager(URL_JSON);
+        Callback<String> mainThreadOperation= getMainThreadOperationForJSON();
+        asyncTaskRunner.executeAsync(asyncOperation,mainThreadOperation);
+    }
+
+    private Callback<String> getMainThreadOperationForJSON() {
+        return new Callback<String>() {
+            @Override
+            public void runResultOnUiThread(String result) {
+
+                //ToDo: Call Supplier Json Parser and add to list
+                List<SupplierWithBills> supplierList=SupplierJsonParser.fromJson(result);
+                
+
+            }
+        };
     }
 }
