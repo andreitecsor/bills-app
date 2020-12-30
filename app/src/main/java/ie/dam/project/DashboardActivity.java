@@ -60,13 +60,15 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         billService = new BillService(getApplicationContext());
+        preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
+        addNameToSharedPreferences();
         initialiseComponents();
 
     }
 
     private void initialiseComponents() {
         getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.overcast_white));
-        preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
+
         billCardButton = findViewById(R.id.act_dashboard_card_bills);
         profileCardButton = findViewById(R.id.act_dashboard_card_profile);
         preferencesCardButton = findViewById(R.id.act_dashboard_card_preferences);
@@ -231,6 +233,16 @@ public class DashboardActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    private void addNameToSharedPreferences() {
+        if (currentUser != null) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor
+                    .putString(RegisterFragment.NAME_KEY, currentUser.getDisplayName())
+                    .apply();
+        }
+
     }
 
     @Override

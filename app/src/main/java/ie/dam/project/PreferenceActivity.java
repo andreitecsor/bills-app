@@ -367,7 +367,7 @@ public class PreferenceActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String path=localFile.getPath();
+        String path = localFile.getPath();
         islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -388,8 +388,9 @@ public class PreferenceActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //TODO:Aici modifica si tu daca e
+        startActivity(new Intent(getApplicationContext(),DashboardActivity.class));
         overridePendingTransition(R.anim.bot_to_top_in, R.anim.bot_to_top_out);
     }
+
 }
 

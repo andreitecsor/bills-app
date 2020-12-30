@@ -21,4 +21,14 @@ public class SupplierWithBills {
                 ", bills=" + bills +
                 '}';
     }
+
+    public SupplierWithBills() {
+    }
+
+    public SupplierWithBills(Supplier supplier, List<Bill> bills) {
+        this.supplier = supplier;
+        this.bills = bills;
+    }
+
+
 }
