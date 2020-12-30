@@ -6,12 +6,12 @@ import androidx.room.Relation;
 import java.util.List;
 
 public class SupplierWithBills {
-    @Embedded public Supplier supplier;
+    @Embedded private Supplier supplier;
     @Relation(
             parentColumn = "supplierId",
             entityColumn = "supplierId"
     )
-    public List<Bill> bills;
+    private List<Bill> bills;
 
 
     @Override
@@ -20,6 +20,22 @@ public class SupplierWithBills {
                 "supplier=" + supplier +
                 ", bills=" + bills +
                 '}';
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public List<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(List<Bill> bills) {
+        this.bills = bills;
     }
 
     public SupplierWithBills() {

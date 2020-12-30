@@ -31,7 +31,7 @@ public interface SupplierDao {
     @Query("SELECT supplierId FROM SUPPLIERS WHERE name=:name")
     long getIdByName(String name);
 
-    @Query("SELECT * FROM SUPPLIERS WHERE name=:name")
+    @Query("SELECT * FROM suppliers WHERE name=:name")
     Supplier getByName(String name);
 
     @Insert

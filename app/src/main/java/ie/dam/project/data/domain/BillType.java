@@ -3,12 +3,12 @@ package ie.dam.project.data.domain;
 import androidx.annotation.NonNull;
 
 public enum BillType {
-    GAS ("Gas"),
-    ELECTRICITY ("Electricity"),
-    WATER("Water"),
-    ENTERTAINMENT("Entertainment"),
-    CONNECTIVITY("Connectivity"),
-    MISCELLANEOUS("Miscellaneous");
+    GAS ("GAS"),
+    ELECTRICITY ("ELECTRICITY"),
+    WATER("WATER"),
+    ENTERTAINMENT("ENTERTAINMENT"),
+    CONNECTIVITY("CONNECTIVITY"),
+    MISCELLANEOUS("MISCELLANEOUS");
 
     private String value;
 
@@ -25,10 +25,11 @@ public enum BillType {
     public String toString() {
         return this.value;
     }
+
     public static boolean contains(String input) {
 
         for (BillType type : BillType.values()) {
-            if (type.name().equals(input)) {
+            if (type.name().equals(input.toUpperCase())) {
                 return true;
             }
         }

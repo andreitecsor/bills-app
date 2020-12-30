@@ -27,11 +27,18 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import ie.dam.project.data.DatabaseManager;
 import ie.dam.project.data.domain.Bill;
+import ie.dam.project.data.domain.Supplier;
+import ie.dam.project.data.domain.SupplierWithBills;
 import ie.dam.project.data.service.BillService;
+import ie.dam.project.data.service.SupplierService;
 import ie.dam.project.fragments.RegisterFragment;
+import ie.dam.project.util.JSON.HttpManager;
+import ie.dam.project.util.JSON.SupplierJsonParser;
+import ie.dam.project.util.asynctask.AsyncTaskRunner;
 import ie.dam.project.util.asynctask.Callback;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -47,11 +54,15 @@ public class DashboardActivity extends AppCompatActivity {
     private TextView overallTv;
     private ProgressBar progressBar;
 
+    private SupplierService supplierService;
     private BillService billService;
     private List<Bill> billList = new ArrayList<>();
 
     private SharedPreferences preferences;
     private String name;
+
+    private static final AsyncTaskRunner asyncTaskRunner = new AsyncTaskRunner();
+    private static final String URL_JSON = "https://jsonkeeper.com/b/VWCL";
 
 
     @Override
@@ -60,6 +71,7 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         billService = new BillService(getApplicationContext());
+        supplierService = new SupplierService(getApplicationContext());
         preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
         addNameToSharedPreferences();
         initialiseComponents();
@@ -68,7 +80,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void initialiseComponents() {
         getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.overcast_white));
-
+        getSuppliersWithBillsFromNetwork();
         billCardButton = findViewById(R.id.act_dashboard_card_bills);
         profileCardButton = findViewById(R.id.act_dashboard_card_profile);
         preferencesCardButton = findViewById(R.id.act_dashboard_card_preferences);
@@ -228,7 +240,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void runResultOnUiThread(Double result) {
                 if (result >= 0) {
                     String updatedTv = amountTv.getText().toString().replace("NUMBER", result.toString());
-                    updatedTv=updatedTv.replace("CURRENCY",preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
+                    updatedTv = updatedTv.replace("CURRENCY", preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency)));
                     amountTv.setText(updatedTv);
                 }
             }
@@ -256,6 +268,66 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
 
-        billService.getAmountToPay(getAmountToPay(),false);
+        billService.getAmountToPay(getAmountToPay(), false);
+    }
+
+    private void getSuppliersWithBillsFromNetwork() {
+        Callable<String> asyncOperation = new HttpManager(URL_JSON);
+        Callback<String> mainThreadOperation = getMainThreadOperationForJSON();
+        asyncTaskRunner.executeAsync(asyncOperation, mainThreadOperation);
+    }
+
+    private Callback<String> getMainThreadOperationForJSON() {
+        return new Callback<String>() {
+            @Override
+            public void runResultOnUiThread(String result) {
+                List<SupplierWithBills> suppliersWithBills = SupplierJsonParser.fromJson(result);
+                System.out.println(suppliersWithBills);
+                for (SupplierWithBills supplierWithBills : suppliersWithBills) {
+                    Supplier supplier = supplierWithBills.getSupplier();
+                    supplierService.getByName(checkSupplierInDb(supplier, supplierWithBills.getBills()), supplier.getName());
+                }
+            }
+        };
+    }
+
+    private Callback<Supplier> checkSupplierInDb(Supplier initialSupplier, List<Bill> bills) {
+        return new Callback<Supplier>() {
+            @Override
+            public void runResultOnUiThread(Supplier result) {
+                System.out.println(result);
+                if (result == null) {
+                    supplierService.insert(insertSupplierWithBills(bills), initialSupplier);
+                }
+            }
+        };
+    }
+
+
+    private Callback<Supplier> insertSupplierWithBills(List<Bill> bills) {
+        return new Callback<Supplier>() {
+            @Override
+            public void runResultOnUiThread(Supplier result) {
+                if (result != null) {
+                    Log.i("SUPPLIER FROM JSON ADDED:  ", result.toString());
+                    for (Bill bill : bills) {
+                        bill.setSupplierId(result.getSupplierId());
+                        billService.insert(insertBillFromJson(), bill);
+                    }
+                }
+            }
+        };
+    }
+
+    private Callback<Bill> insertBillFromJson() {
+        return new Callback<Bill>() {
+            @Override
+            public void runResultOnUiThread(Bill result) {
+                if (result != null) {
+                    Log.i("BILL FROM JSON ADDED:  ", result.toString());
+                    
+                }
+            }
+        };
     }
 }
