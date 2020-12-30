@@ -2,6 +2,7 @@ package ie.dam.project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         initializeComponents();
         if (currentUser != null) {
             emailET.setText(currentUser.getEmail().toString());
+
         }
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
                                         } else if (emailValid != 0 && passwordValid != 0 && emailET.getError() == null) {
                                             Toast.makeText(getApplicationContext(), "Account updated succesfully", Toast.LENGTH_SHORT).show();
                                             finish();
+                                            overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
                                         }
 
 
@@ -105,6 +108,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initializeComponents() {
+        getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.overcast_white));
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
         emailET = findViewById(R.id.act_profile_et_email);
@@ -188,13 +192,16 @@ public class ProfileActivity extends AppCompatActivity {
         } else return 1;
     }
 
-
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+        overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
+
     }
+
 }
+
+
 
 

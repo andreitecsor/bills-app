@@ -96,8 +96,8 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         billService.getAllWithSupplierName(getAllBillShownInfos());
-        user= FirebaseAuth.getInstance().getCurrentUser();
-        preferences=getSharedPreferences(user.getUid()+ RegisterFragment.SHARED_PREF_FILE_EXTENSION,MODE_PRIVATE);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        preferences = getSharedPreferences(user.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
     }
 
     private View.OnClickListener moreFabs() {
@@ -138,7 +138,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), FilterActivity.class));
-                overridePendingTransition(R.anim.left_to_right_in,R.anim.left_to_right_out);
+                overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_out);
             }
         };
     }
@@ -156,6 +156,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), AddEditBillActivity.class);
                 startActivityForResult(intent, ADD_BILL);
+                overridePendingTransition(R.anim.bot_to_top_in, R.anim.bot_to_top_out);
             }
         };
     }
@@ -213,7 +214,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
                     billShownInfos.addAll(result);
                     Collections.sort(billShownInfos, billsComparator());
                     if (billAdapter == null) {
-                        billAdapter = new BillAdapter(billShownInfos, BillActivity.this,preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
+                        billAdapter = new BillAdapter(billShownInfos, BillActivity.this, preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency)));
                         recyclerView.setAdapter(billAdapter);
                     } else {
                         billAdapter.notifyDataSetChanged();
@@ -306,6 +307,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         Intent intent = new Intent(getApplicationContext(), AddEditBillActivity.class);
         intent.putExtra(BILL_TO_UPDATE, billToUpdate);
         startActivityForResult(intent, EDIT_BILL);
+        overridePendingTransition(R.anim.bot_to_top_in, R.anim.bot_to_top_out);
     }
 
     @Override

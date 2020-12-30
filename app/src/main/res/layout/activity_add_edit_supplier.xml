@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.ST_dam_prj"
+    android:background="@color/overcast_white"
     tools:context=".AddEditSupplierActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/act_aesupplier_cl_upper"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/blue_banner"
         app:layout_constraintBottom_toTopOf="@+id/act_aesupplier_button_delete"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,8 +23,8 @@
             android:id="@+id/act_aesupplier_til_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +35,7 @@
                 android:id="@+id/act_aesupplier_tiet_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/transparent"
                 android:hint="@string/aesupplier_name" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -40,9 +43,9 @@
             android:id="@+id/act_aesupplier_til_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/act_aesupplier_til_name">
@@ -51,6 +54,7 @@
                 android:id="@+id/act_aesupplier_tiet_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/transparent"
                 android:hint="@string/aesupplier_email"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -59,9 +63,9 @@
             android:id="@+id/act_aesupplier_til_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/act_aesupplier_til_email">
@@ -70,6 +74,7 @@
                 android:id="@+id/act_aesupplier_tiet_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/transparent"
                 android:hint="@string/aesupplier_phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,9 +82,11 @@
 
     <Button
         android:id="@+id/act_aesupplier_button_save"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,11 +94,12 @@
 
     <Button
         android:id="@+id/act_aesupplier_button_delete"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/aesupplier_delete"
         android:visibility="invisible"
+        android:backgroundTint="@color/red"
         app:layout_constraintBottom_toTopOf="@+id/act_aesupplier_button_save"
         app:layout_constraintEnd_toEndOf="@+id/act_aesupplier_button_save"
         app:layout_constraintStart_toStartOf="@+id/act_aesupplier_button_save" />

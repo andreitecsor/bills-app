@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import android.app.ActivityOptions;
 import android.content.DialogInterface;
@@ -63,11 +64,10 @@ public class DashboardActivity extends AppCompatActivity {
         addNameToSharedPreferences();
         initialiseComponents();
 
-
     }
 
     private void initialiseComponents() {
-        //Preferences
+        getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.overcast_white));
 
         billCardButton = findViewById(R.id.act_dashboard_card_bills);
         profileCardButton = findViewById(R.id.act_dashboard_card_profile);
@@ -86,7 +86,7 @@ public class DashboardActivity extends AppCompatActivity {
         logoutCardButton.setOnClickListener(logoutClickEvent());
 
         hiUser = findViewById(R.id.act_dashboard_tv_hi_user);
-        name = preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default));
+        //  name = preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default));
         hiUser.setText(getString(R.string.dashboard_hi_user, name));
 
         billService.getAll(overdueBillsSort());
@@ -113,7 +113,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
-                finish();
+                overridePendingTransition(R.anim.bot_to_top_in, R.anim.bot_to_top_out);
             }
         };
     }
@@ -125,6 +125,7 @@ public class DashboardActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), PreferenceActivity.class);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
             }
         };
     }
@@ -247,6 +248,8 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        hiUser.setText(getString(R.string.dashboard_hi_user, preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default))));
     }
 
     @Override
