@@ -67,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Log.d("OK", "User re-authenticated.");
+                                        Log.d(getString(R.string.log_ok), getString(R.string.log_user_reauthenticated));
                                         int emailValid = validateEmail(email, currentUser.getEmail());
                                         switch (emailValid) {
                                             case 0:
@@ -94,10 +94,10 @@ public class ProfileActivity extends AppCompatActivity {
                                                 }
                                         }
                                         if (emailValid == -1 && passwordValid == -1) {
-                                            Toast.makeText(getApplicationContext(), "Nothing to update!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), getString(R.string.no_update_done), Toast.LENGTH_SHORT).show();
 
                                         } else if (emailValid != 0 && passwordValid != 0 && emailET.getError() == null) {
-                                            Toast.makeText(getApplicationContext(), "Account updated succesfully", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), getString(R.string.update_success), Toast.LENGTH_SHORT).show();
                                             startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
                                             finish();
                                             overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
@@ -105,15 +105,15 @@ public class ProfileActivity extends AppCompatActivity {
 
 
                                     } else {
-                                        Log.d("FAILED", "ERROR REAUTHENTICATING");
-                                        Toast.makeText(getApplicationContext(), "Invalid Confirm Password", Toast.LENGTH_SHORT).show();
+                                        Log.d(getString(R.string.log_failed), getString(R.string.reauthenticate_error));
+                                        Toast.makeText(getApplicationContext(), getString(R.string.invalid_confirm_password), Toast.LENGTH_SHORT).show();
 
 
                                     }
                                 }
                             });
                 } else
-                    Toast.makeText(getApplicationContext(), "No confirm password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_confirm_password), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -143,8 +143,8 @@ public class ProfileActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Log.d("OK", "User profile updated.");
-                            } else Log.d("ERROR", task.getException().getMessage());
+                                Log.d(getString(R.string.log_ok), getString(R.string.update_username_log));
+                            } else Log.d(getString(R.string.log_error), task.getException().getMessage());
                         }
                     });
         }
@@ -157,7 +157,7 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Log.d("OK", "User password updated.");
+                            Log.d(getString(R.string.log_ok), getString(R.string.password_update_log));
                         }
                     }
                 });
@@ -169,9 +169,9 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Log.d("Ok", "User email address updated.");
+                            Log.d(getString(R.string.log_ok), getString(R.string.email_updated_log));
                         } else {
-                            emailET.setError("Email already exists in the database! Enter a different email!");
+                            emailET.setError(getString(R.string.email_existing));
                         }
                     }
                 });
@@ -181,14 +181,14 @@ public class ProfileActivity extends AppCompatActivity {
     public int validateEmail(String email, String currentEmail) {
 
         if (email.isEmpty() || email.trim().isEmpty()) {
-            emailET.setError("Email cannot be empty");
+            emailET.setError(getString(R.string.email_empty));
             return 0;
         }
         if (!email.equals(currentEmail)) {
             if (RegisterFragment.isEmailValid(email))
                 return 1;
             else {
-                emailET.setError("Email does not have a valid format");
+                emailET.setError(getString(R.string.email_invalid_format));
                 return 0;
             }
         } else return -1;
@@ -201,7 +201,7 @@ public class ProfileActivity extends AppCompatActivity {
             return -1;
         }
         if (password.length() < 8) {
-            passwordET.setError("New password must have at least 8 characters!");
+            passwordET.setError(getString(R.string.password_length_error));
             return 0;
         } else return 1;
     }

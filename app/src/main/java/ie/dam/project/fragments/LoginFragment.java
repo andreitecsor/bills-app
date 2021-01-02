@@ -22,8 +22,12 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
@@ -71,7 +75,7 @@ public class LoginFragment extends Fragment {
                 BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
                 if (beginActivity != null) {
                     beginActivity.getSupportFragmentManager()
-                            .beginTransaction().setCustomAnimations(R.anim.left_to_right_in,R.anim.left_to_right_out)
+                            .beginTransaction().setCustomAnimations(R.anim.left_to_right_in, R.anim.left_to_right_out)
                             .replace(R.id.act_begin_frame_layout, new RegisterFragment())
                             .commit();
                 }
@@ -79,7 +83,7 @@ public class LoginFragment extends Fragment {
         };
     }
 
-    //ToDo-> modify function to integrate FIREBASE
+
     private View.OnClickListener login() {
         return new View.OnClickListener() {
             @Override
@@ -112,11 +116,16 @@ public class LoginFragment extends Fragment {
 
                             }
                             rememberMeToPreferenceFile(email, password);
-                            Toast.makeText(getActivity(), "You've been successfully signed in!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.login_succes), Toast.LENGTH_SHORT).show();
                             getActivity().finish();
 
+                        } else if (task.getException() instanceof FirebaseAuthException) {
+                            Toast.makeText(getActivity(), getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show();
+                            Log.d(getString(R.string.firebase_log), ((FirebaseAuthException) task.getException()).getErrorCode());
+
                         } else {
-                            Toast.makeText(getActivity(), "Invalid email or password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+                            Log.d(getString(R.string.firebase_log), (task.getException()).getMessage());
 
                         }
                     }
@@ -182,12 +191,9 @@ public class LoginFragment extends Fragment {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("OK", "User profile updated.");
-                                //todo: add remember me to shared preferences
-
-
-                            } else Log.d("ERROR", task.getException().getMessage());
+                            if (!task.isSuccessful()) {
+                                Log.d(getString(R.string.log_error), task.getException().getMessage());
+                            }
                         }
                     });
         }

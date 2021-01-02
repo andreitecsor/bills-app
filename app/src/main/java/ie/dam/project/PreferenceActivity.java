@@ -148,7 +148,7 @@ public class PreferenceActivity extends AppCompatActivity {
     private void populateFields() {
         if (currentUser.getDisplayName() != null) {
             nameET.setText(currentUser.getDisplayName());
-            //Todo:get photo from database
+
         }
         if (preferences.contains(CURRENCY_KEY)) {
             currencyEt.setText(preferences.getString(CURRENCY_KEY, getString(R.string.default_currency)));
@@ -161,7 +161,7 @@ public class PreferenceActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
 
                 if (task.isSuccessful()) {
-                    Log.d("FIREBASE", "User re-authenticated.");
+                    Log.d(getString(R.string.firebase_log), getString(R.string.log_user_reauthenticated));
 
                     //region Name Validation + Update
                     int nameValid = validateName(name);
@@ -193,17 +193,17 @@ public class PreferenceActivity extends AppCompatActivity {
                     //endregion
                     //region Final Response
                     if (genderValid == -1 && nameValid == -1 && currencyValid == -1) {
-                        Toast.makeText(getApplicationContext(), "Nothing to update!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),getString(R.string.no_update_done), Toast.LENGTH_SHORT).show();
 
                     } else if (nameValid != 0 && currencyValid != 0) {
-                        Toast.makeText(getApplicationContext(), "Account updated succesfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.update_success), Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
                         finish();
                     }
 //endregion
                 } else {
-                    Log.d("FIREBASE", "ERROR REAUTHENTICATING");
-                    Toast.makeText(getApplicationContext(), "Invalid Confirm Password", Toast.LENGTH_SHORT).show();
+                    Log.d(getString(R.string.firebase_log), getString(R.string.reauthenticate_error));
+                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_confirm_password), Toast.LENGTH_SHORT).show();
 
 
                 }
@@ -215,7 +215,7 @@ public class PreferenceActivity extends AppCompatActivity {
         if (name.equals(currentUser.getDisplayName()))
             return -1;
         if (name.isEmpty()) {
-            nameET.setError("Name cannot be empty");
+            nameET.setError(getString(R.string.empty_name));
             return 0;
         }
         return 1;
@@ -234,7 +234,7 @@ public class PreferenceActivity extends AppCompatActivity {
             return -1;
         }
         if (currency.isEmpty() || currency.length() != 3) {
-            currencyEt.setError("Currency should have 3 characters! (Ex: EUR, USD, LEI)");
+            currencyEt.setError(getString(R.string.currency_error_message));
             return 0;
         }
         return 1;
@@ -252,7 +252,7 @@ public class PreferenceActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Log.d("FIREBASE", "User profile updated.");
+                                Log.d(getString(R.string.firebase_log), getString(R.string.user_profile_update_log));
                                 // Toast.makeText(getApplicationContext(), getString(R.string.preference_save_succes), Toast.LENGTH_SHORT).show();
                             } //else Log.d("FIREBASE", task.getException().getMessage());
                         }
@@ -323,7 +323,7 @@ public class PreferenceActivity extends AppCompatActivity {
     public void uploadImage() {
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Picture uploading, please wait!");
+        progressDialog.setTitle(getString(R.string.picture_wait));
         progressDialog.show();
 
         StorageReference riversRef = storageReference.child("images/" + currentUser.getUid());
@@ -333,7 +333,7 @@ public class PreferenceActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         progressDialog.dismiss();
-                        Snackbar.make(findViewById(android.R.id.content), "Image uploaded", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content), getString(R.string.upload_image), Snackbar.LENGTH_SHORT).show();
 
                     }
                 })
@@ -350,7 +350,7 @@ public class PreferenceActivity extends AppCompatActivity {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
                 double progress = (100 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                progressDialog.setMessage("Progress:" + (int) progress + "%");
+                progressDialog.setMessage(getString(R.string.image_progress,(int)progress));
             }
         });
 
@@ -360,7 +360,7 @@ public class PreferenceActivity extends AppCompatActivity {
 
     private void downloadPhoto() {
 
-        StorageReference islandRef = storageReference.child("images/" + currentUser.getUid());
+        StorageReference reference = this.storageReference.child("images/" + currentUser.getUid());
         File localFile = null;
         try {
             localFile = File.createTempFile(currentUser.getUid(), "jpg");
@@ -368,7 +368,7 @@ public class PreferenceActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         String path = localFile.getPath();
-        islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+        reference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
@@ -380,7 +380,10 @@ public class PreferenceActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
+
+               // Drawable addDrawable=getDrawable(R.drawable.add_photo);
+
+                resizeImage(BitmapFactory.decodeResource(getResources(), R.drawable.add_photo));
             }
         });
     }

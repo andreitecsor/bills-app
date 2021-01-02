@@ -59,7 +59,7 @@ public class DashboardActivity extends AppCompatActivity {
     private String name;
 
     private static final AsyncTaskRunner asyncTaskRunner = new AsyncTaskRunner();
-    private static final String URL_JSON = "https://jsonkeeper.com/b/VWCL";
+    private static final String URL_JSON ="https://jsonkeeper.com/b/VWCL";
 
 
     @Override
@@ -70,9 +70,16 @@ public class DashboardActivity extends AppCompatActivity {
         billService = new BillService(getApplicationContext());
         supplierService = new SupplierService(getApplicationContext());
         preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
-        addNameToSharedPreferences();
+        getNameFromSharedPreferences();
+      //  addNameToSharedPreferences();
         initialiseComponents();
 
+    }
+
+    private void getNameFromSharedPreferences() {
+        name = preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default));
+        hiUser = findViewById(R.id.act_dashboard_tv_hi_user);
+        hiUser.setText(getString(R.string.dashboard_hi_user, name));
     }
 
     private void initialiseComponents() {
@@ -94,9 +101,9 @@ public class DashboardActivity extends AppCompatActivity {
         preferencesCardButton.setOnClickListener(goToPreferencesActivity());
         logoutCardButton.setOnClickListener(logoutClickEvent());
 
-        hiUser = findViewById(R.id.act_dashboard_tv_hi_user);
-        //  name = preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default));
-        hiUser.setText(getString(R.string.dashboard_hi_user, name));
+
+        //name = preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default));
+
 
         billService.getAll(overdueBillsSort());
         billService.getNoBillsByPaymentType(getUnpaidBills(), false);
@@ -173,7 +180,7 @@ public class DashboardActivity extends AppCompatActivity {
     private void logout() {
         FirebaseAuth.getInstance().signOut();
         DatabaseManager.disableDataBaseManager();
-        Toast.makeText(getApplicationContext(), "You signed out succesfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.sign_out_succes), Toast.LENGTH_SHORT).show();
         startActivity(new Intent(getApplicationContext(), BeginActivity.class));
         finish();
     }
@@ -198,10 +205,10 @@ public class DashboardActivity extends AppCompatActivity {
                         } else {
                             notPaid++;
                         }
-                        System.out.println("PAID:" + paid);
-                        System.out.println("notPAID:" + notPaid);
+                        System.out.println(getString(R.string.paid_replace) + paid);
+                        System.out.println(getString(R.string.not_paid_log) + notPaid);
                     }
-                    String updatedTv = overdueTv.getText().toString().replace("NUMBER", String.valueOf(overdueCount));
+                    String updatedTv = overdueTv.getText().toString().replace(getString(R.string.number_replace), String.valueOf(overdueCount));
                     overdueTv.setText(updatedTv);
                     updateProgressBar(paid, notPaid);
                 }
@@ -212,11 +219,11 @@ public class DashboardActivity extends AppCompatActivity {
     private void updateProgressBar(int paid, int notPaid) {
         progressBar.setProgress(0);
         int progress = (notPaid == 0) ? 100 : (paid * (100 / (paid + notPaid)));
-        System.out.println("PROGRESS:" + progress);
+        System.out.println(getString(R.string.progress_log) + progress);
         progressBar.setProgress(progress);
         String toBeReplaced = overallTv.getText().toString();
-        String updatedTv = toBeReplaced.replace("PAID", String.valueOf(paid));
-        updatedTv = updatedTv.replace("TOTAL", String.valueOf(notPaid + paid));
+        String updatedTv = toBeReplaced.replace(getString(R.string.paid_replace), String.valueOf(paid));
+        updatedTv = updatedTv.replace(getString(R.string.total_replace), String.valueOf(notPaid + paid));
         overallTv.setText(updatedTv);
     }
 
@@ -225,7 +232,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void runResultOnUiThread(Integer result) {
                 if (result >= 0) {
-                    String updatedTv = unpaidTv.getText().toString().replace("NUMBER", result.toString());
+                    String updatedTv = unpaidTv.getText().toString().replace(getString(R.string.number_replace), result.toString());
                     unpaidTv.setText(updatedTv);
                 }
             }
@@ -238,8 +245,8 @@ public class DashboardActivity extends AppCompatActivity {
             public void runResultOnUiThread(Double result) {
                 if (result >= 0) {
                     Double roundedValue=round(result,2);
-                    String updatedTv = amountTv.getText().toString().replace("NUMBER",roundedValue.toString());
-                    updatedTv = updatedTv.replace("CURRENCY", preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency)));
+                    String updatedTv = amountTv.getText().toString().replace(getString(R.string.number_replace),roundedValue.toString());
+                    updatedTv = updatedTv.replace(getString(R.string.currency_replace), preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency)));
                     amountTv.setText(updatedTv);
                 }
             }
@@ -317,7 +324,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void runResultOnUiThread(Supplier result) {
                 if (result != null) {
-                    Log.i("SUPPLIER FROM JSON ADDED:  ", result.toString());
+                    Log.i(getString(R.string.supplier_json_added_log), result.toString());
                     for (Bill bill : bills) {
                         bill.setSupplierId(result.getSupplierId());
                         billService.insert(insertBillFromJson(), bill);
@@ -332,7 +339,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void runResultOnUiThread(Bill result) {
                 if (result != null) {
-                    Log.i("BILL FROM JSON ADDED:  ", result.toString());
+                    Log.i(getString(R.string.bill_json_added_log), result.toString());
 
                 }
             }

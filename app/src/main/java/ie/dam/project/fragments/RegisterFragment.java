@@ -43,7 +43,7 @@ public class RegisterFragment extends Fragment {
 
     private String name;
 
-    //TODO: Register button impl
+
 
     public RegisterFragment() {
     }
@@ -103,15 +103,8 @@ public class RegisterFragment extends Fragment {
                 fbAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        boolean task_success = task.isSuccessful();
-                        if (task.isSuccessful()) {
-
-
-                            //todo: open dashboard or go to login fragment (redirecting to login currently)
-
-
-                        } else {
-                            Toast.makeText(getContext(), "Cannot create account!" + task.getException().getMessage(),
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(getContext(), getString(R.string.create_account_failed) + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -160,7 +153,7 @@ public class RegisterFragment extends Fragment {
                     if (beginActivity != null) {
                         createLoginFragment(beginActivity);
 //                        Context context=getContext();
-                        Toast.makeText(getContext(), "User created succesfully! Please log in with your new account!",
+                        Toast.makeText(getContext(), getString(R.string.create_user_succes),
                                 Toast.LENGTH_LONG).show();
                         preferences = getContext().getSharedPreferences(FirebaseAuth.getInstance().getCurrentUser().getUid() + SHARED_PREF_FILE_EXTENSION, Context.MODE_PRIVATE);
                         addNameToSharedPreferences();
