@@ -29,7 +29,8 @@
             app:layout_constraintEnd_toEndOf="@+id/act_bill_fab_extend"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/act_bill_fab_extend"
-            app:srcCompat="@drawable/ic_add" />
+            app:srcCompat="@drawable/ic_add"
+            android:contentDescription="@string/bill_fab_add_desc" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/act_bill_fab_filter"
@@ -42,7 +43,8 @@
             app:layout_constraintEnd_toEndOf="@+id/act_bill_fab_add"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/act_bill_fab_add"
-            app:srcCompat="@drawable/ic_filter" />
+            app:srcCompat="@drawable/ic_filter"
+            android:contentDescription="@string/bill_fab_filter_desc" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/act_bill_fab_extend"
@@ -55,7 +57,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@android:drawable/ic_input_add"
+            android:contentDescription="@string/bill_fab_extend_desc" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/act_bill_list_rv"
@@ -92,9 +95,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/bills_date"
+                android:text="@string/date_format"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

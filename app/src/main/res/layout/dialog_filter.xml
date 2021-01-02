@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/transparent"
-            android:hint="@string/minimum_amount"
+            android:hint="@string/filter_minimum_amount"
             android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:hint="@string/maximum_amount"
+            android:hint="@string/filter_maximum_amount"
             android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,20 +56,22 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:text="@string/payed_bill"
+        android:text="@string/filter_paid_bill"
         app:layout_constraintEnd_toEndOf="@+id/dialog_filter_til_max_amount"
         app:layout_constraintStart_toStartOf="@+id/dialog_filter_til_min_amount"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_filter_til_max_amount" />
+        app:layout_constraintTop_toBottomOf="@+id/dialog_filter_til_max_amount"
+        tools:ignore="UseSwitchCompatOrMaterialXml"/>
 
     <Switch
         android:id="@+id/dialog_filter_switch_recurrent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/recurrent_bill"
+        android:text="@string/aebill_recurrent_bill"
         app:layout_constraintEnd_toEndOf="@+id/dialog_filter_switch_paid"
         app:layout_constraintStart_toStartOf="@+id/dialog_filter_switch_paid"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_filter_switch_paid" />
+        app:layout_constraintTop_toBottomOf="@+id/dialog_filter_switch_paid"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Button
         android:id="@+id/dialog_filter_button_apply"
@@ -77,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/apply_filters"
+        android:text="@string/filter_apply_filters"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

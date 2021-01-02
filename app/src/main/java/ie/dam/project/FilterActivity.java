@@ -166,7 +166,7 @@ public class FilterActivity extends AppCompatActivity {
 
     private boolean validate(double min, double max) {
         if (min < 0 || max < min || max < 0) {
-            Toast.makeText(getApplicationContext(), getString(R.string.invalid_amounts), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.filter_invalid_amounts), Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

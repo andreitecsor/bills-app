@@ -96,7 +96,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
-            android:text="@string/bills_date"
+            android:text="@string/date_format"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/act_aebill_spinner_type"
             app:layout_constraintStart_toStartOf="@+id/act_aebill_tv_due_to"

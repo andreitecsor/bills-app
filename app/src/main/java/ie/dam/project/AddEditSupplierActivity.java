@@ -58,7 +58,7 @@ public class AddEditSupplierActivity extends AppCompatActivity {
     private void addOrEditCheck() {
         if (intent.hasExtra(AddEditBillActivity.SUPPLIER_TO_UPDATE)) {
             buttonDelete.setVisibility(View.VISIBLE);
-            buttonSave.setText(getString(R.string.profile_save_changes));
+            buttonSave.setText(getString(R.string.save_changes));
             long id = (long) intent.getLongExtra(AddEditBillActivity.SUPPLIER_TO_UPDATE, -1);
             supplierService.getById(getSupplierById(), id);
             return;
@@ -97,8 +97,8 @@ public class AddEditSupplierActivity extends AppCompatActivity {
 
     private AlertDialog getDeleteCheckAlertDialog() {
         return new AlertDialog.Builder(AddEditSupplierActivity.this)
-                .setTitle(R.string.delete_supplier)
-                .setMessage(R.string.delete_supplier_check)
+                .setTitle(R.string.aesupplier_delete_supplier)
+                .setMessage(R.string.aesupplier_delete_supplier_check)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -131,16 +131,16 @@ public class AddEditSupplierActivity extends AppCompatActivity {
 
     private boolean validate() {
         if (nameTiet.getText() == null || nameTiet.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), R.string.invalid_name, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.aesupplier_invalid_name, Toast.LENGTH_SHORT).show();
             return false;
         }
         String email = emailTiet.getText().toString().trim();
         if (email == null || email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(getApplicationContext(), R.string.invalid_email, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.aesupplier_invalid_email, Toast.LENGTH_SHORT).show();
             return false;
         }
         if (phoneTiet.getText() == null || emailTiet.getText().toString().isEmpty() || phoneTiet.getText().toString().trim().length() < 3) {
-            Toast.makeText(getApplicationContext(), R.string.invalid_phone, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.aesupplier_invalid_phone, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
