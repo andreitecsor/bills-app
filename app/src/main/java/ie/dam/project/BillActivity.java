@@ -139,6 +139,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), FilterActivity.class));
+                finish();
                 overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_out);
             }
         };
@@ -317,6 +318,8 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
         startActivity(intent);
         finish();
+        overridePendingTransition(R.anim.bot_to_top_in, R.anim.bot_to_top_out);
+
     }
 
     @Override
