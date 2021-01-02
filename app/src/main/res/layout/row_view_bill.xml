@@ -22,14 +22,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_billtype_misc" />
+            app:srcCompat="@drawable/ic_billtype_misc"
+            android:contentDescription="@string/rv_billtype_iv" />
 
         <TextView
             android:id="@+id/rv_tv_supplier"
@@ -39,7 +39,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="@font/montserrat"
             android:text="@string/rv_supplier"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/rv_iv_payment"
@@ -50,10 +50,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginBottom="4dp"
-            android:text="@string/bills_date"
-            android:textSize="18dp"
+            android:text="@string/date_format"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/rv_iv_payment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -79,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/rv_amount"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/rv_line"
             app:layout_constraintEnd_toEndOf="@+id/rv_iv_checked"
             app:layout_constraintStart_toStartOf="@+id/rv_iv_checked"
@@ -94,18 +93,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/rv_line"
             app:layout_constraintTop_toTopOf="@+id/rv_line"
-            app:srcCompat="@drawable/ic_checked" />
+            app:srcCompat="@drawable/ic_checked"
+            android:contentDescription="@string/rv_checked_iv" />
 
         <TextView
             android:id="@+id/rv_bill_tv_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="8dp"
             android:text="@string/rv_type"
-            android:textSize="15dp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rv_iv_payment" />
@@ -115,12 +114,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:layout_marginLeft="6dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/rv_tv_due_to"
             app:layout_constraintStart_toEndOf="@+id/rv_tv_due_to"
             app:layout_constraintTop_toTopOf="@+id/rv_tv_due_to"
-            app:srcCompat="@drawable/ic_recurrent" />
+            app:srcCompat="@drawable/ic_recurrent"
+            android:contentDescription="@string/rv_recurrent_iv" />
 
         <ImageView
             android:id="@+id/rv_iv_not_paid"
@@ -130,7 +129,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/rv_line"
             app:layout_constraintTop_toTopOf="@+id/rv_line"
-            app:srcCompat="@drawable/ic_not_payed" />
+            app:srcCompat="@drawable/ic_not_payed"
+            android:contentDescription="@string/rv_not_paid_iv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

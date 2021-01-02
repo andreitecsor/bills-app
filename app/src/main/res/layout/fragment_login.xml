@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
-                    android:hint="@string/begin_email" />
+                    android:hint="@string/email" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
-                    android:hint="@string/begin_password"
+                    android:hint="@string/password"
                     android:inputType="textPassword" />
 
 
@@ -78,7 +78,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/remember_me"
+                android:text="@string/begin_login_remember_me"
                 app:layout_constraintEnd_toEndOf="@+id/frg_login_til_password"
                 app:layout_constraintStart_toStartOf="@+id/frg_login_til_password"
                 app:layout_constraintTop_toBottomOf="@id/frg_login_til_password"

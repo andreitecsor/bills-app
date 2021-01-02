@@ -27,7 +27,7 @@
         <activity android:name=".AddEditBillActivity" />
         <activity android:name=".BeginActivity">
 
-             TODO:uncomment this and delete the others when finishing the app
+<!--             TODO:uncomment this and delete the others when finishing the app-->
              <intent-filter>
              <action android:name="android.intent.action.MAIN" />
 

@@ -34,7 +34,7 @@
             android:id="@+id/act_dashboard_card_bills"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
             android:backgroundTint="@color/ice_blue"
             android:clickable="true"
             app:cardCornerRadius="8dp"
@@ -57,7 +57,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_bills" />
+                    app:srcCompat="@drawable/ic_bills"
+                    android:contentDescription="@string/dashboard_iv_desc_bills" />
 
                 <TextView
                     android:id="@+id/act_dashboard_tv_bills"
@@ -65,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="16dp"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:text="@string/dashboard_bills"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/act_dashboard_iv_bills"
@@ -100,7 +101,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_profile" />
+                    app:srcCompat="@drawable/ic_profile"
+                    android:contentDescription="@string/dashboard_iv_desc_profile" />
 
                 <TextView
                     android:id="@+id/act_dashboard_tv_profile"
@@ -108,8 +110,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="16dp"
-                    android:textSize="18dp"
-                    android:text="@string/dsahboard_profile"
+                    android:textSize="18sp"
+                    android:text="@string/dashboard_profile"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/act_dashboard_iv_profile"
                     app:layout_constraintStart_toStartOf="@+id/act_dashboard_iv_profile"
@@ -122,7 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
             android:backgroundTint="@color/ice_blue"
             android:clickable="true"
             app:cardCornerRadius="8dp"
@@ -145,7 +147,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_preferences" />
+                    app:srcCompat="@drawable/ic_preferences"
+                    android:contentDescription="@string/dashboard_iv_desc_preferences" />
 
                 <TextView
                     android:id="@+id/act_dashboard_tv_preferences"
@@ -153,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="16dp"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:text="@string/dashboard_preferences"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/act_dashboard_iv_preferences"
@@ -189,7 +192,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_logout" />
+                    app:srcCompat="@drawable/ic_logout"
+                    android:contentDescription="@string/dashboard_iv_desc_logout" />
 
                 <TextView
                     android:id="@+id/act_dashboard_tv_logout"
@@ -197,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="16dp"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:text="@string/dashboard_logout"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/act_dashboard_iv_logout"
@@ -226,8 +230,8 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="@+id/imageView" />
+            app:layout_constraintStart_toEndOf="@+id/act_dashboard_iv_welcome"
+            app:layout_constraintTop_toTopOf="@+id/act_dashboard_iv_welcome" />
 
         <TextView
             android:id="@+id/act_dashboard_tv_stats"
@@ -236,10 +240,10 @@
             android:layout_marginStart="8dp"
 
             android:text="@string/dashboard_stats"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="@+id/act_dashboard_iv_welcome"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toEndOf="@+id/act_dashboard_iv_welcome"
             app:layout_constraintTop_toBottomOf="@+id/act_dashboard_tv_hi_user" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -276,7 +280,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="@string/progress_status"
+                android:text="@string/dashboard_progress_status"
                 app:layout_constraintBottom_toBottomOf="@+id/act_dashboard_progress_bar"
                 app:layout_constraintEnd_toEndOf="@+id/act_dashboard_progress_bar"
                 app:layout_constraintStart_toStartOf="@+id/act_dashboard_progress_bar"
@@ -287,7 +291,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/dashboard_overdue"
                 android:textSize="16sp"
@@ -303,7 +306,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="24dp"
-                android:text="@string/amount_to_pay_number_currency"
+                android:text="@string/dashboard_amount_to_pay"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -329,7 +332,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/act_dashboard_iv_welcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -338,7 +341,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_greeting" />
+            app:srcCompat="@drawable/ic_greeting"
+            android:contentDescription="@string/dashboard_iv_desc_welcome" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
