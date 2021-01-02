@@ -13,20 +13,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ST_dam_prj">
-        <activity android:name=".FilterActivity"></activity>
-        <activity android:name=".AddEditSupplierActivity" />
-        <activity android:name=".PreferenceActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".DashboardActivity"></activity>
-        <activity android:name=".AddEditBillActivity" />
-        <activity android:name=".BeginActivity">
+        <activity android:name=".FilterActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".AddEditSupplierActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".PreferenceActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ProfileActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".DashboardActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".AddEditBillActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".BeginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BillActivity" />
+        <activity android:name=".BillActivity" android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"

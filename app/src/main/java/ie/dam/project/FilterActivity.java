@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.BillShownInfo;
 import ie.dam.project.data.service.BillService;
 import ie.dam.project.fragments.RegisterFragment;
@@ -72,8 +73,8 @@ public class FilterActivity extends AppCompatActivity {
         });
         billService.getAllWithSupplierName(getAllBillShownInfos());
         billService.getAmountToPay(getTotalAmountPaid(), true);
-        user= FirebaseAuth.getInstance().getCurrentUser();
-        preferences=getSharedPreferences(user.getUid()+ RegisterFragment.SHARED_PREF_FILE_EXTENSION,MODE_PRIVATE);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        preferences = getSharedPreferences(user.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
     }
 
     private Callback<Double> getTotalAmountPaid() {
@@ -81,8 +82,8 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void runResultOnUiThread(Double result) {
                 if (result >= 0) {
-                    String updatedTv = totalAmountTv.getText().toString().replace(getString(R.string.number_replace), String.valueOf(result));
-                    updatedTv=updatedTv.replace(getString(R.string.currency_replace),preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
+                    String updatedTv = totalAmountTv.getText().toString().replace(getString(R.string.number_replace), String.valueOf(Bill.round(result, 2)));
+                    updatedTv = updatedTv.replace(getString(R.string.currency_replace), preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency)));
                     totalAmountTv.setText(updatedTv);
 
                 }
@@ -98,7 +99,7 @@ public class FilterActivity extends AppCompatActivity {
                     noFoundTv.setVisibility(View.INVISIBLE);
                     billShownInfos.clear();
                     billShownInfos.addAll(result);
-                    billAdapter = new BillAdapter(billShownInfos, null,preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
+                    billAdapter = new BillAdapter(billShownInfos, null, preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency)));
                     recyclerView.setAdapter(billAdapter);
                 } else {
                     noFoundTv.setVisibility(View.VISIBLE);
@@ -153,7 +154,7 @@ public class FilterActivity extends AppCompatActivity {
                     noFoundTv.setVisibility(View.INVISIBLE);
                     billShownInfos.clear();
                     billShownInfos.addAll(result);
-                    billAdapter = new BillAdapter(billShownInfos, null,preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
+                    billAdapter = new BillAdapter(billShownInfos, null, preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency)));
                     recyclerView.setAdapter(billAdapter);
                 } else {
                     recyclerView.setAdapter(null);
@@ -174,8 +175,8 @@ public class FilterActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(getApplicationContext(),BillActivity.class));
+        startActivity(new Intent(getApplicationContext(), BillActivity.class));
         finish();
-        overridePendingTransition(R.anim.right_to_left_in,R.anim.right_to_left_out);
+        overridePendingTransition(R.anim.right_to_left_in, R.anim.right_to_left_out);
     }
 }
