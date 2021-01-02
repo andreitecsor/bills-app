@@ -197,6 +197,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
         overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
+        finish();
 
     }
 

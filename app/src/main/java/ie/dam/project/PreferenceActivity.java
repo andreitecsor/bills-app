@@ -390,6 +390,7 @@ public class PreferenceActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(getApplicationContext(),DashboardActivity.class));
         overridePendingTransition(R.anim.bot_to_top_in, R.anim.bot_to_top_out);
+        finish();
     }
 
 }

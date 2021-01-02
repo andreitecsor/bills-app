@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +44,7 @@ import ie.dam.project.util.asynctask.AsyncTaskRunner;
 import ie.dam.project.util.asynctask.Callback;
 
 public class DashboardActivity extends AppCompatActivity {
+    public static final String FIRST_TIME_KEY = "first_time";
     private FirebaseUser currentUser;
     private CardView billCardButton;
     private CardView profileCardButton;
@@ -125,6 +128,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
+                finish();
                 overridePendingTransition(R.anim.bot_to_top_in, R.anim.bot_to_top_out);
             }
         };
@@ -239,14 +243,21 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void runResultOnUiThread(Double result) {
                 if (result >= 0) {
-                    String updatedTv = amountTv.getText().toString().replace("NUMBER", result.toString());
+                    Double roundedValue=round(result,2);
+                    String updatedTv = amountTv.getText().toString().replace("NUMBER",roundedValue.toString());
                     updatedTv = updatedTv.replace("CURRENCY", preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency)));
                     amountTv.setText(updatedTv);
                 }
             }
         };
     }
+    private double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
 
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
     private void addNameToSharedPreferences() {
         if (currentUser != null) {
             SharedPreferences.Editor editor = preferences.edit();
@@ -283,9 +294,12 @@ public class DashboardActivity extends AppCompatActivity {
             public void runResultOnUiThread(String result) {
                 List<SupplierWithBills> suppliersWithBills = SupplierJsonParser.fromJson(result);
                 System.out.println(suppliersWithBills);
-                for (SupplierWithBills supplierWithBills : suppliersWithBills) {
-                    Supplier supplier = supplierWithBills.getSupplier();
-                    supplierService.getByName(checkSupplierInDb(supplier, supplierWithBills.getBills()), supplier.getName());
+                if (preferences.getBoolean(FIRST_TIME_KEY, true)) {
+                    for (SupplierWithBills supplierWithBills : suppliersWithBills) {
+                        Supplier supplier = supplierWithBills.getSupplier();
+                        supplierService.getByName(checkSupplierInDb(supplier, supplierWithBills.getBills()), supplier.getName());
+                    }
+                    preferences.edit().putBoolean(FIRST_TIME_KEY,false).apply();
                 }
             }
         };
@@ -325,7 +339,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void runResultOnUiThread(Bill result) {
                 if (result != null) {
                     Log.i("BILL FROM JSON ADDED:  ", result.toString());
-                    
+
                 }
             }
         };
