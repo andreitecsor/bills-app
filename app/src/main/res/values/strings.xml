@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">bills-management</string>
+    <string name="app_name">Bills</string>
 
     <!--   General-->
     <string name="save">SAVE</string>
@@ -112,6 +112,47 @@
     <string name="rv_recurrent_iv">Recurrent Icon</string>
     <string name="rv_not_paid_iv">Not paid Icon</string>
     <string name="rv_checked_iv">Paid Icon</string>
+
+    <!--> Logging, Errors, Toasts<-->
+    <string name="no_internet">No internet connection</string>
+    <string name="invalid_credentials">Invalid email or password</string>
+    <string name="login_succes">You\'ve been successfully signed in!</string>
+    <string name="firebase_log">FIREBASE</string>
+    <string name="log_ok">OK</string>
+    <string name="log_error">ERROR</string>
+    <string name="profile_updated">User profile updated.</string>
+    <string name="create_account_failed">Cannot create account!</string>
+    <string name="create_user_succes">User created successfully! Please log in with your new account!</string>
+    <string name="log_user_reauthenticated">User re-authenticated.</string>
+    <string name="no_update_done">Nothing to update!</string>
+    <string name="update_success">Account updated successfully</string>
+    <string name="log_failed">FAILED</string>
+    <string name="reauthenticate_error">ERROR REAUTHENTICATING</string>
+    <string name="invalid_confirm_password">Invalid Confirm Password</string>
+    <string name="update_username_log">UserName updated.</string>
+    <string name="password_update_log">User password updated.</string>
+    <string name="email_updated_log">User email address updated.</string>
+    <string name="email_existing">Email already exists in the database! Enter a different email!</string>
+    <string name="email_empty">Email cannot be empty</string>
+    <string name="email_invalid_format">Email does not have a valid format</string>
+    <string name="password_length_error">New password must have at least 8 characters!</string>
+    <string name="sign_out_succes">You signed out succesfully</string>
+    <string name="number_replace">NUMBER</string>
+    <string name="paid_replace">PAID</string>
+    <string name="total_replace">TOTAL</string>
+    <string name="currency_replace">CURRENCY</string>
+    <string name="supplier_json_added_log">\"SUPPLIER FROM JSON ADDED:  \"</string>
+    <string name="bill_json_added_log">\"BILL FROM JSON ADDED:  \"</string>
+    <string name="progress_log">PROGRESS:</string>
+    <string name="not_paid_log">notPAID:</string>
+    <string name="empty_name">Name cannot be empty</string>
+    <string name="currency_error_message">Currency should have 3 characters! (Ex: EUR, USD, LEI)</string>
+    <string name="user_profile_update_log">User profile updated.</string>
+    <string name="picture_wait">Picture uploading, please wait!</string>
+    <string name="upload_image">Image uploaded</string>
+    <string name="image_fail">Failed to upload picture,  please try again!</string>
+    <string name="image_progress">Progress: %1$d </string>
+    <string name="no_confirm_password">No confirm password</string>
 
 </resources>
 

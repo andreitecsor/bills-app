@@ -81,9 +81,8 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void runResultOnUiThread(Double result) {
                 if (result >= 0) {
-                    //TODO: Currency based on preference files
-                    String updatedTv = totalAmountTv.getText().toString().replace("NUMBER", String.valueOf(result));
-                    updatedTv=updatedTv.replace("CURRENCY",preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
+                    String updatedTv = totalAmountTv.getText().toString().replace(getString(R.string.number_replace), String.valueOf(result));
+                    updatedTv=updatedTv.replace(getString(R.string.currency_replace),preferences.getString(PreferenceActivity.CURRENCY_KEY,getString(R.string.default_currency)));
                     totalAmountTv.setText(updatedTv);
 
                 }

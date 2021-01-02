@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
@@ -54,6 +55,12 @@ public class LoginFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        fbAuth = FirebaseAuth.getInstance();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
@@ -64,28 +71,23 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    private View.OnClickListener registerNow() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
-                if (beginActivity != null) {
-                    beginActivity.getSupportFragmentManager()
-                            .beginTransaction().setCustomAnimations(R.anim.left_to_right_in,R.anim.left_to_right_out)
-                            .replace(R.id.act_begin_frame_layout, new RegisterFragment())
-                            .commit();
-                }
-            }
-        };
+    private void initialiseComponents(View view) {
+        rememberMePreferences = getActivity().getSharedPreferences(REMEMBER_ME, Context.MODE_PRIVATE);
+        rememberMeCb = view.findViewById(R.id.checkBox);
+        registerNowButton = view.findViewById(R.id.frg_login_button_register);
+        loginButton = view.findViewById(R.id.frg_login_button_login);
+        emailTiet = view.findViewById(R.id.frg_login_tiet_email);
+        passwordTiet = view.findViewById(R.id.frg_login_tiet_password);
     }
 
-    //ToDo-> modify function to integrate FIREBASE
     private View.OnClickListener login() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = emailTiet.getText().toString().trim();
                 String password = passwordTiet.getText().toString();
+
+                //region Validations
                 if (TextUtils.isEmpty(email)) {
                     emailTiet.setError(getString(R.string.begin_email_empty));
                     return;
@@ -98,38 +100,85 @@ public class LoginFragment extends Fragment {
                     passwordTiet.setError(getString(R.string.begin_login_empty_password));
                     return;
                 }
+                //endregion Validations
 
-                fbAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                            createDashboardActivity();
-                            FirebaseUser currentUser = fbAuth.getCurrentUser();
-                            currentUserPreferences = getContext().getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, Context.MODE_PRIVATE);
-                            if (fbAuth.getCurrentUser().getDisplayName() == null) {
-                                updateUser(currentUserPreferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default)), null);
-
-                            }
-                            rememberMeToPreferenceFile(email, password);
-                            Toast.makeText(getActivity(), "You've been successfully signed in!", Toast.LENGTH_SHORT).show();
-                            getActivity().finish();
-
-                        } else {
-                            Toast.makeText(getActivity(), "Invalid email or password", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
+                signIn(email, password);
 
             }
         };
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        fbAuth = FirebaseAuth.getInstance();
+    private Task<AuthResult> signIn(String email, String password) {
+        return fbAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+
+                    createDashboardActivity();
+                    FirebaseUser currentUser = fbAuth.getCurrentUser();
+                    currentUserPreferences = getContext().getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, Context.MODE_PRIVATE);
+                    if (fbAuth.getCurrentUser().getDisplayName() == null) {
+                        updateUser(currentUserPreferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default)), null);
+                    }
+                    rememberMeToPreferenceFile(email, password);
+                    Toast.makeText(getActivity(), getString(R.string.login_succes), Toast.LENGTH_SHORT).show();
+                    getActivity().finish();
+
+                } else if (task.getException() instanceof FirebaseAuthException) {
+                    Toast.makeText(getActivity(), getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show();
+                    Log.d(getString(R.string.firebase_log), ((FirebaseAuthException) task.getException()).getErrorCode());
+
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+                    Log.d(getString(R.string.firebase_log), (task.getException()).getMessage());
+
+                }
+            }
+        });
+    }
+
+    private View.OnClickListener registerNow() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
+                if (beginActivity != null) {
+                    beginActivity.getSupportFragmentManager()
+                            .beginTransaction().setCustomAnimations(R.anim.left_to_right_in, R.anim.left_to_right_out)
+                            .replace(R.id.act_begin_frame_layout, new RegisterFragment())
+                            .commit();
+                }
+            }
+        };
+    }
+
+
+    private void createDashboardActivity() {
+        BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
+        if (beginActivity != null) {
+            Intent intent = new Intent(beginActivity, DashboardActivity.class);
+            beginActivity.startActivity(intent);
+            beginActivity.finish();
+        }
+    }
+
+    public void updateUser(String name, Uri photoUri) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(name)
+                    .build();
+
+            currentUser.updateProfile(profileUpdate)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (!task.isSuccessful()) {
+                                Log.d(getString(R.string.log_error), task.getException().getMessage());
+                            }
+                        }
+                    });
+        }
 
     }
 
@@ -150,48 +199,6 @@ public class LoginFragment extends Fragment {
             rememberMePreferences.edit().clear().apply();
 
         }
-    }
-
-    private void createDashboardActivity() {
-        BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
-        if (beginActivity != null) {
-            Intent intent = new Intent(beginActivity, DashboardActivity.class);
-            beginActivity.startActivity(intent);
-            beginActivity.finish();
-        }
-    }
-
-    private void initialiseComponents(View view) {
-        // preferences=getActivity().getSharedPreferences();
-        rememberMePreferences = getActivity().getSharedPreferences(REMEMBER_ME, Context.MODE_PRIVATE);
-        rememberMeCb = view.findViewById(R.id.checkBox);
-        registerNowButton = view.findViewById(R.id.frg_login_button_register);
-        loginButton = view.findViewById(R.id.frg_login_button_login);
-        emailTiet = view.findViewById(R.id.frg_login_tiet_email);
-        passwordTiet = view.findViewById(R.id.frg_login_tiet_password);
-    }
-
-    public void updateUser(String name, Uri photoUri) {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(name)
-                    .build();
-
-            currentUser.updateProfile(profileUpdate)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("OK", "User profile updated.");
-                                //todo: add remember me to shared preferences
-
-
-                            } else Log.d("ERROR", task.getException().getMessage());
-                        }
-                    });
-        }
-
     }
 
     public void populateLoginPage() {
