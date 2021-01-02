@@ -87,15 +87,15 @@ public class LoginFragment extends Fragment {
                 String email = emailTiet.getText().toString().trim();
                 String password = passwordTiet.getText().toString();
                 if (TextUtils.isEmpty(email)) {
-                    emailTiet.setError(getString(R.string.email_empty));
+                    emailTiet.setError(getString(R.string.begin_email_empty));
                     return;
                 }
                 if (!RegisterFragment.isEmailValid(email)) {
-                    emailTiet.setError(getString(R.string.register_invalid_email_error));
+                    emailTiet.setError(getString(R.string.begin_register_invalid_email_error));
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
-                    passwordTiet.setError(getString(R.string.login_empty_password));
+                    passwordTiet.setError(getString(R.string.begin_login_empty_password));
                     return;
                 }
 

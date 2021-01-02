@@ -114,12 +114,12 @@ public class AddEditBillActivity extends AppCompatActivity {
     }
 
     private boolean validate() {
-        if (selectedDateTv.getText().toString().equals(getString(R.string.bills_date))) {
-            Toast.makeText(getApplicationContext(), R.string.validate_pick_date, Toast.LENGTH_SHORT).show();
+        if (selectedDateTv.getText().toString().equals(getString(R.string.date_format))) {
+            Toast.makeText(getApplicationContext(), R.string.aebill_validate_pick_date, Toast.LENGTH_SHORT).show();
             return false;
         }
         if (amountEt.getText() == null || amountEt.getText().toString().isEmpty() || Double.parseDouble(amountEt.getText().toString()) < 0) {
-            Toast.makeText(getApplicationContext(), R.string.validate_amount, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.aebill_validate_amount, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -175,8 +175,8 @@ public class AddEditBillActivity extends AppCompatActivity {
 
     private AlertDialog getSupplierAlertDialog() {
         return new AlertDialog.Builder(AddEditBillActivity.this)
-                .setTitle(R.string.no_suppliers)
-                .setMessage(R.string.no_supplier_found)
+                .setTitle(R.string.aebill_no_suppliers_title)
+                .setMessage(R.string.aebill_no_suppliers_message)
                 .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -198,7 +198,7 @@ public class AddEditBillActivity extends AppCompatActivity {
             auxBill = (Bill) billActIntent.getSerializableExtra(BillActivity.BILL_TO_UPDATE);
             setComponentsValues(auxBill);
             supplierButton.setText(getString(R.string.aebill_edit_supplier));
-            saveButton.setText(getString(R.string.profile_save_changes));
+            saveButton.setText(getString(R.string.save_changes));
             supplierButton.setOnClickListener(editSupplierAction());
         } else {
             auxBill = new Bill();

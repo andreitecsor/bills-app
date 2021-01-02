@@ -3,10 +3,8 @@ package ie.dam.project.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 import ie.dam.project.BeginActivity;
 import ie.dam.project.DashboardActivity;
@@ -78,28 +75,28 @@ public class RegisterFragment extends Fragment {
                 String confirmPass = confirmPasswordET.getText().toString();
 
                 if (TextUtils.isEmpty(name)) {
-                    nameET.setError(getString(R.string.register_name_error));
+                    nameET.setError(getString(R.string.begin_register_name_error));
                     return;
                 }
                 if (TextUtils.isEmpty(email)) {
-                    emailET.setError(getString(R.string.email_empty));
+                    emailET.setError(getString(R.string.begin_email_empty));
                     return;
                 }
                 if (!isEmailValid(email)) {
-                    emailET.setError(getString(R.string.register_invalid_email_error));
+                    emailET.setError(getString(R.string.begin_register_invalid_email_error));
                     return;
                 }
 
                 if (password.length() < 8) {
-                    passwordET.setError(getString(R.string.register_password_lenght_error));
+                    passwordET.setError(getString(R.string.begin_register_password_len_error));
                     return;
                 }
                 if (TextUtils.isEmpty(confirmPass)) {
-                    confirmPasswordET.setError(getString(R.string.register_confirmPassword_empty_error));
+                    confirmPasswordET.setError(getString(R.string.begin_register_confirmPassword_empty_error));
                     return;
                 }
                 if (!password.equals(confirmPass)) {
-                    confirmPasswordET.setError(getString(R.string.register_confirmPassword_noMatch_error));
+                    confirmPasswordET.setError(getString(R.string.begin_register_confirmPassword_noMatch_error));
                     return;
                 }
 

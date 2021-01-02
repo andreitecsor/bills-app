@@ -1,99 +1,117 @@
 <resources>
     <string name="app_name">bills-management</string>
-    <string name="menu_home">Home</string>
-    <string name="menu_filter">Filter</string>
-    <string name="menu_profile">Profile</string>
-    <string name="menu_add">Add</string>
-    <string name="menu_currency">Currency</string>
+
+    <!--   General-->
+    <string name="save">SAVE</string>
+    <string name="OK">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="password">Password</string>
+    <string name="email">E-mail</string>
+    <string name="name">Name</string>
+    <string name="save_changes">Save changes</string>
+    <string name="date_format">dd MMM yyyy</string>
+    <string name="default_currency">EUR</string>
+    <string name="currency">Currency</string>
 
     <!-- BeginActivity + LoginFragment + RegisterFragment -->
-    <string name="begin_email">Email</string>
-    <string name="begin_password">Password</string>
     <string name="begin_login_button">Let\'s go</string>
+    <string name="begin_login_now_text">Already have an account?</string>
+    <string name="begin_login_now">Sign in</string>
+    <string name="begin_login_empty_password">Please enter your password!</string>
+    <string name="begin_login_invalid_credentials">Invalid e-mail or password</string>
+    <string name="begin_login_remember_me">Remember me</string>
     <string name="begin_register_now">Create one now</string>
     <string name="begin_register_now_text">Don\'t have an account?</string>
-    <string name="begin_login_now_text">Already have an account?</string>
-    <string name="begin_name">Name</string>
-    <string name="begin_confirm_password">Confirm password</string>
+    <string name="begin_register_confirm_password">Confirm password</string>
     <string name="begin_register_button">Let\'s get started</string>
-    <string name="begin_login_now">Sign in</string>
-    <string name="begin_invalid_credentials">Invalid email or password</string>
-
+    <string name="begin_register_name_error">Insert your name(or nickname)!</string>
+    <string name="begin_register_invalid_email_error">Not a valid email address!</string>
+    <string name="begin_register_password_len_error">Password must have at least 8 characters!</string>
+    <string name="begin_register_confirmPassword_empty_error">Please reenter your password!</string>
+    <string name="begin_register_confirmPassword_noMatch_error">Passwords do not match!</string>
+    <string name="begin_email_empty">Please insert your email!</string>
 
     <!--  DashboardActivity  -->
-    <string name="dashboard_hi_user">Welcome back, %1$s!</string>
+    <string name="dashboard_hi_user">Greetings, %1$s!</string>
     <string name="dashboard_stats">Here are your stats:</string>
     <string name="dashboard_to_pay">Bills to pay: NUMBER</string>
     <string name="dashboard_overdue">Overdue bills: NUMBER</string>
     <string name="dashboard_overall">Overall progress</string>
     <string name="dashboard_bills">Bills</string>
-    <string name="dsahboard_profile">Profile</string>
+    <string name="dashboard_profile">Profile</string>
     <string name="dashboard_preferences">Preferences</string>
     <string name="dashboard_logout">Logout</string>
-
-    <!--  BillsActivity  -->
-    <string name="bills_date">dd MMM yyyy</string>
-    <!--    Bill Row View-->
-    <string name="rv_amount">Amount€</string>
-    <string name="rv_supplier">Supplier</string>
-    <string name="rv_type">Type</string>
-    <!--    ProfileActivity-->
-    <string name="profile_name">Name</string>
-    <string name="profile_email">Email</string>
-    <string name="profile_gender">Gender</string>
-    <string name="profile_new_password">New Password</string>
-    <string name="profile_confirm_old_password">Write old password to confirm changes</string>
-    <string name="profile_save_changes">Save changes</string>
-    <string name="register_name_error">Insert your name(or nickname)!</string>
-    <string name="register_invalid_email_error">Not a valid email adress!</string>
-    <string name="email_empty">Please insert your email!</string>
-    <string name="login_empty_password">Please enter your password!</string>
-    <string name="logout_yes">Yes</string>
-    <string name="logout_no">No</string>
-    <string name="dashboard_logout_message">Are you sure you want to log out?</string>
     <string name="dashboard_logout_title">Logout confirmation</string>
-    <string name="register_password_lenght_error">Password have at least 8 characters!</string>
-    <string name="register_confirmPassword_empty_error">Please reenter your password!</string>
-    <string name="register_confirmPassword_noMatch_error">Passwords do not match!</string>
+    <string name="dashboard_logout_message">Are you sure you want to log out?</string>
+    <string name="dashboard_progress_status">PAID/TOTAL</string>
+    <string name="dashboard_amount_to_pay">Amount to pay: NUMBER CURRENCY</string>
+    <string name="dashboard_iv_desc_bills">Bills imageView</string>
+    <string name="dashboard_iv_desc_profile">Profile imageView</string>
+    <string name="dashboard_iv_desc_preferences">Preferences imageView</string>
+    <string name="dashboard_iv_desc_logout">Logout imageView</string>
+    <string name="dashboard_iv_desc_welcome">Welcome imageView</string>
+
+    <!--  BillActivity  -->
+    <string name="bill_fab_add_desc">Add a new bill</string>
+    <string name="bill_fab_filter_desc">Open FilterActivity</string>
+    <string name="bill_fab_extend_desc">Extend other buttons</string>
+
+    <!--    AddEditBillActivity-->
     <string name="aebill_dueto">Due to</string>
     <string name="aebill_amount">Amount</string>
     <string name="aebil_recurrent">Recurrent Payment</string>
-    <string name="aebill_already_payed">Already payed</string>
-    <string name="validate_pick_date">Please pick a date</string>
-    <string name="validate_amount">Please write a valid amount</string>
-    <string name="preference_name_default">Anonymous</string>
-    <string name="preference_save_succes">The preferences were updated succesfully!</string>
+    <string name="aebill_already_payed">Already paid</string>
+    <string name="aebill_recurrent_bill">Recurrent bill</string>
+    <string name="aebill_validate_pick_date">Please pick a date</string>
     <string name="aebill_add_supplier">Add new supplier</string>
     <string name="aebill_edit_supplier">Edit supplier</string>
-    <string name="aesupplier_name">Name</string>
-    <string name="aesupplier_email">Email</string>
+    <string name="aebill_no_suppliers_title">No suppliers found</string>
+    <string name="aebill_no_suppliers_message">Looks like there are no suppliers to attach to your bills. You need to add a new one.</string>
+    <string name="aebill_validate_amount">Please write a valid amount</string>
+
+
+    <!--    AddEditSupplierActivity-->
     <string name="aesupplier_phone">Phone</string>
     <string name="aesupplier_delete">Delete supplier</string>
-    <string name="invalid_email">Invalid email.</string>
-    <string name="invalid_name">Invalid supplier name.</string>
-    <string name="invalid_phone">Invalid phone number.</string>
-    <string name="supplier_exists">Supplier already exists.</string>
-    <string name="save">Save</string>
-    <string name="no_suppliers">No suppliers found</string>
-    <string name="no_supplier_found">Looks like there are no suppliers to attach to your bills. You need to add a new one.</string>
-    <string name="OK">OK</string>
-    <string name="cancel">CANCEL</string>
-    <string name="delete_supplier">DELETE SUPPLIER</string>
-    <string name="yes">YES</string>
-    <string name="no">No</string>
-    <string name="delete_supplier_check">ATTENTION! If you delete this supplier, you will also delete all the bills attached to it. Do you wish to proceed?</string>
-    <string name="filter">Filter</string>
-    <string name="minimum_amount">Min amount</string>
-    <string name="maximum_amount">Max amount</string>
-    <string name="payed_bill">Payed bill</string>
-    <string name="recurrent_bill">Recurrent bill</string>
-    <string name="apply_filters">Apply filters</string>
-    <string name="no_results_found">No results found</string>
-    <string name="invalid_amounts">Invalid amounts. Max must be bigger than min.</string>
-    <string name="progress_status">PAID/TOTAL</string>
-    <string name="remember_me">Remember me</string>
-    <string name="default_currency">EUR</string>
-    <string name="amount_to_pay_number_currency">Amount to pay: NUMBER CURRENCY</string>
+    <string name="aesupplier_invalid_email">Invalid e-mail.</string>
+    <string name="aesupplier_invalid_name">Invalid supplier name.</string>
+    <string name="aesupplier_invalid_phone">Invalid phone number.</string>
+    <string name="aesupplier_supplier_exists">Supplier already exists.</string>
+    <string name="aesupplier_delete_supplier">DELETE SUPPLIER</string>
+    <string name="aesupplier_delete_supplier_check">ATTENTION! If you delete this supplier, you will also delete all the bills attached to it. Do you wish to proceed?</string>
 
+    <!--    ProfileActivity-->
+    <string name="profile_new_password">New Password</string>
+    <string name="profile_confirm_old_password">Write old password to confirm changes</string>
+    <string name="example_company_com">example@company.com</string>
+
+    <!--    PreferencesActivity-->
+    <string name="preference_name_default">Anonymous</string>
+    <string name="preference_save_success">The preferences were updated successfully!</string>
+    <string name="preferences_gender">Gender</string>
+
+    <!--    FilterActivity-->
+    <string name="filter_paid_bill">Paid bill</string>
+    <string name="filter_minimum_amount">Min amount</string>
+    <string name="filter_maximum_amount">Max amount</string>
+    <string name="filter_no_results_found">No results found</string>
+    <string name="filter_apply_filters">Apply filters</string>
+    <string name="filter_button">Filter</string>
+    <string name="filter_invalid_amounts">Invalid amounts. Max must be bigger than min.</string>
+    <string name="filter_total_amount_paid">Total amount paid: NUMBER CURRENCY</string>
+
+    <!--    Bill Row View-->
+    <string name="rv_amount">Amount CUR</string>
+    <string name="rv_supplier">Supplier</string>
+    <string name="rv_type">Type</string>
+    <string name="preference_et_old_pass_hint">Your password</string>
+    <string name="preference_profile_picture">Profile picture</string>
+    <string name="rv_billtype_iv">BillType Icon</string>
+    <string name="rv_recurrent_iv">Recurrent Icon</string>
+    <string name="rv_not_paid_iv">Not paid Icon</string>
+    <string name="rv_checked_iv">Paid Icon</string>
 
 </resources>
+
