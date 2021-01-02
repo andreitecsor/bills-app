@@ -24,7 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import ie.dam.project.fragments.LoginFragment;
 import ie.dam.project.fragments.RegisterFragment;
+import ie.dam.project.util.encryption.AESCrypt;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -36,6 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button saveBtn;
 
     SharedPreferences preferences;
+    SharedPreferences rememberMePreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +74,9 @@ public class ProfileActivity extends AppCompatActivity {
                                                 break;
                                             case 1: {
                                                 updateEmail(email);
-
+                                                if (rememberMePreferences.getBoolean(LoginFragment.REMEMBER_ME_PREFERENCE, false)) {
+                                                    rememberMePreferences.edit().putString(LoginFragment.EMAIL_KEY, email).apply();
+                                                }
                                             }
                                         }
                                         int passwordValid = validatePassword(password);
@@ -80,12 +85,20 @@ public class ProfileActivity extends AppCompatActivity {
                                                 break;
                                             case 1:
                                                 updatePassword(password);
+                                                if (rememberMePreferences.getBoolean(LoginFragment.REMEMBER_ME_PREFERENCE, false)) {
+                                                    try {
+                                                        rememberMePreferences.edit().putString(LoginFragment.PASSWORD_KEY, AESCrypt.encrypt(password)).apply();
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
                                         }
                                         if (emailValid == -1 && passwordValid == -1) {
                                             Toast.makeText(getApplicationContext(), "Nothing to update!", Toast.LENGTH_SHORT).show();
 
                                         } else if (emailValid != 0 && passwordValid != 0 && emailET.getError() == null) {
                                             Toast.makeText(getApplicationContext(), "Account updated succesfully", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
                                             finish();
                                             overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
                                         }
@@ -111,6 +124,7 @@ public class ProfileActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.overcast_white));
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
+        rememberMePreferences = getSharedPreferences(LoginFragment.REMEMBER_ME, MODE_PRIVATE);
         emailET = findViewById(R.id.act_profile_et_email);
         passwordET = findViewById(R.id.act_profile_et_new_password);
         oldPasswordET = findViewById(R.id.act_profile_et_confirm_old_pass);
