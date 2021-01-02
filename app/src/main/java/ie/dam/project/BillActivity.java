@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -27,20 +26,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import ie.dam.project.data.domain.Bill;
 import ie.dam.project.data.domain.BillShownInfo;
-import ie.dam.project.data.domain.Supplier;
-import ie.dam.project.data.domain.SupplierWithBills;
 import ie.dam.project.data.service.BillService;
-import ie.dam.project.data.service.SupplierService;
 import ie.dam.project.fragments.RegisterFragment;
-import ie.dam.project.util.JSON.HttpManager;
-import ie.dam.project.util.JSON.SupplierJsonParser;
 import ie.dam.project.util.adapters.BillAdapter;
 import ie.dam.project.util.adapters.RecyclerViewItemClick;
-import ie.dam.project.util.asynctask.AsyncTaskRunner;
 import ie.dam.project.util.asynctask.Callback;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -50,9 +42,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
     public static final String BILL_TO_UPDATE = "BILL_TO_UPDATE";
 
     private BillService billService;
-
     private List<BillShownInfo> billShownInfos = new ArrayList<>();
-
 
     private RecyclerView recyclerView;
     private BillAdapter billAdapter;
@@ -69,15 +59,11 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
     private SharedPreferences preferences;
     private FirebaseUser user;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill);
         billService = new BillService(getApplicationContext());
-
-
         initialiseComponents();
     }
 
@@ -99,6 +85,35 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         billService.getAllWithSupplierName(getAllBillShownInfos());
         user = FirebaseAuth.getInstance().getCurrentUser();
         preferences = getSharedPreferences(user.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
+    }
+
+    private void setCurrentDate() {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+        TextView currentDate = findViewById(R.id.act_bill_tv_date);
+        currentDate.setText(formatter.format(date));
+    }
+
+    private View.OnClickListener openAddBillActivity() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddEditBillActivity.class);
+                startActivityForResult(intent, ADD_BILL);
+                overridePendingTransition(R.anim.bot_to_top_in, R.anim.bot_to_top_out);
+            }
+        };
+    }
+
+    private View.OnClickListener openFilterActivity() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), FilterActivity.class));
+                finish();
+                overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_out);
+            }
+        };
     }
 
     private View.OnClickListener moreFabs() {
@@ -134,31 +149,35 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         }
     }
 
-    private View.OnClickListener openFilterActivity() {
-        return new View.OnClickListener() {
+    private Callback<List<BillShownInfo>> getAllBillShownInfos() {
+        return new Callback<List<BillShownInfo>>() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), FilterActivity.class));
-                finish();
-                overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_out);
+            public void runResultOnUiThread(List<BillShownInfo> result) {
+                if (result != null) {
+                    billShownInfos.clear();
+                    billShownInfos.addAll(result);
+                    Collections.sort(billShownInfos, billsComparator());
+                    if (billAdapter == null) {
+                        billAdapter = new BillAdapter(billShownInfos, BillActivity.this, preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency)));
+                        recyclerView.setAdapter(billAdapter);
+                    } else {
+                        billAdapter.notifyDataSetChanged();
+                    }
+                }
             }
         };
     }
 
-    private void setCurrentDate() {
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
-        TextView currentDate = findViewById(R.id.act_bill_tv_date);
-        currentDate.setText(formatter.format(date));
-    }
-
-    private View.OnClickListener openAddBillActivity() {
-        return new View.OnClickListener() {
+    private Comparator<BillShownInfo> billsComparator() {
+        return new Comparator<BillShownInfo>() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AddEditBillActivity.class);
-                startActivityForResult(intent, ADD_BILL);
-                overridePendingTransition(R.anim.bot_to_top_in, R.anim.bot_to_top_out);
+            public int compare(BillShownInfo o1, BillShownInfo o2) {
+                int result;
+                result = Boolean.compare(o1.getBill().isPaid(), o2.getBill().isPaid());
+                if (result == 0) {
+                    result = o1.getBill().getDueTo().compareTo(o2.getBill().getDueTo());
+                }
+                return result;
             }
         };
     }
@@ -207,35 +226,14 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         }
     };
 
-    private Callback<List<BillShownInfo>> getAllBillShownInfos() {
-        return new Callback<List<BillShownInfo>>() {
+    private Callback<Integer> deleteBill(final int selectedPosition) {
+        return new Callback<Integer>() {
             @Override
-            public void runResultOnUiThread(List<BillShownInfo> result) {
-                if (result != null) {
-                    billShownInfos.clear();
-                    billShownInfos.addAll(result);
-                    Collections.sort(billShownInfos, billsComparator());
-                    if (billAdapter == null) {
-                        billAdapter = new BillAdapter(billShownInfos, BillActivity.this, preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency)));
-                        recyclerView.setAdapter(billAdapter);
-                    } else {
-                        billAdapter.notifyDataSetChanged();
-                    }
+            public void runResultOnUiThread(Integer result) {
+                if (result != -1) {
+                    billShownInfos.remove(selectedPosition);
+                    billAdapter.notifyItemRemoved(selectedPosition);
                 }
-            }
-        };
-    }
-
-    private Comparator<BillShownInfo> billsComparator() {
-        return new Comparator<BillShownInfo>() {
-            @Override
-            public int compare(BillShownInfo o1, BillShownInfo o2) {
-                int result;
-                result = Boolean.compare(o1.getBill().isPaid(), o2.getBill().isPaid());
-                if (result == 0) {
-                    result = o1.getBill().getDueTo().compareTo(o2.getBill().getDueTo());
-                }
-                return result;
             }
         };
     }
@@ -252,25 +250,13 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         };
     }
 
-    private Callback<Integer> deleteBill(final int selectedPosition) {
-        return new Callback<Integer>() {
-            @Override
-            public void runResultOnUiThread(Integer result) {
-                if (result != -1) {
-                    billShownInfos.remove(selectedPosition);
-                    billAdapter.notifyItemRemoved(selectedPosition);
-                }
-            }
-        };
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
             Bill bill = (Bill) data.getSerializableExtra(AddEditBillActivity.PROCESSED_BILL);
             if (requestCode == ADD_BILL) {
-                billService.insert(insertBill2(), bill);
+                billService.insert(insertBill(), bill);
                 return;
             }
             if (requestCode == EDIT_BILL) {
@@ -281,7 +267,7 @@ public class BillActivity extends AppCompatActivity implements RecyclerViewItemC
         billService.getAllWithSupplierName(getAllBillShownInfos());
     }
 
-    private Callback<Bill> insertBill2() {
+    private Callback<Bill> insertBill() {
         return new Callback<Bill>() {
             @Override
             public void runResultOnUiThread(Bill result) {

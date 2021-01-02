@@ -3,8 +3,8 @@
     package="ie.dam.project">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,23 +17,14 @@
         <activity android:name=".AddEditSupplierActivity" />
         <activity android:name=".PreferenceActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".DashboardActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
+        <activity android:name=".DashboardActivity"></activity>
         <activity android:name=".AddEditBillActivity" />
         <activity android:name=".BeginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--             TODO:uncomment this and delete the others when finishing the app-->
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-
-
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".BillActivity" />
 
