@@ -22,12 +22,9 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
@@ -58,6 +55,12 @@ public class LoginFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        fbAuth = FirebaseAuth.getInstance();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
@@ -66,6 +69,72 @@ public class LoginFragment extends Fragment {
         registerNowButton.setOnClickListener(registerNow());
         populateLoginPage();
         return view;
+    }
+
+    private void initialiseComponents(View view) {
+        rememberMePreferences = getActivity().getSharedPreferences(REMEMBER_ME, Context.MODE_PRIVATE);
+        rememberMeCb = view.findViewById(R.id.checkBox);
+        registerNowButton = view.findViewById(R.id.frg_login_button_register);
+        loginButton = view.findViewById(R.id.frg_login_button_login);
+        emailTiet = view.findViewById(R.id.frg_login_tiet_email);
+        passwordTiet = view.findViewById(R.id.frg_login_tiet_password);
+    }
+
+    private View.OnClickListener login() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = emailTiet.getText().toString().trim();
+                String password = passwordTiet.getText().toString();
+
+                //region Validations
+                if (TextUtils.isEmpty(email)) {
+                    emailTiet.setError(getString(R.string.begin_email_empty));
+                    return;
+                }
+                if (!RegisterFragment.isEmailValid(email)) {
+                    emailTiet.setError(getString(R.string.begin_register_invalid_email_error));
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
+                    passwordTiet.setError(getString(R.string.begin_login_empty_password));
+                    return;
+                }
+                //endregion Validations
+
+                signIn(email, password);
+
+            }
+        };
+    }
+
+    private Task<AuthResult> signIn(String email, String password) {
+        return fbAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+
+                    createDashboardActivity();
+                    FirebaseUser currentUser = fbAuth.getCurrentUser();
+                    currentUserPreferences = getContext().getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, Context.MODE_PRIVATE);
+                    if (fbAuth.getCurrentUser().getDisplayName() == null) {
+                        updateUser(currentUserPreferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default)), null);
+                    }
+                    rememberMeToPreferenceFile(email, password);
+                    Toast.makeText(getActivity(), getString(R.string.login_succes), Toast.LENGTH_SHORT).show();
+                    getActivity().finish();
+
+                } else if (task.getException() instanceof FirebaseAuthException) {
+                    Toast.makeText(getActivity(), getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show();
+                    Log.d(getString(R.string.firebase_log), ((FirebaseAuthException) task.getException()).getErrorCode());
+
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+                    Log.d(getString(R.string.firebase_log), (task.getException()).getMessage());
+
+                }
+            }
+        });
     }
 
     private View.OnClickListener registerNow() {
@@ -84,83 +153,6 @@ public class LoginFragment extends Fragment {
     }
 
 
-    private View.OnClickListener login() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = emailTiet.getText().toString().trim();
-                String password = passwordTiet.getText().toString();
-                if (TextUtils.isEmpty(email)) {
-                    emailTiet.setError(getString(R.string.begin_email_empty));
-                    return;
-                }
-                if (!RegisterFragment.isEmailValid(email)) {
-                    emailTiet.setError(getString(R.string.begin_register_invalid_email_error));
-                    return;
-                }
-                if (TextUtils.isEmpty(password)) {
-                    passwordTiet.setError(getString(R.string.begin_login_empty_password));
-                    return;
-                }
-
-                fbAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                            createDashboardActivity();
-                            FirebaseUser currentUser = fbAuth.getCurrentUser();
-                            currentUserPreferences = getContext().getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, Context.MODE_PRIVATE);
-                            if (fbAuth.getCurrentUser().getDisplayName() == null) {
-                                updateUser(currentUserPreferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default)), null);
-
-                            }
-                            rememberMeToPreferenceFile(email, password);
-                            Toast.makeText(getActivity(), getString(R.string.login_succes), Toast.LENGTH_SHORT).show();
-                            getActivity().finish();
-
-                        } else if (task.getException() instanceof FirebaseAuthException) {
-                            Toast.makeText(getActivity(), getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show();
-                            Log.d(getString(R.string.firebase_log), ((FirebaseAuthException) task.getException()).getErrorCode());
-
-                        } else {
-                            Toast.makeText(getActivity(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
-                            Log.d(getString(R.string.firebase_log), (task.getException()).getMessage());
-
-                        }
-                    }
-                });
-
-            }
-        };
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        fbAuth = FirebaseAuth.getInstance();
-
-    }
-
-    private void rememberMeToPreferenceFile(String email, String password) {
-        if (rememberMeCb.isChecked()) {
-            try {
-
-                SharedPreferences.Editor editor = rememberMePreferences.edit();
-                editor
-                        .putString(EMAIL_KEY, email)
-                        .putString(PASSWORD_KEY, AESCrypt.encrypt(password))
-                        .putBoolean(REMEMBER_ME_PREFERENCE, true)
-                        .apply();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            rememberMePreferences.edit().clear().apply();
-
-        }
-    }
-
     private void createDashboardActivity() {
         BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
         if (beginActivity != null) {
@@ -168,16 +160,6 @@ public class LoginFragment extends Fragment {
             beginActivity.startActivity(intent);
             beginActivity.finish();
         }
-    }
-
-    private void initialiseComponents(View view) {
-        // preferences=getActivity().getSharedPreferences();
-        rememberMePreferences = getActivity().getSharedPreferences(REMEMBER_ME, Context.MODE_PRIVATE);
-        rememberMeCb = view.findViewById(R.id.checkBox);
-        registerNowButton = view.findViewById(R.id.frg_login_button_register);
-        loginButton = view.findViewById(R.id.frg_login_button_login);
-        emailTiet = view.findViewById(R.id.frg_login_tiet_email);
-        passwordTiet = view.findViewById(R.id.frg_login_tiet_password);
     }
 
     public void updateUser(String name, Uri photoUri) {
@@ -198,6 +180,25 @@ public class LoginFragment extends Fragment {
                     });
         }
 
+    }
+
+    private void rememberMeToPreferenceFile(String email, String password) {
+        if (rememberMeCb.isChecked()) {
+            try {
+
+                SharedPreferences.Editor editor = rememberMePreferences.edit();
+                editor
+                        .putString(EMAIL_KEY, email)
+                        .putString(PASSWORD_KEY, AESCrypt.encrypt(password))
+                        .putBoolean(REMEMBER_ME_PREFERENCE, true)
+                        .apply();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            rememberMePreferences.edit().clear().apply();
+
+        }
     }
 
     public void populateLoginPage() {

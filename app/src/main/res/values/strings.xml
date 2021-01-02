@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">bills-management</string>
+    <string name="app_name">Bills</string>
 
     <!--   General-->
     <string name="save">SAVE</string>
@@ -129,7 +129,6 @@
     <string name="log_failed">FAILED</string>
     <string name="reauthenticate_error">ERROR REAUTHENTICATING</string>
     <string name="invalid_confirm_password">Invalid Confirm Password</string>
-    <string name="no_confirm_password">No confirm password</string>
     <string name="update_username_log">UserName updated.</string>
     <string name="password_update_log">User password updated.</string>
     <string name="email_updated_log">User email address updated.</string>
@@ -153,6 +152,7 @@
     <string name="upload_image">Image uploaded</string>
     <string name="image_fail">Failed to upload picture,  please try again!</string>
     <string name="image_progress">Progress: %1$d </string>
+    <string name="no_confirm_password">No confirm password</string>
 
 </resources>
 

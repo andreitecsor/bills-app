@@ -60,24 +60,20 @@ public class PreferenceActivity extends AppCompatActivity {
 
     public static final String GENDER_KEY = "gender_key";
     public static final String CURRENCY_KEY = "currency_key";
-    public static final int IMAGE_CODE = 500;
     private static final int PICK_IMAGE_CHOOSER_REQUEST_CODE = 300;
 
 
-    TextInputEditText nameET;
-    EditText currencyEt;
-    ImageButton imageIB;
-    EditText oldPasswordET;
-    FirebaseUser currentUser;
-    Button saveBtn;
-    Spinner genderSpn;
-    SharedPreferences preferences;
-    Uri downloadUri = null;
-    Uri uploadUri;
-    FirebaseStorage storage;
-    StorageReference storageReference;
-    StorageReference fileReference;
-    Bitmap selectedImage;
+    private TextInputEditText nameET;
+    private EditText currencyEt;
+    private ImageButton imageIB;
+    private EditText oldPasswordET;
+    private FirebaseUser currentUser;
+    private Button saveBtn;
+    private Spinner genderSpn;
+    private SharedPreferences preferences;
+    private Uri uploadUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
 
     @Override
@@ -98,20 +94,15 @@ public class PreferenceActivity extends AppCompatActivity {
                 String gender = genderSpn.getSelectedItem().toString();
                 String currency = currencyEt.getText().toString().trim();
 
-
                 if (!oldPassword.isEmpty()) {
-
                     AuthCredential credential = EmailAuthProvider
                             .getCredential(currentUser.getEmail(), oldPassword);
 
-
                     currentUser.reauthenticate(credential)
                             .addOnCompleteListener(getOnCompleteListener(name, uploadUri, gender, currency));
-
-
-                } else
-                    Toast.makeText(getApplicationContext(), "No confirm password", Toast.LENGTH_SHORT).show();
-
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.no_confirm_password, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -133,6 +124,37 @@ public class PreferenceActivity extends AppCompatActivity {
         downloadPhoto();
     }
 
+    private void downloadPhoto() {
+
+        StorageReference imageRef = this.storageReference.child("images/" + currentUser.getUid());
+        File localFile = null;
+        try {
+            localFile = File.createTempFile(currentUser.getUid(), "jpg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String path = localFile.getPath();
+        imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                resizeImage(bitmap);
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                resizeImage(BitmapFactory.decodeResource(getResources(), R.drawable.add_photo));
+            }
+        });
+    }
+
+    public void resizeImage(Bitmap bitmap) {
+        Bitmap resized = Bitmap.createScaledBitmap(bitmap, imageIB.getWidth(), imageIB.getHeight(), true);
+        imageIB.setImageBitmap(resized);
+    }
+
     private void populateSpinner() {
         ArrayAdapter genderAdapter = new ArrayAdapter<Gender>(this, R.layout.spinner_view, Gender.values());
         genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_view);
@@ -148,11 +170,26 @@ public class PreferenceActivity extends AppCompatActivity {
     private void populateFields() {
         if (currentUser.getDisplayName() != null) {
             nameET.setText(currentUser.getDisplayName());
-
         }
         if (preferences.contains(CURRENCY_KEY)) {
             currencyEt.setText(preferences.getString(CURRENCY_KEY, getString(R.string.default_currency)));
         }
+    }
+
+    private View.OnClickListener selectPictureFromGallery() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent gallery = new Intent();
+                gallery.setType("image/*");
+                gallery.setAction(Intent.ACTION_GET_CONTENT);
+
+                startActivityForResult(gallery, PICK_IMAGE_CHOOSER_REQUEST_CODE);
+
+            }
+
+        };
     }
 
     private OnCompleteListener<Void> getOnCompleteListener(String name, Uri imageUri, String gender, String currency) {
@@ -166,14 +203,15 @@ public class PreferenceActivity extends AppCompatActivity {
                     //region Name Validation + Update
                     int nameValid = validateName(name);
                     switch (nameValid) {
-                        case 0:
+                        case 0: {
                             break;
+                        }
                         case 1: {
                             updateUser(name, imageUri);
                             addNameToSharedPreferences(name);
                         }
                     }
-                    //endregion
+                    //endregion Name Validation + Update
                     //region Gender Validation + Update
                     int genderValid = validateGender(gender);
                     if (genderValid == 1) {
@@ -193,7 +231,7 @@ public class PreferenceActivity extends AppCompatActivity {
                     //endregion
                     //region Final Response
                     if (genderValid == -1 && nameValid == -1 && currencyValid == -1) {
-                        Toast.makeText(getApplicationContext(),getString(R.string.no_update_done), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.no_update_done), Toast.LENGTH_SHORT).show();
 
                     } else if (nameValid != 0 && currencyValid != 0) {
                         Toast.makeText(getApplicationContext(), getString(R.string.update_success), Toast.LENGTH_SHORT).show();
@@ -216,25 +254,6 @@ public class PreferenceActivity extends AppCompatActivity {
             return -1;
         if (name.isEmpty()) {
             nameET.setError(getString(R.string.empty_name));
-            return 0;
-        }
-        return 1;
-    }
-
-    private int validateGender(String gender) {
-        String currentGender = preferences.getString(PreferenceActivity.GENDER_KEY, Gender.RATHER_NOT_SAY.toString());
-        if (gender.toString().equals(currentGender)) {
-            return -1;
-        } else return 1;
-    }
-
-    private int validateCurrency(String currency) {
-        String currentCurrency = preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency));
-        if (currency.equals(currentCurrency)) {
-            return -1;
-        }
-        if (currency.isEmpty() || currency.length() != 3) {
-            currencyEt.setError(getString(R.string.currency_error_message));
             return 0;
         }
         return 1;
@@ -268,11 +287,30 @@ public class PreferenceActivity extends AppCompatActivity {
 
     }
 
+    private int validateGender(String gender) {
+        String currentGender = preferences.getString(PreferenceActivity.GENDER_KEY, Gender.RATHER_NOT_SAY.toString());
+        if (gender.toString().equals(currentGender)) {
+            return -1;
+        } else return 1;
+    }
+
     private void addGenderToSharedPreferences(String gender) {
         SharedPreferences.Editor editor = preferences.edit();
         editor
                 .putString(GENDER_KEY, gender)
                 .apply();
+    }
+
+    private int validateCurrency(String currency) {
+        String currentCurrency = preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency));
+        if (currency.equals(currentCurrency)) {
+            return -1;
+        }
+        if (currency.isEmpty() || currency.length() != 3) {
+            currencyEt.setError(getString(R.string.currency_error_message));
+            return 0;
+        }
+        return 1;
     }
 
     private void addCurrencyToPreferenceFiles(String currency) {
@@ -299,36 +337,14 @@ public class PreferenceActivity extends AppCompatActivity {
         }
     }
 
-    private View.OnClickListener selectPictureFromGallery() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent gallery = new Intent();
-                gallery.setType("image/*");
-                gallery.setAction(Intent.ACTION_GET_CONTENT);
-
-                startActivityForResult(gallery, PICK_IMAGE_CHOOSER_REQUEST_CODE);
-
-            }
-
-        };
-    }
-
-    public void resizeImage(Bitmap bitmap) {
-        Bitmap resized = Bitmap.createScaledBitmap(bitmap, imageIB.getWidth(), imageIB.getHeight(), true);
-        imageIB.setImageBitmap(resized);
-    }
-
     public void uploadImage() {
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(getString(R.string.picture_wait));
         progressDialog.show();
 
-        StorageReference riversRef = storageReference.child("images/" + currentUser.getUid());
-
-        riversRef.putFile(uploadUri)
+        StorageReference imageRef = storageReference.child("images/" + currentUser.getUid());
+        imageRef.putFile(uploadUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -350,40 +366,7 @@ public class PreferenceActivity extends AppCompatActivity {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
                 double progress = (100 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                progressDialog.setMessage(getString(R.string.image_progress,(int)progress));
-            }
-        });
-
-
-//
-    }
-
-    private void downloadPhoto() {
-
-        StorageReference reference = this.storageReference.child("images/" + currentUser.getUid());
-        File localFile = null;
-        try {
-            localFile = File.createTempFile(currentUser.getUid(), "jpg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String path = localFile.getPath();
-        reference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-                Bitmap bitmap = BitmapFactory.decodeFile(path);
-                resizeImage(bitmap);
-
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-
-               // Drawable addDrawable=getDrawable(R.drawable.add_photo);
-
-                resizeImage(BitmapFactory.decodeResource(getResources(), R.drawable.add_photo));
+                progressDialog.setMessage(getString(R.string.image_progress, (int) progress));
             }
         });
     }
@@ -391,7 +374,7 @@ public class PreferenceActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(getApplicationContext(),DashboardActivity.class));
+        startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
         overridePendingTransition(R.anim.bot_to_top_in, R.anim.bot_to_top_out);
         finish();
     }

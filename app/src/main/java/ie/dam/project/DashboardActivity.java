@@ -71,7 +71,6 @@ public class DashboardActivity extends AppCompatActivity {
         supplierService = new SupplierService(getApplicationContext());
         preferences = getSharedPreferences(currentUser.getUid() + RegisterFragment.SHARED_PREF_FILE_EXTENSION, MODE_PRIVATE);
         getNameFromSharedPreferences();
-      //  addNameToSharedPreferences();
         initialiseComponents();
 
     }
@@ -100,10 +99,6 @@ public class DashboardActivity extends AppCompatActivity {
         profileCardButton.setOnClickListener(goToProfileActivity());
         preferencesCardButton.setOnClickListener(goToPreferencesActivity());
         logoutCardButton.setOnClickListener(logoutClickEvent());
-
-
-        //name = preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default));
-
 
         billService.getAll(overdueBillsSort());
         billService.getNoBillsByPaymentType(getUnpaidBills(), false);
@@ -252,6 +247,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         };
     }
+
     private double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
@@ -259,20 +255,11 @@ public class DashboardActivity extends AppCompatActivity {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
-    private void addNameToSharedPreferences() {
-        if (currentUser != null) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor
-                    .putString(RegisterFragment.NAME_KEY, currentUser.getDisplayName())
-                    .apply();
-        }
 
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         hiUser.setText(getString(R.string.dashboard_hi_user, preferences.getString(RegisterFragment.NAME_KEY, getString(R.string.preference_name_default))));
     }
 

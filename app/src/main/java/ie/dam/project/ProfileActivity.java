@@ -31,92 +31,22 @@ import ie.dam.project.util.encryption.AESCrypt;
 public class ProfileActivity extends AppCompatActivity {
 
 
-    EditText emailET;
-    EditText passwordET;
-    EditText oldPasswordET;
-    FirebaseUser currentUser;
-    Button saveBtn;
+    private EditText emailET;
+    private EditText passwordET;
+    private EditText oldPasswordET;
+    private FirebaseUser currentUser;
+    private Button saveBtn;
 
-    SharedPreferences preferences;
-    SharedPreferences rememberMePreferences;
+    private SharedPreferences preferences;
+    private SharedPreferences rememberMePreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         initializeComponents();
-        if (currentUser != null) {
-            emailET.setText(currentUser.getEmail().toString());
-
-        }
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String oldPassword = oldPasswordET.getText().toString();
-                String password = passwordET.getText().toString();
-                String email = emailET.getText().toString().trim();
-
-                if (!oldPassword.isEmpty()) {
-
-                    AuthCredential credential = EmailAuthProvider
-                            .getCredential(currentUser.getEmail(), oldPassword);
-
-
-                    currentUser.reauthenticate(credential)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Log.d(getString(R.string.log_ok), getString(R.string.log_user_reauthenticated));
-                                        int emailValid = validateEmail(email, currentUser.getEmail());
-                                        switch (emailValid) {
-                                            case 0:
-                                                break;
-                                            case 1: {
-                                                updateEmail(email);
-                                                if (rememberMePreferences.getBoolean(LoginFragment.REMEMBER_ME_PREFERENCE, false)) {
-                                                    rememberMePreferences.edit().putString(LoginFragment.EMAIL_KEY, email).apply();
-                                                }
-                                            }
-                                        }
-                                        int passwordValid = validatePassword(password);
-                                        switch (passwordValid) {
-                                            case 0:
-                                                break;
-                                            case 1:
-                                                updatePassword(password);
-                                                if (rememberMePreferences.getBoolean(LoginFragment.REMEMBER_ME_PREFERENCE, false)) {
-                                                    try {
-                                                        rememberMePreferences.edit().putString(LoginFragment.PASSWORD_KEY, AESCrypt.encrypt(password)).apply();
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                        }
-                                        if (emailValid == -1 && passwordValid == -1) {
-                                            Toast.makeText(getApplicationContext(), getString(R.string.no_update_done), Toast.LENGTH_SHORT).show();
-
-                                        } else if (emailValid != 0 && passwordValid != 0 && emailET.getError() == null) {
-                                            Toast.makeText(getApplicationContext(), getString(R.string.update_success), Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
-                                            finish();
-                                            overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
-                                        }
-
-
-                                    } else {
-                                        Log.d(getString(R.string.log_failed), getString(R.string.reauthenticate_error));
-                                        Toast.makeText(getApplicationContext(), getString(R.string.invalid_confirm_password), Toast.LENGTH_SHORT).show();
-
-
-                                    }
-                                }
-                            });
-                } else
-                    Toast.makeText(getApplicationContext(), getString(R.string.no_confirm_password), Toast.LENGTH_SHORT).show();
-
-            }
-        });
+        checkNullUser();
+        saveBtn.setOnClickListener(saveButtonOnClickListener());
 
     }
 
@@ -132,51 +62,91 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    public void updateUser(String name, Uri photoUri) {
+    private void checkNullUser() {
         if (currentUser != null) {
-            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(name)
-                    .build();
-
-            currentUser.updateProfile(profileUpdate)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d(getString(R.string.log_ok), getString(R.string.update_username_log));
-                            } else Log.d(getString(R.string.log_error), task.getException().getMessage());
-                        }
-                    });
+            emailET.setText(currentUser.getEmail());
         }
     }
 
-    private void updatePassword(String password) {
+    private View.OnClickListener saveButtonOnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        currentUser.updatePassword(password)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(getString(R.string.log_ok), getString(R.string.password_update_log));
-                        }
-                    }
-                });
+                //region Declarations
+                String oldPassword = oldPasswordET.getText().toString();
+                String password = passwordET.getText().toString();
+                String email = emailET.getText().toString().trim();
+                //endregion Declarations
+
+                if (!oldPassword.isEmpty()) {
+                    AuthCredential credential = EmailAuthProvider
+                            .getCredential(currentUser.getEmail(), oldPassword);
+
+                    currentUser.reauthenticate(credential)
+                            .addOnCompleteListener(reauthenticateOnCompleteListener(password, email));
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_confirm_password), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
     }
 
-    private void updateEmail(String email) {
-        currentUser.updateEmail(email)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(getString(R.string.log_ok), getString(R.string.email_updated_log));
-                        } else {
-                            emailET.setError(getString(R.string.email_existing));
+    private OnCompleteListener<Void> reauthenticateOnCompleteListener(String password, String email) {
+        return new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(getString(R.string.log_ok), getString(R.string.log_user_reauthenticated));
+                    //region Email Validation + Update
+                    int emailValid = validateEmail(email, currentUser.getEmail());
+                    switch (emailValid) {
+                        case 0: {
+                            break;
+                        }
+                        case 1: {
+                            updateEmail(email);
+                            if (rememberMePreferences.getBoolean(LoginFragment.REMEMBER_ME_PREFERENCE, false)) {
+                                rememberMePreferences.edit().putString(LoginFragment.EMAIL_KEY, email).apply();
+                            }
                         }
                     }
-                });
-    }
+                    //endregion Email Validation + Update
+                    //region Password Validation + Update
 
+                    int passwordValid = validatePassword(password);
+                    switch (passwordValid) {
+                        case 0:
+                            break;
+                        case 1:
+                            updatePassword(password);
+                            if (rememberMePreferences.getBoolean(LoginFragment.REMEMBER_ME_PREFERENCE, false)) {
+                                try {
+                                    rememberMePreferences.edit().putString(LoginFragment.PASSWORD_KEY, AESCrypt.encrypt(password)).apply();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                    }
+                    //endregion Password Validation + Update
+                    //region Final Response
+                    if (emailValid == -1 && passwordValid == -1) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.no_update_done), Toast.LENGTH_SHORT).show();
+
+                    } else if (emailValid != 0 && passwordValid != 0 && emailET.getError() == null) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.update_success), Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+                        finish();
+                        overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
+                    }
+                    //endregion Final Response
+                } else {
+                    Log.d(getString(R.string.log_failed), getString(R.string.reauthenticate_error));
+                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_confirm_password), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+    }
 
     public int validateEmail(String email, String currentEmail) {
 
@@ -196,6 +166,20 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    private void updateEmail(String email) {
+        currentUser.updateEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(getString(R.string.log_ok), getString(R.string.email_updated_log));
+                        } else {
+                            emailET.setError(getString(R.string.email_existing));
+                        }
+                    }
+                });
+    }
+
     public int validatePassword(String password) {
         if (password.isEmpty()) {
             return -1;
@@ -205,6 +189,20 @@ public class ProfileActivity extends AppCompatActivity {
             return 0;
         } else return 1;
     }
+
+    private void updatePassword(String password) {
+
+        currentUser.updatePassword(password)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(getString(R.string.log_ok), getString(R.string.password_update_log));
+                        }
+                    }
+                });
+    }
+
 
     @Override
     public void onBackPressed() {

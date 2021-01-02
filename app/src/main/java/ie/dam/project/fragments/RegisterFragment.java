@@ -50,12 +50,65 @@ public class RegisterFragment extends Fragment {
 
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        fbAuth = FirebaseAuth.getInstance();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         initialiseComponents(view);
+        loginNowButton.setOnClickListener(loginOnClickListener());
+        registerButton.setOnClickListener(registerOnClickListener());
+        return view;
+    }
 
-        loginNowButton.setOnClickListener(new View.OnClickListener() {
+    private void initialiseComponents(View view) {
+
+        authStateListener = getAuthStateListener();
+
+        fbAuth.addAuthStateListener(authStateListener);
+
+        loginNowButton = view.findViewById(R.id.frg_register_button_login);
+        registerButton = view.findViewById(R.id.frg_register_button_register);
+        nameET = view.findViewById(R.id.frg_register_tiet_name);
+        emailET = view.findViewById(R.id.frg_register_tiet_email);
+        passwordET = view.findViewById(R.id.frg_register_tiet_password);
+        confirmPasswordET = view.findViewById(R.id.frg_register_tiet_password_confirm);
+    }
+
+    private FirebaseAuth.AuthStateListener getAuthStateListener() {
+        return new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    BeginActivity beginActivity = (BeginActivity) getContext();
+                    if (beginActivity != null) {
+                        createLoginFragment(beginActivity);
+                        Toast.makeText(getContext(), getString(R.string.create_user_succes),
+                                Toast.LENGTH_LONG).show();
+                        preferences = getContext().getSharedPreferences(FirebaseAuth.getInstance().getCurrentUser().getUid() + SHARED_PREF_FILE_EXTENSION, Context.MODE_PRIVATE);
+                        addNameToSharedPreferences();
+                    }
+
+                }
+
+
+            }
+        };
+    }
+
+    private void addNameToSharedPreferences() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(NAME_KEY, name).apply();
+    }
+
+    private View.OnClickListener loginOnClickListener() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
@@ -63,17 +116,28 @@ public class RegisterFragment extends Fragment {
                     createLoginFragment(beginActivity);
                 }
             }
-        });
+        };
+    }
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
+    private void createLoginFragment(BeginActivity beginActivity) {
+        beginActivity.getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.right_to_left_in,R.anim.right_to_left_out)
+                .replace(R.id.act_begin_frame_layout,
+                        new LoginFragment()).commit();
+    }
+
+    private View.OnClickListener registerOnClickListener() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 name = nameET.getText().toString();
-
+                //region Declarations
                 String email = emailET.getText().toString().trim();
                 String password = passwordET.getText().toString();
                 String confirmPass = confirmPasswordET.getText().toString();
-
+                //endregion Declarations
+                //region Validations
                 if (TextUtils.isEmpty(name)) {
                     nameET.setError(getString(R.string.begin_register_name_error));
                     return;
@@ -99,94 +163,28 @@ public class RegisterFragment extends Fragment {
                     confirmPasswordET.setError(getString(R.string.begin_register_confirmPassword_noMatch_error));
                     return;
                 }
-
-                fbAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(getContext(), getString(R.string.create_account_failed) + task.getException().getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-            }
-        });
-        return view;
-    }
-
-    private void createLoginFragment(BeginActivity beginActivity) {
-        beginActivity.getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(R.anim.right_to_left_in,R.anim.right_to_left_out)
-                .replace(R.id.act_begin_frame_layout,
-                new LoginFragment()).commit();
-    }
-
-    private void addNameToSharedPreferences() {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(NAME_KEY, name).apply();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        fbAuth = FirebaseAuth.getInstance();
-    }
-
-    private void initialiseComponents(View view) {
-
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-
-
-                    BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
-                    if (beginActivity != null) {
-                        createLoginFragment(beginActivity);
-//                        Context context=getContext();
-                        Toast.makeText(getContext(), getString(R.string.create_user_succes),
-                                Toast.LENGTH_LONG).show();
-                        preferences = getContext().getSharedPreferences(FirebaseAuth.getInstance().getCurrentUser().getUid() + SHARED_PREF_FILE_EXTENSION, Context.MODE_PRIVATE);
-                        addNameToSharedPreferences();
-                    }
-
-                }
-
+                //endregion Validations
+                createUser(email, password);
 
             }
         };
-
-        fbAuth.addAuthStateListener(authStateListener);
-
-        loginNowButton = view.findViewById(R.id.frg_register_button_login);
-        registerButton = view.findViewById(R.id.frg_register_button_register);
-        nameET = view.findViewById(R.id.frg_register_tiet_name);
-        emailET = view.findViewById(R.id.frg_register_tiet_email);
-        passwordET = view.findViewById(R.id.frg_register_tiet_password);
-        confirmPasswordET = view.findViewById(R.id.frg_register_tiet_password_confirm);
     }
 
     public static boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-
-    private void createDashboardActivity() {
-        BeginActivity beginActivity = (BeginActivity) getContext(); //poate returna null. WATCH OUT!!!
-        if (beginActivity != null) {
-            Intent intent = new Intent(beginActivity, DashboardActivity.class);
-            beginActivity.startActivity(intent);
-            beginActivity.finish();
-        }
+    private void createUser(String email, String password) {
+        fbAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(getContext(), getString(R.string.create_account_failed) + task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
 }
 
