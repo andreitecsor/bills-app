@@ -140,12 +140,6 @@ public class AddEditBillActivity extends AppCompatActivity {
         };
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        supplierService.getAll(getSuppliersMapping());
-    }
-
     private Callback<List<Supplier>> getSuppliersMapping() {
         return new Callback<List<Supplier>>() {
             @Override
@@ -323,5 +317,11 @@ public class AddEditBillActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.top_to_bot_in, R.anim.top_to_bot_out);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        supplierService.getAll(getSuppliersMapping());
     }
 }

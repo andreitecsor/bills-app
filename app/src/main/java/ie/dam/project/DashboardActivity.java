@@ -59,7 +59,7 @@ public class DashboardActivity extends AppCompatActivity {
     private String name;
 
     private static final AsyncTaskRunner asyncTaskRunner = new AsyncTaskRunner();
-    private static final String URL_JSON ="https://jsonkeeper.com/b/VWCL";
+    private static final String URL_JSON = "https://jsonkeeper.com/b/VWCL";
 
 
     @Override
@@ -239,21 +239,13 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void runResultOnUiThread(Double result) {
                 if (result >= 0) {
-                    Double roundedValue=round(result,2);
-                    String updatedTv = amountTv.getText().toString().replace(getString(R.string.number_replace),roundedValue.toString());
+                    Double roundedValue = Bill.round(result, 2);
+                    String updatedTv = amountTv.getText().toString().replace(getString(R.string.number_replace), roundedValue.toString());
                     updatedTv = updatedTv.replace(getString(R.string.currency_replace), preferences.getString(PreferenceActivity.CURRENCY_KEY, getString(R.string.default_currency)));
                     amountTv.setText(updatedTv);
                 }
             }
         };
-    }
-
-    private double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-
-        BigDecimal bd = new BigDecimal(Double.toString(value));
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
     }
 
 
@@ -287,7 +279,7 @@ public class DashboardActivity extends AppCompatActivity {
                         Supplier supplier = supplierWithBills.getSupplier();
                         supplierService.getByName(checkSupplierInDb(supplier, supplierWithBills.getBills()), supplier.getName());
                     }
-                    preferences.edit().putBoolean(FIRST_TIME_KEY,false).apply();
+                    preferences.edit().putBoolean(FIRST_TIME_KEY, false).apply();
                 }
             }
         };
